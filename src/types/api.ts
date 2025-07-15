@@ -66,6 +66,9 @@ export interface Publication {
   status: 'active' | 'sold' | 'paused' | 'deleted'
 }
 
+// Alias para compatibilidad
+export type Product = Publication
+
 export interface SearchParams {
   q?: string
   category_id?: number
