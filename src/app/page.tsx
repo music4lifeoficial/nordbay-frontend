@@ -36,144 +36,82 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section className="py-16">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-nordic-900">
-            Why Choose NordBay?
-          </h2>
-          <p className="mt-4 text-lg text-nordic-600">
-            Built with Nordic values of simplicity, quality, and trust
-          </p>
-        </div>
-
-            <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  icon: ShoppingBag,
-                  title: 'Quality Products',
-                  description: 'Curated marketplace for authentic, high-quality items from verified sellers.'
-                },
-                {
-                  icon: Users,
-                  title: 'Trusted Community',
-                  description: 'Connect with verified buyers and sellers in a safe, moderated environment.'
-                },
-                {
-                  icon: Shield,
-                  title: 'Secure Payments',
-                  description: 'Protected transactions with escrow system and buyer/seller guarantees.'
-                },
-                {
-                  icon: Heart,
-                  title: 'Conscious Commerce',
-                  description: 'Promote sustainable consumption through quality second-hand and new items.'
-                },
-                {
-                  icon: Search,
-                  title: 'Smart Discovery',
-                  description: 'AI-powered recommendations and advanced search to find exactly what you need.'
-                },
-                {
-                  icon: TrendingUp,
-                  title: 'Fair Pricing',
-                  description: 'Transparent commission structure and pricing that benefits both parties.'
-                }
-              ].map((feature) => (
-                <Card key={feature.title} className="p-6 text-center border-nordic-200 hover:shadow-md transition-shadow">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-brand-50">
-                    <feature.icon className="h-6 w-6 text-brand-600" />
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-nordic-900">{feature.title}</h3>
-                  <p className="mt-2 text-nordic-600">{feature.description}</p>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="bg-brand-50 py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-nordic-900">
-                Ready to start your Nordic marketplace journey?
-              </h2>
-              <p className="mt-4 text-lg text-nordic-600">
-                Join thousands of users buying and selling on Denmark's most trusted platform
-              </p>
-              <div className="mt-8 flex items-center justify-center gap-x-4">
-                <Button size="lg" className="bg-brand-500 hover:bg-brand-600">
-                  Browse Products
-                </Button>
-                <Button variant="outline" size="lg">
-                  List Your First Item
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-nordic-200 bg-white py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-nordic-600">
-            <p>&copy; 2025 NordBay. Built with Nordic values.</p>
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-nordic-900">
+              Why Choose NordBay?
+            </h2>
+            <p className="mt-4 text-lg text-nordic-600">
+              Built with Nordic values of simplicity, quality, and trust
+            </p>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: ShoppingBag,
+                title: 'Quality Products',
+                description: 'Curated marketplace for authentic, high-quality items from verified sellers.'
+              },
+              {
+                icon: Users,
+                title: 'Trusted Community',
+                description: 'Connect with verified buyers and sellers in a safe, moderated environment.'
+              },
+              {
+                icon: Shield,
+                title: 'Secure Payments',
+                description: 'Protected transactions with escrow system and buyer/seller guarantees.'
+              },
+              {
+                icon: Heart,
+                title: 'Conscious Commerce',
+                description: 'Promote sustainable consumption through quality second-hand and new items.'
+              },
+              {
+                icon: Search,
+                title: 'Smart Discovery',
+                description: 'AI-powered recommendations and advanced search to find exactly what you need.'
+              },
+              {
+                icon: TrendingUp,
+                title: 'Fair Pricing',
+                description: 'Transparent commission structure and pricing that benefits both parties.'
+              }
+            ].map((feature) => (
+              <Card key={feature.title} className="p-6 text-center border-nordic-200 hover:shadow-md transition-shadow">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-brand-50">
+                  <feature.icon className="h-6 w-6 text-brand-600" />
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-nordic-900">{feature.title}</h3>
+                <p className="mt-2 text-nordic-600">{feature.description}</p>
+              </Card>
+            ))}
           </div>
         </div>
-      </footer>
-    </div>
-  )
-}
-          </a>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-brand-50 py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-nordic-900">
+              Ready to start your Nordic marketplace journey?
+            </h2>
+            <p className="mt-4 text-lg text-nordic-600">
+              Join thousands of users buying and selling on Denmark's most trusted platform
+            </p>
+            <div className="mt-8 flex items-center justify-center gap-x-4">
+              <Button size="lg" className="bg-brand-500 hover:bg-brand-600">
+                Browse Products
+              </Button>
+              <Button variant="outline" size="lg">
+                List Your First Item
+              </Button>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </section>
+    </AppLayout>
+  )
 }
