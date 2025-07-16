@@ -1,6 +1,6 @@
 // Tipos base del API de NordBay basados en BACKEND_FOR_FRONTEND.txt
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean
   error?: string
   details?: object
@@ -42,6 +42,7 @@ export interface RegisterRequest {
   name?: string
   phone?: string
   address?: string
+  accept_terms?: boolean
 }
 
 export interface LoginRequest {

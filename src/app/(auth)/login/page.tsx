@@ -38,8 +38,9 @@ export default function LoginPage() {
       await login(data)
       toast.success('Welcome back!')
       router.push('/') // Redirect to home page
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Login failed. Please try again.')
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { error?: string } } }
+      toast.error(err.response?.data?.error || 'Login failed. Please try again.')
     }
   }
 
@@ -161,7 +162,7 @@ export default function LoginPage() {
       {/* Sign up link */}
       <div className="text-center">
         <p className="text-sm text-nordic-600">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="text-brand-600 hover:text-brand-500 font-medium">
             Sign up for free
           </Link>

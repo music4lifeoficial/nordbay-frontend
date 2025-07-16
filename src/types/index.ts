@@ -114,7 +114,7 @@ export interface RegisterRequest {
   accept_terms: boolean
 }
 
-export interface BaseResponse<T = any> {
+export interface BaseResponse<T = unknown> {
   success: boolean
   data: T
   message?: string

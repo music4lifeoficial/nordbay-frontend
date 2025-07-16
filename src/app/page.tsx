@@ -98,9 +98,9 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold tracking-tight text-nordic-900">
               Ready to start your Nordic marketplace journey?
             </h2>
-            <p className="mt-4 text-lg text-nordic-600">
-              Join thousands of users buying and selling on Denmark's most trusted platform
-            </p>
+              <p className="mt-4 text-lg text-nordic-600">
+                Join thousands of users buying and selling on Denmark&apos;s most trusted platform
+              </p>
             <div className="mt-8 flex items-center justify-center gap-x-4">
               <Button size="lg" className="bg-brand-500 hover:bg-brand-600">
                 Browse Products

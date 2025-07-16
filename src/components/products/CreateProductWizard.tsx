@@ -280,7 +280,7 @@ export default function CreateProductWizard() {
 
       // Upload images if any
       if (formData.images.length > 0) {
-        await productsAPI.uploadImages(product.id, formData.images)
+        await productsAPI.uploadImages(product.publication_id, formData.images)
       }
 
       toast({
@@ -288,13 +288,14 @@ export default function CreateProductWizard() {
         description: 'Dit produkt er blevet oprettet'
       })
 
-      router.push(`/products/${product.id}`)
+      router.push(`/products/${product.publication_id}`)
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating product:', error)
+      const err = error as { response?: { data?: { message?: string } } }
       toast({
         title: 'Fejl',
-        description: error.response?.data?.message || 'Der opstod en fejl ved oprettelse af produktet',
+        description: err.response?.data?.message || 'Der opstod en fejl ved oprettelse af produktet',
         variant: 'destructive'
       })
     } finally {

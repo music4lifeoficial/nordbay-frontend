@@ -20,15 +20,15 @@ interface SearchFilters {
   per_page?: number
 }
 
-interface CreateProductData {
+export interface CreateProductData {
   title: string
   description: string
   price: number
   category: string
   condition: string
   quantity?: number
-  location?: any
-  shipping_options?: any[]
+  location?: string | { city?: string }
+  shipping_options?: unknown[]
   featured?: boolean
 }
 
@@ -147,6 +147,9 @@ export const productsApi = {
       },
     })
 
-    return response.data.images?.map((img: any) => img.url) || []
+    return response.data.images?.map((img: { url: string }) => img.url) || []
   }
 }
+
+// Export alias for compatibility
+export const productsAPI = productsApi

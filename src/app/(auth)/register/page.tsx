@@ -53,8 +53,9 @@ export default function RegisterPage() {
       })
       toast.success('Account created successfully! Welcome to NordBay.')
       router.push('/') // Redirect to home page
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Registration failed. Please try again.')
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { error?: string } } }
+      toast.error(err.response?.data?.error || 'Registration failed. Please try again.')
     }
   }
 
