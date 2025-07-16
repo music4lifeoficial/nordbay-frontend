@@ -1,65 +1,77 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ===========================================
+# NORDBAY FRONTEND - GITIGNORE
+# Vercel + Railway + Security
+# ===========================================
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# ✅ DEPENDENCIES
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ✅ NEXT.JS BUILD
+.next/
+out/
+build/
+dist/
+
+# ✅ ENVIRONMENT VARIABLES & SECRETS
+.env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
 
-# Archivos con información sensible - NO COMMITEAR
-BACKEND_FOR_FRONTEND.txt
-API_DOCUMENTATION.md
-ARQUITECTURA_AUTENTICACION.md
-RAILWAY_*.md
-RAILWAY_*.js
-*_SETUP.js
-*_DEPLOYMENT_*.md
-CLOUDINARY_*.md
-MODULO_*.md
-THUNDER_CLIENT_*.md
-
-# Documentación con rutas y configuraciones sensibles
-*_GUIDE.md
-*_CONFIG.md
-masterguide.txt
-audit_*.js
-
-# Scripts y archivos temporales
-nordbay_epic_journey*.ps1
-generate-*.js
-# vercel
+# ✅ VERCEL DEPLOYMENT
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# ✅ DEVELOPMENT TOOLS
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
 
-#documentacion sensible
+# ✅ LOGS & DEBUG
+logs
+*.log
+debug.log
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ✅ TEMPORARY FILES
+*.tmp
+*.temp
+.cache/
+
+# ✅ TESTING
+coverage/
+.nyc_output/
+.jest/
+
+# ✅ TYPESCRIPT BUILD
+*.tsbuildinfo
+
+# ✅ SECURITY & API KEYS
+config/secrets.json
+secrets/
+keys/
+certificates/
+
+# ✅ RAILWAY LOCAL CONFIG (if any)
+railway.toml
+.railway/
+
+# ✅ STRIPE WEBHOOKS LOCAL
+stripe-cli.log
+
+# ✅ ANALYTICS & MONITORING
+.sentry-*

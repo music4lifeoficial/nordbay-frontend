@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/components/providers/Providers";
-import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,9 +9,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NordBay - Nordic Marketplace for Conscious Consumers",
+  title: {
+    default: "NordBay - Nordic Marketplace for Conscious Consumers",
+    template: "%s | NordBay"
+  },
   description: "The Danish marketplace for authentic, quality products. Buy and sell with confidence in our trusted Nordic community.",
-  keywords: ["marketplace", "Denmark", "Nordic", "sustainable", "quality", "authentic"],
+  keywords: [
+    "marketplace", 
+    "Denmark", 
+    "Nordic", 
+    "sustainable", 
+    "quality", 
+    "authentic",
+    "danish design",
+    "conscious consumers"
+  ],
   authors: [{ name: "NordBay Team" }],
   creator: "NordBay",
   publisher: "NordBay",
@@ -22,19 +32,28 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://nordbay.dk'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://nordbay.vercel.app'),
   openGraph: {
     title: "NordBay - Nordic Marketplace",
-    description: "The Danish marketplace for authentic, quality products",
-    url: "https://nordbay.dk",
+    description: "The Danish marketplace for authentic, quality products. Buy and sell with confidence in our trusted Nordic community.",
+    url: process.env.NEXT_PUBLIC_APP_URL || 'https://nordbay.vercel.app',
     siteName: "NordBay",
-    locale: "en_DK",
+    locale: "da_DK",
     type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "NordBay - Nordic Marketplace",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "NordBay - Nordic Marketplace",
-    description: "The Danish marketplace for authentic, quality products",
+    description: "The Danish marketplace for authentic, quality products.",
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -47,30 +66,27 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: process.env.GOOGLE_VERIFICATION,
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-nordic-50 font-sans antialiased">
-        <Providers>
-          {children}
-          <Toaster 
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: 'white',
-                color: 'var(--color-nordic-900)',
-                border: '1px solid var(--color-nordic-200)',
-              },
-            }}
-          />
-        </Providers>
+    <html lang="da" className={inter.variable}>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0f172a" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+      </head>
+      <body className="min-h-screen bg-background font-sans antialiased">
+        {children}
       </body>
     </html>
   );

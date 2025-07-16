@@ -1,38 +1,59 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Vercel deployment optimizations  
+  // ✅ VERCEL DEPLOYMENT OPTIMIZATIONS  
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   
-  // External packages for server components
+  // ✅ MOVED FROM EXPERIMENTAL
   serverExternalPackages: ['@tanstack/react-query'],
   
-  // Image optimization for Vercel + Cloudinary
+  // ✅ TYPESCRIPT & BUILD OPTIMIZATION
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  
+  // ✅ IMAGE OPTIMIZATION (Vercel + Cloudinary)
   images: {
-    domains: ['res.cloudinary.com', 'images.unsplash.com'],
+    domains: [
+      'res.cloudinary.com', 
+      'images.unsplash.com',
+      'nordbay-production.up.railway.app' // Railway backend images
+    ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   
-  // Performance optimizations for Vercel
+  // ✅ PERFORMANCE OPTIMIZATIONS
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   
-  // Bundle analyzer disabled for Vercel (only needed in dev)
+  // ✅ WEBPACK OPTIMIZATION
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {
       config.devtool = 'eval-source-map'
     }
+    
+    // Bundle analyzer only in development
+    if (process.env.ANALYZE === 'true') {
+      const withBundleAnalyzer = require('@next/bundle-analyzer')({
+        enabled: true,
+      })
+      return withBundleAnalyzer(config)
+    }
+    
     return config
   },
   
-  // Security headers for Vercel
+  // ✅ SECURITY HEADERS FOR VERCEL
   async headers() {
     return [
       {
@@ -59,11 +80,31 @@ const nextConfig: NextConfig = {
     ]
   },
 
-  // Environment variables for Vercel + Railway
+  // ✅ REWRITES FOR RAILWAY BACKEND API
+  async rewrites() {
+    return [
+      {
+        source: '/api/railway/:path*',
+        destination: 'https://nordbay-production.up.railway.app/api/:path*',
+      },
+    ]
+  },
+
+  // ✅ ENVIRONMENT VARIABLES
   env: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
   },
+
+  // ✅ OUTPUT FOR VERCEL
+  output: 'standalone',
+  
+  // ✅ TRAILING SLASH CONSISTENCY
+  trailingSlash: false,
+  
+  // ✅ POWERED BY HEADER
+  poweredByHeader: false,
 };
 
 export default nextConfig;

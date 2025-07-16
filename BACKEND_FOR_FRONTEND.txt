@@ -1,0 +1,709 @@
+Backend-for-Frontend Integration Guide - NordBay.dk
+==========================================================
+UPDATED: July 2025 - Complete API Reference for Railway Deployment
+
+This document summarizes the entire Node+Express/PostgreSQL backend deployed on Railway.
+Every endpoint, authentication level, payload, and response format for professional frontend implementation.
+
+Base URL & Infrastructure
+-------------------------
+• Production: https://[railway-app-url]/api
+• All endpoints are rooted at `/api`
+• PostgreSQL database hosted on Railway
+• File storage: Cloudinary integration
+• Payment processing: Stripe integration
+• Shipping: PostNord, GLS, DAO integrations
+
+Authentication Levels & Flow
+----------------------------
+The system has three distinct authentication levels:
+
+1. **PUBLIC ACCESS** - No authentication required
+   • Browse listings, search, view categories
+   • Endpoints: GET /api/publications/, /api/categories/, /api/search/*
+
+2. **LIGHT ACCOUNT** - Email verification only
+   • Social login (Google, Apple, Facebook) OR traditional email/password
+   • Permissions: favorites, questions, notifications, follow sellers
+   • Required middleware: `requireLightAccount`
+
+3. **MITID VERIFIED** - Full marketplace access
+   • Danish identity verification for transactions
+   • Permissions: buy, sell, publish listings, payments, shipping
+   • Required middleware: `requireMitIDVerification`
+
+Authentication Headers
+---------------------
+• JWT: `Authorization: Bearer <access_token>`
+• Refresh: Include refresh token in request body when needed
+• OAuth: Handled via redirect flows
+
+Environment Variables (Railway)
+------------------------------
+• `DATABASE_URL` – PostgreSQL connection string (Railway managed)
+• `JWT_SECRET` – Access token signing key
+• `JWT_REFRESH_SECRET` – Refresh token signing key
+• `PORT` – Railway assigned port (usually 3000)
+• `CLOUDINARY_URL` – Image storage configuration
+• `STRIPE_SECRET_KEY` – Payment processing
+• `STRIPE_WEBHOOK_SECRET` – Webhook validation
+• `GOOGLE_CLIENT_ID` – OAuth Google integration
+• `APPLE_CLIENT_ID` – OAuth Apple integration
+• `FACEBOOK_APP_ID` – OAuth Facebook integration
+• `MITID_CLIENT_ID` – Danish identity verification
+• `POSTNORD_API_KEY` – Shipping integration
+• `GLS_API_KEY` – Shipping integration
+• `EMAIL_SENDER_*` – SMTP credentials
+
+Response Format Standard
+-----------------------
+• Success: `{ success: true, ...data }`
+• Error: `{ success: false, error: string, details?: object }`
+• Pagination: `{ success: true, items: [], total: number, page: number, page_size: number }`
+
+═══════════════════════════════════════════════════════════
+
+1. AUTHENTICATION SYSTEM
+═══════════════════════════════════════════════════════════
+
+1. AUTHENTICATION SYSTEM
+-------------------------
+Tables: `users`, `email_verifications`, `audit_logs`, `oauth_accounts`
+
+1.1 Traditional Authentication
+POST /api/users/register
+Body: `{ email, password, nickname, name? }`
+Response: `{ success: true, user_id, message }`
+
+POST /api/users/verify-email
+Body: `{ token }`
+Response: `{ success: true, message }`
+
+POST /api/users/login
+Body: `{ email, password }`
+Response: `{ success: true, jwt, refresh, user: { id, email, nickname, avatar_url, mitid_verified } }`
+
+POST /api/users/request-password-reset
+Body: `{ email }`
+Response: `{ success: true, message }`
+
+POST /api/users/reset-password
+Body: `{ token, new_password }`
+Response: `{ success: true, message }`
+
+1.2 OAuth Authentication (Google, Apple, Facebook)
+GET /api/auth/oauth/:provider/login
+Params: provider = 'google' | 'apple' | 'facebook'
+Response: Redirect to OAuth provider
+
+GET /api/auth/oauth/:provider/callback
+Query: `{ code, state }` (OAuth callback)
+Response: Redirect with JWT in URL or cookie
+
+POST /api/auth/oauth/apple/callback
+Body: Apple POST callback data
+Response: `{ success: true, jwt, refresh, user }`
+
+DELETE /api/auth/oauth/:provider/disconnect
+Headers: Authorization Bearer token
+Response: `{ success: true, message }`
+
+1.3 MitID Verification (Danish Identity)
+POST /api/auth/mitid/verify
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, mitid_url, session_id }`
+
+GET /api/auth/mitid/callback
+Query: `{ code, state }` (MitID callback)
+Response: `{ success: true, verified: boolean, user }`
+
+GET /api/auth/mitid/status
+Headers: Authorization Bearer token
+Response: `{ success: true, mitid_verified: boolean, verified_at?: date }`
+
+DELETE /api/auth/mitid/revoke
+Headers: Authorization Bearer token
+Response: `{ success: true, message }`
+
+1.4 Authentication Info
+GET /api/auth/methods
+Response: `{ success: true, authentication_methods: { traditional, oauth, mitid }, auth_levels }`
+
+1.5 User Profile & Security
+GET /api/users/me
+Headers: Authorization Bearer token
+Response: `{ success: true, user: { id, email, nickname, name, avatar_url, created_at, mitid_verified } }`
+
+PUT /api/users/me
+Headers: Authorization Bearer token
+Body: `{ nickname?, name?, avatar_url? }`
+Response: `{ success: true, user }`
+
+GET /api/users/public/:user_id
+Response: `{ success: true, user: { id, nickname, avatar_url, created_at, reputation } }`
+
+POST /api/users/change-password
+Headers: Authorization Bearer token
+Body: `{ current_password, new_password }`
+Response: `{ success: true, message }`
+
+1.6 Two-Factor Authentication
+POST /api/users/2fa/enable
+Headers: Authorization Bearer token
+Response: `{ success: true, qr_code, backup_codes }`
+
+POST /api/users/2fa/verify
+Headers: Authorization Bearer token
+Body: `{ code }`
+Response: `{ success: true, enabled: boolean }`
+
+POST /api/users/2fa/disable
+Headers: Authorization Bearer token
+Body: `{ code }`
+Response: `{ success: true, message }`
+
+1.7 Session Management
+GET /api/users/sessions
+Headers: Authorization Bearer token
+Response: `{ success: true, sessions: [{ id, device, location, last_activity }] }`
+
+POST /api/users/logout-session
+Headers: Authorization Bearer token
+Body: `{ sessionId }`
+Response: `{ success: true, message }`
+
+═══════════════════════════════════════════════════════════
+
+2. PUBLICATIONS & MARKETPLACE
+------------------------------
+Tables: `publications`, `publication_images`, `categories`, `category_attributes`, `publication_attributes`, `questions`
+
+2.1 Publications CRUD
+GET /api/publications/
+Query: `{ category?, price_min?, price_max?, condition?, location?, sort?, page?, page_size? }`
+Response: `{ success: true, items: [], total, page, page_size }`
+
+GET /api/publications/:id
+Response: `{ success: true, publication: { id, title, description, price, images, seller, shipping_options } }`
+
+POST /api/publications/
+Headers: Authorization Bearer token (MitID required)
+Body: `{ title, description, price, category_id, condition, location, images?, attributes? }`
+Response: `{ success: true, publication_id, message }`
+
+PUT /api/publications/:id
+Headers: Authorization Bearer token (MitID required)
+Body: `{ title?, description?, price?, condition?, images? }`
+Response: `{ success: true, message }`
+
+DELETE /api/publications/:id
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, message }`
+
+2.2 Publication Images
+GET /api/publication-images/publication/:publication_id
+Response: `{ success: true, images: [{ id, url, is_primary, order }] }`
+
+POST /api/publication-images/upload
+Headers: Authorization Bearer token (MitID required)
+Body: FormData with image file
+Response: `{ success: true, image: { id, url, cloudinary_id } }`
+
+DELETE /api/publication-images/:id
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, message }`
+
+POST /api/publication-images/:id/set-primary
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, message }`
+
+PATCH /api/publication-images/:id/primary
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, message }`
+
+2.3 Categories & Attributes
+GET /api/categories/
+Response: `{ success: true, categories: [{ id, name, slug, parent_id, icon }] }`
+
+GET /api/categories/:id
+Response: `{ success: true, category: { id, name, description, attributes } }`
+
+GET /api/categories/:id/attributes
+Response: `{ success: true, attributes: [{ id, name, type, required, options? }] }`
+
+GET /api/categories/hierarchy/tree
+Response: `{ success: true, tree: nested_category_structure }`
+
+2.4 Questions & Answers
+POST /api/questions/
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ publication_id, question }`
+Response: `{ success: true, question_id }`
+
+POST /api/questions/answer/:id
+Headers: Authorization Bearer token (Publication owner)
+Body: `{ answer }`
+Response: `{ success: true, message }`
+
+GET /api/questions/publication/:publication_id
+Response: `{ success: true, questions: [{ id, question, answer?, asked_by, answered_at? }] }`
+
+DELETE /api/questions/:id
+Headers: Authorization Bearer token
+Response: `{ success: true, message }`
+
+2.5 Reporting & Moderation
+POST /api/publications/:id/report
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ reason, evidence_url?, description? }`
+Response: `{ success: true, report_id }`
+
+═══════════════════════════════════════════════════════════
+
+3. SEARCH SYSTEM
+----------------
+Tables: `search_logs`, `saved_searches`, `search_suggestions`
+
+3.1 Advanced Search
+GET /api/search/publications
+Query: `{ q?, category?, price_min?, price_max?, condition?, location?, attributes?, sort?, page? }`
+Response: `{ success: true, items: [], total, page, filters_applied, suggestions }`
+
+GET /api/search/filters
+Response: `{ success: true, filters: { categories, conditions, price_ranges, locations } }`
+
+GET /api/search/suggestions
+Query: `{ q }`
+Response: `{ success: true, suggestions: [{ text, type, category? }] }`
+
+GET /api/search/trending
+Response: `{ success: true, trending: [{ term, category, count }] }`
+
+3.2 Saved Searches
+POST /api/search/save
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ name, query_params, alert_frequency? }`
+Response: `{ success: true, saved_search_id }`
+
+GET /api/search/saved
+Headers: Authorization Bearer token
+Response: `{ success: true, saved_searches: [{ id, name, query, created_at, alert_enabled }] }`
+
+DELETE /api/search/saved/:id
+Headers: Authorization Bearer token
+Response: `{ success: true, message }`
+
+3.3 Search Analytics
+GET /api/search/stats
+Response: `{ success: true, stats: { popular_terms, categories, trends } }`
+
+POST /api/search/track-click
+Body: `{ search_id?, publication_id, position? }`
+Response: `{ success: true }`
+
+═══════════════════════════════════════════════════════════
+
+4. PAYMENTS & TRANSACTIONS
+---------------------------
+Tables: `payments`, `transactions`, `escrows`, `refunds`, `disputes`
+
+4.1 Payment Processing
+POST /api/payments/intent
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ publication_id, quantity?, shipping_method, address? }`
+Response: `{ success: true, payment_intent: { id, client_secret, amount } }`
+
+POST /api/payments/webhook/stripe
+Body: Stripe webhook payload
+Response: 200 OK (webhook confirmation)
+
+4.2 Transaction Management
+GET /api/payments/transactions
+Headers: Authorization Bearer token (MitID required)
+Query: `{ status?, type?, page? }`
+Response: `{ success: true, transactions: [{ id, amount, status, type, created_at }] }`
+
+GET /api/payments/transactions/:transaction_id
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, transaction: { id, amount, status, escrow_status, dispute? } }`
+
+POST /api/payments/transactions/:transaction_id/release
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, message }`
+
+4.3 Wallet & Balance
+GET /api/payments/wallet
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, wallet: { balance, pending, currency, transactions_count } }`
+
+4.4 Refunds & Disputes
+POST /api/payments/payments/:payment_id/refund
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ reason, amount? }`
+Response: `{ success: true, refund_id }`
+
+POST /api/payments/transactions/:transaction_id/dispute
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ reason, description, evidence_url? }`
+Response: `{ success: true, dispute_id }`
+
+═══════════════════════════════════════════════════════════
+
+5. SHIPPING & LOGISTICS
+------------------------
+Tables: `shipments`, `pickup_points`, `shipping_rates`, `tracking_events`
+
+5.1 Shipping Rates & Options
+GET /api/shipping/rates
+Query: `{ carrier?, weight?, origin_country?, destination_country?, include_pickup? }`
+Response: `{ success: true, rates: [{ carrier, service_type, cost, currency, estimated_days }] }`
+
+GET /api/shipping/pickup-points
+Query: `{ latitude, longitude, radius?, carrier? }`
+Response: `{ success: true, pickup_points: [{ id, name, address, carrier, hours }] }`
+
+5.2 Shipment Management
+POST /api/shipping/create
+Headers: Authorization Bearer token (MitID required)
+Body: `{ sale_id, carrier, service_type, address?, pickup_point_id? }`
+Response: `{ success: true, shipment_id, tracking_number }`
+
+GET /api/shipping/my-shipments
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, shipments: [{ id, tracking_number, status, carrier }] }`
+
+GET /api/shipping/tracking/:shipment_id
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, tracking: { status, events, estimated_delivery } }`
+
+5.3 Shipping Actions
+POST /api/shipping/:shipment_id/confirm-delivery
+Headers: Authorization Bearer token (MitID required)
+Body: `{ signature?, photo? }`
+Response: `{ success: true, message }`
+
+POST /api/shipping/:shipment_id/confirm-pickup
+Headers: Authorization Bearer token (MitID required)
+Response: `{ success: true, message }`
+
+POST /api/shipping/:shipment_id/request-return
+Headers: Authorization Bearer token (MitID required)
+Body: `{ reason, description? }`
+Response: `{ success: true, return_shipment_id }`
+
+5.4 Publication Shipping Settings
+PUT /api/shipping/publications/:publication_id/shipping
+Headers: Authorization Bearer token (MitID required)
+Body: `{ shipping_methods: [], default_carrier?, shipping_cost? }`
+Response: `{ success: true, message }`
+
+GET /api/shipping/publications/:publication_id/options
+Response: `{ success: true, shipping_options: [{ method, cost, estimated_days }] }`
+
+═══════════════════════════════════════════════════════════
+
+6. PICKUP POINTS SYSTEM
+------------------------
+Tables: `pickup_points`, `pickup_point_sync_logs`
+
+6.1 Pickup Point Search
+GET /api/pickup-points/search
+Query: `{ latitude, longitude, radius?, carrier?, limit? }`
+Response: `{ success: true, points: [{ id, name, address, carrier, distance, hours }] }`
+
+GET /api/pickup-points/city
+Query: `{ city, country?, carrier? }`
+Response: `{ success: true, points: [] }`
+
+GET /api/pickup-points/coverage
+Response: `{ success: true, coverage: { total_points, carriers, cities_covered } }`
+
+6.2 Pickup Point Validation
+GET /api/pickup-points/:carrier/:external_id/validate
+Response: `{ success: true, valid: boolean, point?: {} }`
+
+6.3 Admin Pickup Management
+POST /api/pickup-points/sync
+Headers: Authorization Bearer token (Admin required)
+Body: `{ carrier?, force? }`
+Response: `{ success: true, sync_started: boolean }`
+
+GET /api/admin/pickup-points/sync/stats
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: true, stats: { last_sync, total_points, errors } }`
+
+═══════════════════════════════════════════════════════════
+
+13. SYSTEM ADMINISTRATION
+--------------------------
+Direct endpoints in app.js for system management
+
+13.1 Pickup Points Sync Management
+GET /api/admin/pickup-sync/status
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: true, status: { running: boolean, last_sync: date, total_points: number } }`
+
+POST /api/admin/pickup-sync/manual
+Headers: Authorization Bearer token (Admin required)
+Body: `{ carrier?: 'all' | 'postnord' | 'gls' | 'dao' }`
+Response: `{ success: true, message: "Sincronización [carrier] iniciada" }`
+
+13.2 System Health
+GET /
+Response: `"NordBay Backend API v1 - Sistema completo con pickup points"`
+
+═══════════════════════════════════════════════════════════
+
+7. FAVORITES & NOTIFICATIONS
+-----------------------------
+Tables: `favorites`, `notifications`, `notification_preferences`
+
+7.1 Favorites Management
+POST /api/favorites/toggle
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ entity_type: 'publication', entity_id }`
+Response: `{ success: true, favorited: boolean }`
+
+GET /api/favorites/
+Headers: Authorization Bearer token (Light Account required)
+Query: `{ page?, page_size? }`
+Response: `{ success: true, items: [], total }`
+
+GET /api/favorites/is-favorite
+Headers: Authorization Bearer token (Light Account required)
+Query: `{ entity_type, entity_id }`
+Response: `{ success: true, is_favorite: boolean }`
+
+7.2 Notifications
+GET /api/notifications/
+Headers: Authorization Bearer token (Light Account required)
+Query: `{ unread?, type?, page? }`
+Response: `{ success: true, notifications: [{ id, type, message, read, created_at }] }`
+
+GET /api/notifications/unread-count
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, unread_count: number }`
+
+PUT /api/notifications/:id/read
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, message }`
+
+PUT /api/notifications/mark-all-read
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, message }`
+
+DELETE /api/notifications/:id
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, message }`
+
+7.3 Notification Preferences
+GET /api/notifications/preferences
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, preferences: { email_enabled, push_enabled, types: {} } }`
+
+PUT /api/notifications/preferences
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ email_enabled?, push_enabled?, types?: {} }`
+Response: `{ success: true, message }`
+
+═══════════════════════════════════════════════════════════
+
+8. REPUTATION & REVIEWS
+------------------------
+Tables: `reputation`, `reviews`, `badges`, `reputation_logs`
+
+8.1 Reviews System
+POST /api/reputation/reviews
+Headers: Authorization Bearer token
+Body: `{ transaction_id, rating, comment?, recommendation? }`
+Response: `{ success: true, review_id }`
+
+GET /api/reputation/reviews/user/:userId
+Query: `{ page?, type? }`
+Response: `{ success: true, reviews: [{ id, rating, comment, reviewer, created_at }] }`
+
+POST /api/reputation/reviews/:reviewId/response
+Headers: Authorization Bearer token
+Body: `{ response }`
+Response: `{ success: true, message }`
+
+POST /api/reputation/reviews/:reviewId/report
+Headers: Authorization Bearer token
+Body: `{ reason, description? }`
+Response: `{ success: true, report_id }`
+
+8.2 Reputation Stats
+GET /api/reputation/user/:userId
+Response: `{ success: true, reputation: { score, level, reviews_count, completion_rate } }`
+
+GET /api/reputation/users/:userId/badges
+Response: `{ success: true, badges: [{ id, name, description, earned_at }] }`
+
+GET /api/reputation/seller-summary/:sellerId
+Response: `{ success: true, summary: { rating, sales_count, response_time, badges } }`
+
+═══════════════════════════════════════════════════════════
+
+9. ANALYTICS & BI
+------------------
+Tables: `analytics_events`, `user_metrics`, `system_metrics`
+
+9.1 Event Tracking
+POST /api/analytics/track
+Body: `{ event_type, entity_id?, meta?, user_id? }`
+Response: `{ success: true, event_id }`
+
+9.2 User Analytics
+GET /api/analytics/user/dashboard
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, dashboard: { views, favorites, sales, purchases } }`
+
+GET /api/analytics/user/metrics
+Headers: Authorization Bearer token (Light Account required)
+Response: `{ success: true, metrics: { engagement, conversion, activity } }`
+
+9.3 Admin Analytics
+GET /api/analytics/admin/dashboard
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: true, dashboard: { users, publications, sales, revenue } }`
+
+GET /api/analytics/admin/popular-content
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: true, popular: { publications, searches, categories } }`
+
+GET /api/analytics/admin/conversion-funnel
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: true, funnel: { steps, conversion_rates } }`
+
+═══════════════════════════════════════════════════════════
+
+10. AI & AUTOMATION
+-------------------
+Tables: `ai_logs`, `moderation_queue`, `ai_suggestions`
+
+10.1 AI Copilot Admin
+POST /api/ai/admin/command
+Headers: Authorization Bearer token (Admin required)
+Body: `{ command, context?, parameters? }`
+Response: `{ success: true, result, suggestions? }`
+
+GET /api/ai/admin/suggestions
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: true, suggestions: [{ type, priority, action, data }] }`
+
+GET /api/ai/dashboard
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: true, dashboard: { moderation_queue, insights, alerts } }`
+
+10.2 AI Support
+POST /api/ai/support
+Body: `{ message, context?, user_id? }`
+Response: `{ success: false, message: "Chatbot de soporte estará disponible en Fase 3", coming_soon: true }`
+
+10.3 Content Moderation
+GET /api/ai/human-review-queue
+Headers: Authorization Bearer token (Admin required)
+Response: `{ success: false, message: "Cola de revisión humana estará disponible en Fase 3", coming_soon: true }`
+
+═══════════════════════════════════════════════════════════
+
+11. SALES & TRANSACTIONS
+-------------------------
+Tables: `sales`, `sale_events`, `commission_logs`
+
+11.1 Sales Management
+POST /api/sales/
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ publication_id, quantity?, shipping_address?, payment_method }`
+Response: `{ success: true, sale_id, payment_url }`
+
+GET /api/sales/
+Headers: Authorization Bearer token (Light Account required)
+Query: `{ status?, type?, page? }`
+Response: `{ success: true, sales: [{ id, publication, status, amount, created_at }] }`
+
+POST /api/sales/:id/confirm
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ confirmation_code?, signature? }`
+Response: `{ success: true, message }`
+
+POST /api/sales/:id/dispute
+Headers: Authorization Bearer token (Light Account required)
+Body: `{ reason, description, evidence_url? }`
+Response: `{ success: true, dispute_id }`
+
+═══════════════════════════════════════════════════════════
+
+12. ADMIN ENDPOINTS
+-------------------
+All admin endpoints require Admin role authentication
+
+12.1 User Management
+POST /api/admin/block-user
+Body: `{ user_id, reason, duration? }`
+
+POST /api/admin/delete-publication
+Body: `{ publication_id, reason }`
+
+GET /api/admin/audit-logs
+Query: `{ user_id?, action?, date_from?, date_to? }`
+
+12.2 Shipping Administration
+GET /api/admin/shipments
+GET /api/admin/shipments/statistics
+GET /api/admin/shipments/export
+GET /api/admin/shipments/:id
+PUT /api/admin/shipments/:id/intervene
+
+═══════════════════════════════════════════════════════════
+
+FRONTEND IMPLEMENTATION GUIDELINES
+===================================
+
+Railway-Specific Considerations:
+• Use environment variables for dynamic Railway URLs
+• Implement retry logic for cold starts (30s timeout recommended)
+• Handle Railway's auto-sleep behavior gracefully
+• Root endpoint for basic health check: GET /
+• Admin sync endpoints available at app level: /api/admin/pickup-sync/*
+
+Authentication Flow Recommendations:
+1. Check /api/auth/methods to determine available auth options
+2. Implement OAuth redirects properly for Railway URLs
+3. Store JWT securely, handle refresh tokens automatically
+4. Implement progressive authentication (Light → MitID)
+
+Error Handling:
+• Always check success: boolean in responses
+• Implement retry logic for 5xx errors (Railway cold starts)
+• Handle 401 errors with automatic token refresh
+• Show user-friendly messages for 403 errors (permission needed)
+
+Performance Optimizations:
+• Implement pagination for all list endpoints
+• Use React Query/SWR for caching
+• Prefetch critical data (categories, user profile)
+• Implement optimistic updates for favorites/likes
+
+Required UI Components:
+• MitID verification flow (Danish identity verification)
+• Multi-step publication creation
+• Real-time shipping tracking
+• Payment flow with Stripe integration
+• Image upload with Cloudinary
+• Search with filters and suggestions
+
+Security Best Practices:
+• Validate file uploads on frontend (images only)
+• Sanitize user inputs before API calls
+• Implement CSRF protection for sensitive actions
+• Use HTTPS only in production (Railway default)
+• Validate JWT expiration before API calls
+
+Shipping Integration:
+• Support both address delivery and pickup points
+• Show real-time shipping rates
+• Integrate with Danish carriers (PostNord, GLS, DAO)
+• Handle in-person pickup (free shipping option)
+
+This guide provides complete API coverage for professional NordBay.dk frontend implementation on Railway infrastructure.
