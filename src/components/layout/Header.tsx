@@ -51,9 +51,9 @@ export default function Header() {
             {isAuthenticated ? (
               <>
                 <Link
-                  href="/dashboard2"
+                  href="/dashboard2page"
                   className={`text-sm font-medium transition-colors hover:text-nordic-700 ${
-                    isActive('/dashboard2') ? 'text-nordic-900' : 'text-nordic-600'
+                    isActive('/dashboard2page') ? 'text-nordic-900' : 'text-nordic-600'
                   }`}
                 >
                   Dashboard
@@ -163,7 +163,7 @@ export default function Header() {
               {isAuthenticated ? (
                 <>
                   <Link
-                    href="/dashboard2"
+                    href="/dashboard2page"
                     className="block px-2 py-2 text-base font-medium text-nordic-700 hover:bg-nordic-50 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
