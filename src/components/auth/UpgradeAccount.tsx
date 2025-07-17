@@ -15,7 +15,7 @@ export default function UpgradeAccount() {
   // Mejor práctica: redirigir en useEffect para evitar side effects en render
   useEffect(() => {
     if (isMitIDVerified()) {
-      router.replace("/dashboard");
+      router.replace("/dashboard2");
     }
   }, [isMitIDVerified, router]);
 

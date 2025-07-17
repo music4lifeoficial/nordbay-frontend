@@ -25,7 +25,7 @@ export default function MitIDCallback() {
         await completeMitIDVerification(code);
         setStatus("success");
         showToast("¡Verificación exitosa!", "success");
-        setTimeout(() => router.replace("/dashboard"), 2000);
+        setTimeout(() => router.replace("/dashboard2"), 2000);
       } catch {
         setStatus("error");
         showToast("Error de verificación", "error");

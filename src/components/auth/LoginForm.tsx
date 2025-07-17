@@ -24,7 +24,7 @@ export default function LoginForm() {
     try {
       await login({ email, password });
       showToast("¡Bienvenido a NordBay! Has iniciado sesión exitosamente.", "success");
-      router.push('/dashboard');
+      router.push('/dashboard2');
     } catch (error) {
       showToast("Credenciales incorrectas. Intenta nuevamente.", "error");
     } finally {
