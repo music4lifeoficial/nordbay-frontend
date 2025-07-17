@@ -122,4 +122,5 @@ module.exports = {
     require("tailwindcss-animate"),
   ],
   darkMode: "class",
+  // audit: cambio mínimo para forzar deploy y trazabilidad (2025-07-17)
 };
