@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles (opcional) */
+:root {
+  --radius: 0.5rem;
+}
+
+body {
+  font-family: var(--font-inter, Inter, system-ui, sans-serif);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
