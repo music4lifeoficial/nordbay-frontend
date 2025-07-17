@@ -1,5 +1,7 @@
 # 🚀 Plan de Implementación Frontend NordBay - Roadmap Técnico Detallado
 
+Nuestro slogan: “Sælg nemt. Køb trygt. Giv videre.”
+
 ## 📋 ÍNDICE DE FEATURES POR PRIORIDAD
 
 ### FASE 1: FUNDACIÓN TÉCNICA (Semana 1-2)
@@ -111,11 +113,11 @@ src/
 - `.env.local`: Variables de entorno con fallbacks
 
 **✅ Criterios de completitud:**
-- [ ] Proyecto inicia sin errores
-- [ ] TypeScript configurado strictamente
-- [ ] Todas las dependencias instaladas
-- [ ] Hot reload funciona
-- [ ] Structure de carpetas creada
+- [x] Proyecto inicia sin errores
+- [x] TypeScript configurado strictamente
+- [x] Todas las dependencias instaladas
+- [x] Hot reload funciona
+- [x] Structure de carpetas creada
 
 ---
 
@@ -138,47 +140,135 @@ npx shadcn-ui@latest add button card input label
 npx shadcn-ui@latest add dropdown-menu dialog sheet
 ```
 
-**🎨 Color Palette Nórdico:**
-```typescript
+
+**🎨 Color Palette, Tipografía y Animaciones (Estado Actual):**
+```js
 // tailwind.config.js
 module.exports = {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
+    container: {
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
-        // Nordic minimalist palette
         nordic: {
-          50: '#f8fafc',   // Ice white
-          100: '#f1f5f9',  // Snow
-          200: '#e2e8f0',  // Light grey
-          300: '#cbd5e1',  // Medium grey
-          400: '#94a3b8',  // Dark grey
-          500: '#64748b',  // Slate
-          600: '#475569',  // Dark slate
-          700: '#334155',  // Charcoal
-          800: '#1e293b',  // Dark charcoal
-          900: '#0f172a',  // Midnight
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
         },
         brand: {
-          50: '#f0f9ff',   // Light blue
-          500: '#3b82f6',  // Primary blue
-          600: '#2563eb',  // Dark blue
+          50: '#f0f9ff',
+          500: '#3b82f6',
+          600: '#2563eb',
         },
         success: '#10b981',
         warning: '#f59e0b',
         error: '#ef4444',
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        sans: 'Inter, system-ui, sans-serif',
+        mono: 'JetBrains Mono, monospace',
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        fadeIn: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        slideUp: {
+          from: { transform: "translateY(20px)", opacity: "0" },
+          to: { transform: "translateY(0)", opacity: "1" },
+        },
+        scaleIn: {
+          from: { transform: "scale(0.95)", opacity: "0" },
+          to: { transform: "scale(1)", opacity: "1" },
+        },
       },
       animation: {
-        'fade-in': 'fadeIn 0.3s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'scale-in': 'scaleIn 0.2s ease-out',
-      }
-    }
-  }
-}
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fadeIn 0.3s ease-out",
+        "slide-up": "slideUp 0.3s ease-out",
+        "scale-in": "scaleIn 0.2s ease-out",
+      },
+      boxShadow: {
+        sm: "0 1px 2px 0 rgba(16, 24, 40, 0.05)",
+        DEFAULT: "0 1.5px 6px 0 rgba(16, 24, 40, 0.07)",
+        md: "0 4px 12px 0 rgba(16, 24, 40, 0.10)",
+        lg: "0 8px 24px 0 rgba(16, 24, 40, 0.12)",
+        xl: "0 12px 48px 0 rgba(16, 24, 40, 0.14)",
+      },
+      screens: {
+        xs: "400px",
+      },
+    },
+  },
+  plugins: [
+    require("tailwindcss-animate"),
+  ],
+  darkMode: "class",
+};
 ```
 
 **🧩 Componentes base customizados:**
@@ -188,12 +278,13 @@ module.exports = {
 - `<LoadingSpinner />`: Animation sutil
 - `<Avatar />`: Circular, con fallback
 
+
 **✅ Criterios de completitud:**
-- [ ] Shadcn/ui instalado y configurado
-- [ ] Color palette aplicado
+- [x] Shadcn/ui instalado y configurado
+- [x] Color palette nórdica aplicada en tailwind.config.js
+- [x] Typography responsive y fuente Inter configurada
+- [x] Animations suaves y custom definidas
 - [ ] Componentes base funcionando
-- [ ] Typography responsive
-- [ ] Animations suaves definidas
 
 ---
 
