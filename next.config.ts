@@ -2,10 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // ✅ VERCEL DEPLOYMENT OPTIMIZATIONS  
-  experimental: {
-    optimizeCss: true,
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-  },
+  // experimental: {
+  //   optimizeCss: true,
+  //   optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+  // },
   
   // ✅ MOVED FROM EXPERIMENTAL
   serverExternalPackages: ['@tanstack/react-query'],

@@ -29,6 +29,14 @@ interface AuthState {
   canBuy: () => boolean;
   needsUpgrade: (requiredLevel?: User['account_level']) => boolean;
   getAccountInfo: () => ReturnType<typeof authApi.getAccountLevelInfo>;
+
+  // Account level helpers
+  accountLevel: () => User['account_level'];
+  hasLevel: (level: User['account_level']) => boolean;
+  isLightAccount: () => boolean;
+  isMitIDVerified: () => boolean;
+  isAdmin: () => boolean;
+  canAccess: (level: User['account_level']) => boolean;
   
   // MitID (Phase 2)
   initiateMitIDVerification: () => Promise<string>;
@@ -181,6 +189,35 @@ export const useAuthStore = create<AuthState>()(
         return authApi.getAccountLevelInfo(user ?? undefined);
       },
 
+      // ===== ACCOUNT LEVEL HELPERS =====
+      accountLevel: () => {
+        const { user } = get();
+        return user?.account_level ?? 'public';
+      },
+      hasLevel: (level) => {
+        const { user } = get();
+        return user?.account_level === level;
+      },
+      isLightAccount: () => {
+        const { user } = get();
+        return user?.account_level === 'light_account';
+      },
+      isMitIDVerified: () => {
+        const { user } = get();
+        return user?.account_level === 'mitid_verified' && user?.mitid_verified;
+      },
+      isAdmin: () => {
+        // TODO: usar user cuando el backend lo soporte
+        return false; // Placeholder, ajustar según backend
+      },
+      canAccess: (level) => {
+        const { user } = get();
+        const levels = ['public', 'light_account', 'mitid_verified'];
+        const userLevelIdx = user ? levels.indexOf(user.account_level) : 0;
+        const requiredIdx = levels.indexOf(level);
+        return userLevelIdx >= requiredIdx;
+      },
+
       // ✅ MITID VERIFICATION (Phase 2)
       initiateMitIDVerification: async () => {
         set({ isLoading: true, error: null });
@@ -246,17 +283,15 @@ export const authActions = {
 
 // ✅ INITIALIZE AUTH ON APP START
 export const initializeAuth = () => {
+  if (typeof window === 'undefined') return; // Solo en cliente
   const { getCurrentUser } = useAuthStore.getState();
-  
   // Check localStorage for existing auth
   const localAuth = authApi.checkAuth();
-  
   if (localAuth.isAuthenticated && localAuth.user) {
     useAuthStore.setState({
       user: localAuth.user,
       isAuthenticated: true,
     });
-    
     // Refresh user data from backend
     getCurrentUser().catch(console.error);
   }
