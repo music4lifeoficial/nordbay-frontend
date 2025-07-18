@@ -14,8 +14,14 @@ export interface BenefitsSectionProps {
 
 export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
   const { t } = useTranslation();
-  // TODO: Replace with props for icons, table, CTA when assets are ready
   // Mobile first layout, accessibility AA, modular structure
+  const icons = [
+    '/icon-benefit-money.svg',
+    '/icon-benefit-shield.svg',
+    '/icon-benefit-robot.svg',
+    '/icon-benefit-chat.svg',
+  ];
+  const benefitKeys = ["noFees", "securePayments", "aiModeration", "danishSupport"];
   return (
     <section
       aria-labelledby="benefits-title"
@@ -33,20 +39,20 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
         </p>
       </div>
       <div className="flex flex-col gap-4 md:flex-row md:justify-center mb-8">
-        {/* TODO: Replace icons with real assets, validate with users */}
-        {["noFees", "securePayments", "aiModeration", "danishSupport"].map((key) => (
+        {benefitKeys.map((key, i) => (
           <div
             key={key}
-            className="flex flex-col items-center bg-blue-50 rounded-lg p-4 shadow-sm w-full md:w-1/4"
+            className="flex flex-col items-center bg-blue-50 rounded-lg p-4 shadow-sm w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-brand"
             tabIndex={0}
             role="region"
             aria-label={t(`benefits.${key}.title`)}
           >
-            {/* TODO: Insert icon for {key} */}
-            <span className="mb-2 text-brand">
-              {/* Icon placeholder */}
-              <span className="sr-only">{t(`benefits.${key}.title`)}</span>
-            </span>
+            <img
+              src={icons[i]}
+              alt={t(`benefits.${key}.title`)}
+              className="mb-2 w-12 h-12"
+              aria-hidden="false"
+            />
             <span className="font-semibold text-lg mb-1">
               {t(`benefits.${key}.title`)}
             </span>
@@ -56,23 +62,25 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
           </div>
         ))}
       </div>
-      {/* TODO: Comparativa visual con competidores, tabla o gráfico */}
       <div className="w-full max-w-3xl mx-auto mb-8">
-        {/* Table placeholder, replace with real data and assets */}
-        <div className="bg-gray-50 rounded-lg p-4 text-center">
-          <span className="font-bold text-brand">TODO: Tabla comparativa con competidores</span>
+        <div className="bg-gray-50 rounded-lg p-4 text-center flex justify-center">
+          <img
+            src="/benefits-comparison-table.svg"
+            alt="Tabla comparativa de beneficios NordBay vs competidores"
+            className="w-full h-auto max-w-2xl mx-auto"
+            aria-hidden="false"
+          />
         </div>
       </div>
       <div className="flex justify-center">
-        {/* CTA button, mobile first, accessible */}
         <button
-          className="bg-brand text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand"
+          className="bg-brand text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-150"
           aria-label={t('benefits.cta')}
         >
           {t('benefits.cta')}
         </button>
       </div>
-      {/* TODO: Animaciones sutiles, validate with users */}
+      {/* Animaciones sutiles, validate with users */}
     </section>
   );
 };
