@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { getProducts } from '@/lib/api/products';
 import type { Publication } from '@/types';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function ProductsList() {
   const [products, setProducts] = useState<Publication[]>([]);
@@ -16,7 +17,21 @@ export default function ProductsList() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="text-nordic-600">Cargando productos...</div>;
+  if (loading) {
+    // Skeletons para cards de producto (3 columnas en desktop, 1 en mobile)
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="bg-white rounded-lg shadow p-4 border border-nordic-100">
+            <Skeleton className="h-32 w-full rounded-md mb-3" />
+            <Skeleton className="h-6 w-3/4 mb-2" />
+            <Skeleton className="h-4 w-1/2 mb-2" />
+            <Skeleton className="h-5 w-1/4" />
+          </div>
+        ))}
+      </div>
+    );
+  }
   if (error) return <div className="text-red-600">{error}</div>;
   if (!products.length) return <div className="text-nordic-500">No hay productos publicados aún.</div>;
 

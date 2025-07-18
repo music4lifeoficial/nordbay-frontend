@@ -1,68 +1,70 @@
 "use client";
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
-import { useAuthStore } from '@/lib/stores/auth-store';
-import { useToast } from '@/hooks/useToast';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
+import { useAuthStore } from "@/lib/stores/auth-store";
+import { useToast } from "@/hooks/useToast";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
   const { login } = useAuthStore();
   const showToast = useToast();
   const router = useRouter();
 
-  // Podés tipar el evento si usás TypeScript: (e: React.FormEvent<HTMLFormElement>)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       await login({ email, password });
       showToast("¡Bienvenido a NordBay! Has iniciado sesión exitosamente.", "success");
-      router.push('/dashboard2page');
-    } catch (error) {
-      showToast("Credenciales incorrectas. Intenta nuevamente.", "error");
+      router.push("/dashboard");
+    } catch (err) {
+      showToast("Error al iniciar sesión. Verifica tus credenciales.", "error");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    showToast("Redirigiendo a Google...", "success");
+    window.open(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`, "_self");
+  };
+  const handleMitIDLogin = async () => {
+    showToast("Redirigiendo a MitID...", "success");
+    try {
+      const url = await useAuthStore.getState().initiateMitIDVerification();
+      window.open(url, "_self");
+    } catch (e) {
+      showToast("Error iniciando MitID", "error");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-nordic-50 to-white px-4">
       <div className="w-full max-w-md">
-        {/* Logo y Título */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-nordic-600 to-nordic-700 rounded-2xl mb-6 shadow-lg">
             <span className="text-2xl font-bold text-white">N</span>
           </div>
-          <h1 className="text-3xl font-bold text-nordic-900 mb-2">
-            Bienvenido a NordBay
-          </h1>
-          <p className="text-nordic-600">
-            Inicia sesión para acceder a tu cuenta
-          </p>
+          <h1 className="text-3xl font-bold text-nordic-900 mb-2">Iniciar sesión</h1>
+          <p className="text-nordic-600">Accede a tu cuenta NordBay</p>
         </div>
-
-        {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white rounded-xl shadow-sm border border-nordic-200 p-6">
-            {/* Campo Email */}
             <div className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Correo electrónico
-                </label>
+                <label htmlFor="email" className="block text-sm font-medium text-nordic-700 mb-2">Correo electrónico</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Mail className="h-5 w-5 text-nordic-400" />
                   </div>
                   <input
                     id="email"
+                    name="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -74,19 +76,16 @@ export default function LoginForm() {
                   />
                 </div>
               </div>
-
-              {/* Campo Contraseña */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Contraseña
-                </label>
+                <label htmlFor="password" className="block text-sm font-medium text-nordic-700 mb-2">Contraseña</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Lock className="h-5 w-5 text-nordic-400" />
                   </div>
                   <input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="block w-full pl-10 pr-12 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
@@ -110,18 +109,11 @@ export default function LoginForm() {
                 </div>
               </div>
             </div>
-
-            {/* Olvidé mi contraseña */}
             <div className="flex justify-end mt-4">
-              <Link 
-                href="/auth/forgot-password" 
-                className="text-sm text-nordic-600 hover:text-nordic-800 transition-colors"
-              >
+              <Link href="/auth/forgot-password" className="text-sm text-nordic-600 hover:text-nordic-800 transition-colors">
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
-
-            {/* Botón de Login */}
             <button
               type="submit"
               disabled={isLoading || !email || !password}
@@ -138,21 +130,42 @@ export default function LoginForm() {
             </button>
           </div>
         </form>
-
-        {/* Enlace a Registro */}
+        <div className="mt-8 space-y-3">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-nordic-200" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-2 text-nordic-600">O continúa con</span>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-2 border border-nordic-200 rounded-lg py-3 bg-white hover:bg-nordic-50 transition-colors"
+            aria-label="Iniciar sesión con Google"
+            onClick={handleGoogleLogin}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path d="M19.6 10.23c0-.68-.06-1.36-.18-2H10v3.79h5.41c-.23 1.25-.93 2.31-1.98 3.01v2.5h3.2c1.87-1.73 2.97-4.28 2.97-7.3z" fill="#4285F4"/><path d="M10 20c2.7 0 4.97-.89 6.63-2.41l-3.2-2.5c-.89.6-2.02.96-3.43.96-2.64 0-4.88-1.78-5.68-4.18H1.01v2.62A9.99 9.99 0 0010 20z" fill="#34A853"/><path d="M4.32 12.37A5.99 5.99 0 013.67 10c0-.82.15-1.62.41-2.37V5.01H1.01A9.99 9.99 0 000 10c0 1.64.39 3.19 1.01 4.56l3.31-2.19z" fill="#FBBC05"/><path d="M10 4.04c1.47 0 2.8.51 3.84 1.51l2.88-2.88C14.97 1.07 12.7 0 10 0A9.99 9.99 0 001.01 5.01l3.31 2.62C5.12 6.82 7.36 4.04 10 4.04z" fill="#EA4335"/></g></svg>
+            Google
+          </button>
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-2 border border-nordic-200 rounded-lg py-3 bg-white hover:bg-nordic-50 transition-colors"
+            aria-label="Iniciar sesión con MitID"
+            onClick={handleMitIDLogin}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" fill="#2563eb"/><text x="50%" y="55%" textAnchor="middle" fill="#fff" fontSize="10" fontFamily="Arial" dy=".3em">MitID</text></svg>
+            MitID
+          </button>
+        </div>
         <div className="text-center mt-6">
           <p className="text-nordic-600">
             ¿No tienes una cuenta?{' '}
-            <Link 
-              href="/auth/register" 
-              className="font-medium text-nordic-700 hover:text-nordic-900 transition-colors"
-            >
+            <Link href="/auth/register" className="font-medium text-nordic-700 hover:text-nordic-900 transition-colors">
               Regístrate aquí
             </Link>
           </p>
         </div>
-
-        {/* Footer */}
         <div className="text-center mt-10 text-xs text-nordic-500">
           <hr className="mb-3 opacity-20" />
           <p>© 2025 NordBay. Todos los derechos reservados.</p>

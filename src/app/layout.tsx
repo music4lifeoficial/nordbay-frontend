@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+
 import { Toaster } from "@/components/ui/toaster";
+import AppLayout from "@/components/layout/AppLayout";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -87,7 +89,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
-        {children}
+        <AppLayout>
+          {children}
+        </AppLayout>
         <Toaster />
       </body>
     </html>
