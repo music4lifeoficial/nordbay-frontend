@@ -25,7 +25,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   illustrationSrc = "/hero-illustration.svg", // Ilustración principal validada
   onSearch,
   onCTA,
-  variant = "mobile", // mobile first por defecto
 }) => {
   const locale = getLocale();
   const t = useTranslation(locale);
