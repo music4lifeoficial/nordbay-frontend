@@ -20,12 +20,24 @@ export const CTAFooterSection: React.FC<CTAFooterSectionProps> = ({
   socialIcons,
   contactInfo,
 }) => {
-  // TODO: Estructura visual y lógica según design-landing.md
   return (
     <footer>
-      {/* TODO: Implementar layout, accesibilidad, animaciones y assets */}
-      {/* TODO: Mobile first, variantes desktop */}
-      {/* TODO: Insertar mensaje, CTA, links, iconos de redes, contacto */}
+      {/* Mensaje motivador */}
+      {message && <div className="font-bold text-lg mb-2">{message}</div>}
+      {/* Botón CTA */}
+      {cta && <div className="mb-4">{cta}</div>}
+      {/* Links útiles */}
+      {links && (
+        <nav className="mb-4 flex flex-wrap gap-4">
+          {links.map((link, idx) => (
+            <a key={idx} href={link.url} className="text-blue-700 underline">{link.label}</a>
+          ))}
+        </nav>
+      )}
+      {/* Iconos de redes sociales */}
+      {socialIcons && <div className="mb-4 flex gap-2">{socialIcons}</div>}
+      {/* Información de contacto */}
+      {contactInfo && <div className="text-sm text-gray-500">{contactInfo}</div>}
     </footer>
   );
 };
