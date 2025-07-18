@@ -32,24 +32,37 @@ export const HowItWorksSection: React.FC<HowItWorksSectionProps> = () => {
 
       {/* 3 pasos visuales */}
       <div className="flex flex-col md:flex-row gap-6 w-full justify-center mb-6">
-        {t.howItWorks.steps.map((step: any, idx: number) => (
-          <div
-            key={idx}
-            className="flex flex-col items-center bg-gray-50 rounded-xl p-4 shadow-sm flex-1 animate-fade-in"
-            aria-label={`Step ${idx + 1}`}
-          >
-            {/* TODO: Integrar ilustración propia validada para cada paso */}
-            <div className="w-16 h-16 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
-              <span className="text-gray-400">Ilustration</span>
+        {t.howItWorks.steps.map((step: any, idx: number) => {
+          const svgSrc = `/howitworks-step${idx + 1}.svg`;
+          return (
+            <div
+              key={idx}
+              className="flex flex-col items-center bg-gray-50 rounded-xl p-4 shadow-sm flex-1 animate-fade-in"
+              aria-label={`Step ${idx + 1}: ${step.title}`}
+              tabIndex={0}
+            >
+              <div
+                className="w-16 h-16 mb-2 flex items-center justify-center"
+                aria-hidden="true"
+              >
+                <img
+                  src={svgSrc}
+                  alt={step.title}
+                  width={64}
+                  height={64}
+                  className="rounded-full"
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="font-semibold text-brand mb-1 text-center text-base md:text-lg">
+                {step.title}
+              </h3>
+              <p className="text-sm md:text-base text-nordic-blue text-center">
+                {step.copy}
+              </p>
             </div>
-            <h3 className="font-semibold text-brand mb-1 text-center text-base md:text-lg">
-              {step.title}
-            </h3>
-            <p className="text-sm md:text-base text-nordic-blue text-center">
-              {step.copy}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Beneficios destacados (chips) */}
