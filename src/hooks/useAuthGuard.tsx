@@ -1,4 +1,5 @@
 // Guard para proteger rutas según nivel de autenticación
+"use client";
 // Uso: <AuthGuard level="light_account">contenido</AuthGuard>
 
 import { useUser } from '@/lib/stores/auth-store';
