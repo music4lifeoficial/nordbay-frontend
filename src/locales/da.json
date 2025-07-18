@@ -1,0 +1,88 @@
+{
+  "hero": {
+    "slogan": "Sælg nemt. Køb trygt. Giv videre.",
+    "subcopy": "Den danske markedsplads til at sælge og købe nemt, sikkert og menneskeligt.",
+    "cta": "Kom i gang med at sælge",
+    "searchPlaceholder": "Hvad leder du efter i dag?",
+    "trust": {
+      "payments": "Beskyttede betalinger",
+      "moderation": "AI-moderering",
+      "shipping": "Levering i hele DK",
+      "support": "Dansk support"
+    }
+  },
+  "benefits": {
+    "title": "Hvorfor vælge NordBay?",
+    "subcopy": "Opdag fordelene ved vores danske markedsplads.",
+    "noFees": {
+      "title": "Ingen skjulte gebyrer",
+      "copy": "Hvad du ser er hvad du får. Ingen overraskelser eller småt print."
+    },
+    "securePayments": {
+      "title": "Beskyttede betalinger",
+      "copy": "Sikre transaktioner med Stripe/MobilePay. Dine penge og data er beskyttet."
+    },
+    "aiModeration": {
+      "title": "Automatisk AI-moderering",
+      "copy": "Vores AI sikrer kvalitet og sikkerhed på platformen."
+    },
+    "danishSupport": {
+      "title": "Dansk support",
+      "copy": "Et dedikeret team klar til at hjælpe dig på dansk."
+    },
+    "cta": "Udforsk markedspladsen"
+  },
+  "testimonials": {
+    "title": "Hvad siger vores brugere?",
+    "subcopy": "Ægte succeshistorier fra NordBay.",
+    "items": [
+      {
+        "name": "Mikkel",
+        "city": "København",
+        "text": "Fantastisk oplevelse, solgte min cykel på 3 dage uden problemer.",
+        "stars": 5
+      },
+      {
+        "name": "Sara",
+        "city": "Aarhus",
+        "text": "Købte en næsten ny sofa til en super pris. Alt var nemt og sikkert.",
+        "stars": 5
+      },
+      {
+        "name": "Lars",
+        "city": "Odense",
+        "text": "Dansk support er et stort plus. Fik hurtigt hjælp til et spørgsmål.",
+        "stars": 5
+      }
+    ],
+    "metrics": {
+      "productsSold": "+10.000 produkter solgt sidste måned",
+      "satisfaction": "95% tilfredshed med supporten",
+      "avgSaleTime": "Gennemsnitlig salgstid: 7 dage"
+    },
+    "cta": "Bliv medlem af NordBay"
+  },
+  "faq": {
+    "title": "Ofte stillede spørgsmål",
+    "subcopy": "Her finder du svar på de mest almindelige spørgsmål.",
+    "items": [
+      {
+        "question": "Hvordan beskytter I mine persondata?",
+        "answer": "Hos NordBay er din datasikkerhed en topprioritet. Vi bruger kryptering og deler ikke dine oplysninger med tredjeparter."
+      },
+      {
+        "question": "Hvad gør jeg, hvis jeg har et problem med et køb?",
+        "answer": "Vores support er klar til at hjælpe dig. Kontakt os via chat eller e-mail, og vi løser dit problem hurtigt."
+      },
+      {
+        "question": "Kan jeg stole på sælgerne?",
+        "answer": "Ja, alle vores sælgere er verificerede, og transaktioner er beskyttet af Stripe/MobilePay."
+      },
+      {
+        "question": "Er der nogen omkostninger ved at bruge NordBay?",
+        "answer": "Vi har ingen skjulte gebyrer. Hvad du ser er hvad du får."
+      }
+    ],
+    "cta": "Har du flere spørgsmål? Kontakt os"
+  }
+}

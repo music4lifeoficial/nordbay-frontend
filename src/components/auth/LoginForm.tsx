@@ -46,14 +46,21 @@ export default function LoginForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-nordic-50 to-white px-4">
       <div className="w-full max-w-md">
+        {/* Branding & Slogan */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-nordic-600 to-nordic-700 rounded-2xl mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-nordic-600 to-nordic-700 rounded-2xl mb-4 shadow-lg">
             <span className="text-2xl font-bold text-white">N</span>
           </div>
-          <h1 className="text-3xl font-bold text-nordic-900 mb-2">Iniciar sesión</h1>
-          <p className="text-nordic-600">Accede a tu cuenta NordBay</p>
+          <h1 className="text-3xl font-bold text-nordic-900 mb-1">Iniciar sesión en NordBay</h1>
+          <p className="text-nordic-600 mb-2">Accede a tu cuenta y disfruta de la experiencia completa</p>
+          <span className="block text-xs text-nordic-500 italic mb-2">Sælg nemt. Køb trygt. Giv videre.</span>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Motivational message */}
+        <div className="bg-nordic-50 border border-nordic-100 rounded-lg p-3 mb-4 text-center text-nordic-700 text-sm shadow-sm">
+          Accede a ofertas exclusivas, gestiona tus favoritos y compra con seguridad.
+        </div>
+        {/* Login Form */}
+        <form onSubmit={handleSubmit} className="space-y-6" aria-label="Formulario de inicio de sesión">
           <div className="bg-white rounded-xl shadow-sm border border-nordic-200 p-6">
             <div className="space-y-4">
               <div>
@@ -73,6 +80,7 @@ export default function LoginForm() {
                     required
                     autoFocus
                     autoComplete="email"
+                    aria-required="true"
                   />
                 </div>
               </div>
@@ -92,6 +100,7 @@ export default function LoginForm() {
                     placeholder="Tu contraseña"
                     required
                     autoComplete="current-password"
+                    aria-required="true"
                   />
                   <button
                     type="button"
@@ -118,6 +127,7 @@ export default function LoginForm() {
               type="submit"
               disabled={isLoading || !email || !password}
               className="w-full mt-6 bg-gradient-to-r from-nordic-600 to-nordic-700 text-white py-3 px-4 rounded-lg font-medium hover:from-nordic-700 hover:to-nordic-800 focus:ring-2 focus:ring-nordic-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+              aria-label="Iniciar sesión"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -130,13 +140,14 @@ export default function LoginForm() {
             </button>
           </div>
         </form>
+        {/* Divider & Social Login */}
         <div className="mt-8 space-y-3">
-          <div className="relative">
+          <div className="relative" aria-label="O accede con">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-nordic-200" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-nordic-600">O continúa con</span>
+              <span className="bg-white px-2 text-nordic-600">O accede con</span>
             </div>
           </div>
           <button
@@ -144,6 +155,7 @@ export default function LoginForm() {
             className="w-full flex items-center justify-center gap-2 border border-nordic-200 rounded-lg py-3 bg-white hover:bg-nordic-50 transition-colors"
             aria-label="Iniciar sesión con Google"
             onClick={handleGoogleLogin}
+            tabIndex={0}
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path d="M19.6 10.23c0-.68-.06-1.36-.18-2H10v3.79h5.41c-.23 1.25-.93 2.31-1.98 3.01v2.5h3.2c1.87-1.73 2.97-4.28 2.97-7.3z" fill="#4285F4"/><path d="M10 20c2.7 0 4.97-.89 6.63-2.41l-3.2-2.5c-.89.6-2.02.96-3.43.96-2.64 0-4.88-1.78-5.68-4.18H1.01v2.62A9.99 9.99 0 0010 20z" fill="#34A853"/><path d="M4.32 12.37A5.99 5.99 0 013.67 10c0-.82.15-1.62.41-2.37V5.01H1.01A9.99 9.99 0 000 10c0 1.64.39 3.19 1.01 4.56l3.31-2.19z" fill="#FBBC05"/><path d="M10 4.04c1.47 0 2.8.51 3.84 1.51l2.88-2.88C14.97 1.07 12.7 0 10 0A9.99 9.99 0 001.01 5.01l3.31 2.62C5.12 6.82 7.36 4.04 10 4.04z" fill="#EA4335"/></g></svg>
             Google
@@ -153,11 +165,14 @@ export default function LoginForm() {
             className="w-full flex items-center justify-center gap-2 border border-nordic-200 rounded-lg py-3 bg-white hover:bg-nordic-50 transition-colors"
             aria-label="Iniciar sesión con MitID"
             onClick={handleMitIDLogin}
+            tabIndex={0}
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" fill="#2563eb"/><text x="50%" y="55%" textAnchor="middle" fill="#fff" fontSize="10" fontFamily="Arial" dy=".3em">MitID</text></svg>
             MitID
           </button>
+          <div className="text-xs text-nordic-500 text-center mt-2">No compartimos datos sin tu permiso. Acceso rápido y seguro.</div>
         </div>
+        {/* Register & Legal Links */}
         <div className="text-center mt-6">
           <p className="text-nordic-600">
             ¿No tienes una cuenta?{' '}
@@ -166,7 +181,12 @@ export default function LoginForm() {
             </Link>
           </p>
         </div>
-        <div className="text-center mt-10 text-xs text-nordic-500">
+        <div className="text-center mt-4 text-xs text-nordic-500">
+          <Link href="/legal/terms" className="underline hover:text-nordic-700">Términos</Link> &nbsp;|&nbsp;
+          <Link href="/legal/privacy" className="underline hover:text-nordic-700">Privacidad</Link>
+        </div>
+        {/* Footer */}
+        <div className="text-center mt-8 text-xs text-nordic-500">
           <hr className="mb-3 opacity-20" />
           <p>© 2025 NordBay. Todos los derechos reservados.</p>
         </div>

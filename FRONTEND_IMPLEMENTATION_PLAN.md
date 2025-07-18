@@ -1,3 +1,33 @@
+# 🛠️ Workflow y Parámetros Profesionales para NordBay Frontend
+
+Este documento es la **fuente de verdad** para todo el equipo y Copilot/GPT. Aquí se define el método, parámetros y checklist para abordar cada módulo/feature con coherencia y calidad profesional.
+
+## Metodología y Workflow
+
+1. **Antes de programar:** Documentar cada módulo/feature en su propio archivo (design.md, Notion, etc.) con:
+   - Introducción, objetivo, parámetros de marca, reglas para devs/Copilot.
+   - Desglose en subtasks/micro-puntos (UX, copy, estados, animaciones, QA, edge-cases).
+   - Benchmark y validación de mejores prácticas.
+   - Checklist de QA y criterios de “done”.
+
+2. **Iterativo y colaborativo:** Avanzar módulo por módulo, validando y documentando cada decisión antes de escribir código. No teorizar todo el proyecto primero.
+
+3. **Prompt para Copilot/desarrolladores:**
+   - NO usar contenido genérico, stock, ni completar con texto falso (“lorem ipsum”).
+   - Si algo NO está definido, dejarlo como TODO y NO rellenar con defaults.
+   - Respetar naming, paleta, responsividad, accesibilidad, idioma y personalidad de marca.
+   - Revisar este documento antes de cada nueva tarea/módulo.
+
+4. **Checklist QA por feature:**
+   - Validación visual, funcional y de accesibilidad antes de avanzar.
+   - Documentar edge-cases, estados, animaciones y microcopy.
+
+5. **Fuente de verdad única:** Este archivo + design.md en repo + Notion para trabajo colaborativo.
+
+6. **Para cada nuevo módulo:** Volver a esta sección y seguir el mismo proceso.
+
+---
+
 # 🚀 Plan de Implementación Frontend NordBay - Roadmap Técnico Detallado
 
 Nuestro slogan: “Sælg nemt. Køb trygt. Giv videre.”
