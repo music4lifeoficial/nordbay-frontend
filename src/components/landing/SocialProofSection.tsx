@@ -16,12 +16,25 @@ export const SocialProofSection: React.FC<SocialProofSectionProps> = ({
   metrics,
   cta,
 }) => {
-  // TODO: Estructura visual y lógica según design-landing.md
   return (
     <section>
-      {/* TODO: Implementar layout, accesibilidad, animaciones y assets */}
-      {/* TODO: Mobile first, variantes desktop */}
-      {/* TODO: Insertar testimonios, métricas, CTA */}
+      {/* Testimonios */}
+      {testimonials && Array.isArray(testimonials) && (
+        <div className="flex flex-col gap-4 mb-6">
+          {testimonials.map((t, idx) => (
+            <div key={idx} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
+              {t.photo && <div className="mb-2">{t.photo}</div>}
+              <div className="font-bold text-lg mb-1">{t.name}, {t.city}</div>
+              <div className="text-gray-700 mb-2">{t.text}</div>
+              {t.rating && <div className="flex gap-1">{Array.from({length: t.rating}, (_, i) => <span key={i} aria-label="star">★</span>)}</div>}
+            </div>
+          ))}
+        </div>
+      )}
+      {/* Métricas */}
+      {metrics && <div className="flex gap-4 mb-6">{metrics}</div>}
+      {/* CTA */}
+      {cta && <div className="mb-4">{cta}</div>}
     </section>
   );
 };

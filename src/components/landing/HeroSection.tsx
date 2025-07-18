@@ -6,6 +6,7 @@
 import React from "react";
 import { useTranslation } from "../../lib/useTranslation";
 import { getLocale } from "../../lib/getLocale";
+import Image from "next/image";
 
 export interface HeroSectionProps {
   // Permite pasar assets validados, variantes, y callbacks para CTA/búsqueda
@@ -21,7 +22,7 @@ export interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   logoSrc = "/logo.png", // Usar logo real proporcionado en la raíz
-  illustrationSrc = "", // TODO: definir ilustración principal
+  illustrationSrc = "/hero-illustration.svg", // Ilustración principal validada
   onSearch,
   onCTA,
   variant = "mobile", // mobile first por defecto
@@ -64,13 +65,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* TODO: Integrar ilustración/foto principal validada */}
         <div className="w-full flex justify-center items-center py-4">
           <Image
-            src="/hero-illustration.svg"
+            src={illustrationSrc}
             alt="Ilustración principal: usuarios daneses intercambiando productos en NordBay"
             width={360}
             height={220}
             className="rounded-xl shadow-md object-contain max-w-full h-auto"
-            priority
-            aria-label="Ilustración principal Hero NordBay"
+            priority={true}
           />
         </div>
       </div>
@@ -119,14 +119,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <input
           type="search"
           name="search"
-          <Image
-            src="/hero-illustration.svg"
-            alt="Ilustración principal: usuarios daneses intercambiando productos en NordBay"
-            width={360}
-            height={220}
-            className="rounded-xl shadow-md object-contain max-w-full h-auto"
-            priority={true}
-          />
+          placeholder={t.hero.searchPlaceholder}
+          className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand"
+          aria-label={t.hero.searchPlaceholder}
+        />
+        <button
+          type="submit"
+          className="bg-brand text-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand"
+          aria-label="Buscar"
+        >
           <span role="img" aria-label="Buscar">🔍</span>
         </button>
       </form>
