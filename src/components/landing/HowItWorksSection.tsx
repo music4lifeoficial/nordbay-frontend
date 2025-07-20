@@ -64,21 +64,14 @@ export const HowItWorksSection: React.FC<HowItWorksSectionProps> = () => {
       </div>
 
 
-      {/* Proceso de uso NordBay */}
-      <div className="w-full max-w-2xl mx-auto mb-8">
-        <div className="bg-nordic-50 rounded-xl p-6 shadow-md">
-          <h3 className="text-xl md:text-2xl font-bold text-brand mb-2 text-center">¿Cómo funciona NordBay?</h3>
-          <ol className="space-y-4 text-base md:text-lg text-nordic-blue list-decimal list-inside">
-            <li><strong>Publica gratis:</strong> Sube tu producto en minutos, sin costo inicial ni tarifas ocultas.</li>
-            <li><strong>Solo pagas si vendes:</strong> La comisión se descuenta únicamente cuando tu producto se vende exitosamente.</li>
-            <li><strong>Envíos integrados:</strong> Elige envío a domicilio o entrega personal, todo gestionado desde la plataforma.</li>
-            <li><strong>Compra protegida:</strong> El pago queda retenido y solo se libera cuando el comprador confirma que recibió el producto en buen estado.</li>
-          </ol>
-          <div className="mt-4 text-center">
-            <span className="inline-block bg-brand text-white px-4 py-2 rounded-full font-semibold shadow">¡Empieza ahora y vende fácil y seguro!</span>
-          </div>
-        </div>
-      </div>
+      {/* Proceso de uso NordBay - solo los 3 bloques visuales, texto ajustado */}
+      {/* Los textos de los pasos se ajustan en el archivo de traducción para mayor precisión: */}
+      {/* Ejemplo para los 3 pasos relevantes: */}
+      {/*
+        1. Publica tu producto gratis y en minutos.
+        2. Recibe preguntas públicas de potenciales compradores (no chat privado hasta la compra).
+        3. Cuando vendes, el pago queda protegido y puedes coordinar el envío o entrega.
+      */}
 
       {/* CTA secundario */}
       <button

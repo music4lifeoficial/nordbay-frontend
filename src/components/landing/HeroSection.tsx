@@ -89,16 +89,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <span className="text-xs text-nordic-blue">{t.hero.trust.payments}</span>
         </div>
         <div className="flex flex-col items-center">
-          <img src="/icon-robot.svg" alt={t.hero.trust.moderation} width={32} height={32} aria-label={t.hero.trust.moderation} />
-          <span className="text-xs text-nordic-blue">{t.hero.trust.moderation}</span>
-        </div>
-        <div className="flex flex-col items-center">
           <img src="/icon-truck.svg" alt={t.hero.trust.shipping} width={32} height={32} aria-label={t.hero.trust.shipping} />
           <span className="text-xs text-nordic-blue">{t.hero.trust.shipping}</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <img src="/icon-chat.svg" alt={t.hero.trust.support} width={32} height={32} aria-label={t.hero.trust.support} />
-          <span className="text-xs text-nordic-blue">{t.hero.trust.support}</span>
         </div>
       </div>
 

@@ -16,10 +16,8 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
   const icons = [
     '/icon-benefit-money.svg',
     '/icon-benefit-shield.svg',
-    '/icon-benefit-robot.svg',
-    '/icon-benefit-chat.svg',
   ];
-  const benefitKeys = ["noFees", "securePayments", "aiModeration", "danishSupport"];
+  const benefitKeys = ["noFees", "securePayments"];
   return (
     <section
       aria-labelledby="benefits-title"
@@ -40,7 +38,7 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
         {benefitKeys.map((key, i) => (
           <div
             key={key}
-            className="flex flex-col items-center bg-blue-50 rounded-lg p-4 shadow-sm w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-brand"
+            className="flex flex-col items-center bg-blue-50 rounded-lg p-4 shadow-sm w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-brand"
             tabIndex={0}
             role="region"
             aria-label={t.benefits[key].title}
