@@ -2,6 +2,7 @@
 
 import Header from '@/components/layout/Header';
 import * as React from "react";
+import { HeroSection } from '@/components/landing/HeroSection';
 import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
 import { BenefitsSection } from '@/components/landing/BenefitsSection';
 import { TestimonialSection } from '@/components/landing/TestimonialSection';
@@ -14,8 +15,8 @@ export default function HomePage() {
     <>
       <Header />
       <main className="min-h-screen bg-gradient-to-br from-nordic-50 to-white">
-        {/* Hero Section */}
-        {/* ...HeroSection modularizado aquí si existe... */}
+      {/* Hero Section */}
+      <HeroSection />
         {/* Sección ¿Cómo funciona? */}
         <HowItWorksSection />
         {/* Sección Beneficios clave */}
