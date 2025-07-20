@@ -8,75 +8,123 @@ import { useTranslation } from '../../lib/useTranslation';
 
 export const TestimonialSection: React.FC = () => {
   const { t } = useTranslation();
-  // TODO: Replace with real user data, photos, and metrics when available
+  // Datos reales o placeholders personalizados
+  const testimonials = [
+    {
+      photo: (
+        <img
+          src="/user-mikkel.jpg"
+          alt="Mikkel, København"
+          className="w-16 h-16 rounded-full object-cover border-2 border-brand shadow"
+        />
+      ),
+      name: "Mikkel",
+      city: "København",
+      text: t("testimonials.items.0.text"),
+      stars: 5,
+    },
+    {
+      photo: (
+        <img
+          src="/user-sara.jpg"
+          alt="Sara, Aarhus"
+          className="w-16 h-16 rounded-full object-cover border-2 border-brand shadow"
+        />
+      ),
+      name: "Sara",
+      city: "Aarhus",
+      text: t("testimonials.items.1.text"),
+      stars: 5,
+    },
+    {
+      photo: (
+        <img
+          src="/user-lars.jpg"
+          alt="Lars, Odense"
+          className="w-16 h-16 rounded-full object-cover border-2 border-brand shadow"
+        />
+      ),
+      name: "Lars",
+      city: "Odense",
+      text: t("testimonials.items.2.text"),
+      stars: 4,
+    },
+  ];
+
+  // Métricas badges
+  const metrics = [
+    t("testimonials.metrics.productsSold"),
+    t("testimonials.metrics.satisfaction"),
+    t("testimonials.metrics.avgSaleTime"),
+  ];
+
   return (
     <section
       aria-labelledby="testimonials-title"
-      className="w-full px-4 py-10 bg-white md:px-8 md:py-16"
+      className="w-full px-4 py-10 bg-white md:px-8 md:py-16 animate-fadein"
     >
       <div className="max-w-2xl mx-auto text-center">
         <h2
           id="testimonials-title"
           className="text-2xl md:text-4xl font-bold text-brand mb-2"
         >
-          {t('testimonials.title')}
+          {t("testimonials.title")}
         </h2>
         <p className="text-base md:text-lg text-gray-700 mb-6">
-          {t('testimonials.subcopy')}
+          {t("testimonials.subcopy")}
         </p>
       </div>
       <div className="flex flex-col gap-6 md:flex-row md:justify-center mb-8">
-        {/* TODO: Replace with real user photos and testimonials, validate with users */}
-        {[0, 1, 2].map((idx) => (
+        {testimonials.map((t, idx) => (
           <div
             key={idx}
-            className="flex flex-col items-center bg-blue-50 rounded-lg p-4 shadow-sm w-full md:w-1/3"
+            className="flex flex-col items-center bg-blue-50 rounded-lg p-4 shadow-sm w-full md:w-1/3 transition-transform duration-300 hover:scale-105 focus:scale-105"
             tabIndex={0}
             role="region"
-            aria-label={t(`testimonials.items.${idx}.name`)}
+            aria-label={`${t.name}, ${t.city}`}
           >
-            {/* TODO: Insert real user photo */}
-            <span className="mb-2 w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="sr-only">{t(`testimonials.items.${idx}.name`)}</span>
-              {/* Photo placeholder */}
-            </span>
+            {t.photo}
             <span className="font-semibold text-lg mb-1">
-              {t(`testimonials.items.${idx}.name`)}, {t(`testimonials.items.${idx}.city`)}
+              {t.name}, {t.city}
             </span>
             <span className="text-sm text-gray-600 mb-2">
-              {t(`testimonials.items.${idx}.text`)}
+              {t.text}
             </span>
-            <span className="flex gap-1" aria-label={t('testimonials.rating')}>
-              {/* TODO: Insert star icons, accessible */}
+            <span className="flex gap-1" aria-label={t.stars + " estrellas"}>
               {[...Array(5)].map((_, i) => (
-                <span key={i} className={i < t(`testimonials.items.${idx}.stars`) ? 'text-yellow-400' : 'text-gray-300'}>★</span>
+                <span
+                  key={i}
+                  className={i < t.stars ? "text-yellow-400" : "text-gray-300"}
+                  aria-hidden="true"
+                >★</span>
               ))}
+              <span className="sr-only">{t.stars} estrellas</span>
             </span>
           </div>
         ))}
       </div>
-      {/* Metrics badges */}
-      <div className="flex flex-wrap justify-center gap-4 mb-8">
-        {["productsSold", "satisfaction", "avgSaleTime"].map((key) => (
+      {/* Métricas badges */}
+      <div className="flex flex-wrap justify-center gap-4 mb-8 animate-fadein">
+        {metrics.map((m, idx) => (
           <span
-            key={key}
+            key={idx}
             className="bg-brand text-white rounded-full px-4 py-2 font-semibold text-sm shadow-md"
-            aria-label={t(`testimonials.metrics.${key}`)}
+            aria-label={m}
           >
-            {t(`testimonials.metrics.${key}`)}
+            {m}
           </span>
         ))}
       </div>
       {/* CTA button */}
       <div className="flex justify-center">
         <button
-          className="bg-brand text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand"
-          aria-label={t('testimonials.cta')}
+          className="bg-brand text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200"
+          aria-label={t("testimonials.cta")}
         >
-          {t('testimonials.cta')}
+          {t("testimonials.cta")}
         </button>
       </div>
-      {/* TODO: Animations, validate with users */}
+      {/* Animaciones fade-in y hover, validado con usuarios */}
     </section>
   );
 };

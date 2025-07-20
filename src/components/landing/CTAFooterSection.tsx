@@ -21,16 +21,16 @@ export const CTAFooterSection: React.FC<CTAFooterSectionProps> = ({
   contactInfo,
 }) => {
   return (
-    <footer>
+    <footer className="animate-fadein">
       {/* Mensaje motivador */}
       {message && <div className="font-bold text-lg mb-2">{message}</div>}
       {/* Botón CTA */}
-      {cta && <div className="mb-4">{cta}</div>}
+      {cta && <div className="mb-4 transition-transform duration-300 hover:scale-105 focus:scale-105">{cta}</div>}
       {/* Links útiles */}
       {links && (
         <nav className="mb-4 flex flex-wrap gap-4">
           {links.map((link, idx) => (
-            <a key={idx} href={link.url} className="text-blue-700 underline">{link.label}</a>
+            <a key={idx} href={link.url} className="text-blue-700 underline transition-colors duration-200 hover:text-brand-dark focus:text-brand-dark">{link.label}</a>
           ))}
         </nav>
       )}
