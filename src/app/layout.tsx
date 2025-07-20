@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { Toaster } from "@/components/ui/toaster";
 import AppLayout from "@/components/layout/AppLayout";
+import { LocaleProvider } from "../context/LocaleContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -89,9 +90,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
-        <AppLayout>
-          {children}
-        </AppLayout>
+        <LocaleProvider>
+          <AppLayout>
+            {children}
+          </AppLayout>
+        </LocaleProvider>
         <Toaster />
       </body>
     </html>

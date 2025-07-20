@@ -5,15 +5,13 @@
 
 import React from "react";
 import { useTranslation } from "../../lib/useTranslation";
-import { getLocale } from "../../lib/getLocale";
 
 export interface HowItWorksSectionProps {
   // TODO: props para assets, callbacks, variantes
 }
 
 export const HowItWorksSection: React.FC<HowItWorksSectionProps> = () => {
-  const locale = getLocale();
-  const t = useTranslation(locale);
+  const t = useTranslation();
 
   return (
     <section
@@ -65,17 +63,21 @@ export const HowItWorksSection: React.FC<HowItWorksSectionProps> = () => {
         })}
       </div>
 
-      {/* Beneficios destacados (chips) */}
-      <div className="flex flex-row flex-wrap gap-2 justify-center mb-6">
-        {t.howItWorks.chips.map((chip: string, idx: number) => (
-          <span
-            key={idx}
-            className="bg-brand text-white px-3 py-1 rounded-full text-xs md:text-sm shadow-sm animate-fade-in"
-            aria-label={chip}
-          >
-            {chip}
-          </span>
-        ))}
+
+      {/* Proceso de uso NordBay */}
+      <div className="w-full max-w-2xl mx-auto mb-8">
+        <div className="bg-nordic-50 rounded-xl p-6 shadow-md">
+          <h3 className="text-xl md:text-2xl font-bold text-brand mb-2 text-center">¿Cómo funciona NordBay?</h3>
+          <ol className="space-y-4 text-base md:text-lg text-nordic-blue list-decimal list-inside">
+            <li><strong>Publica gratis:</strong> Sube tu producto en minutos, sin costo inicial ni tarifas ocultas.</li>
+            <li><strong>Solo pagas si vendes:</strong> La comisión se descuenta únicamente cuando tu producto se vende exitosamente.</li>
+            <li><strong>Envíos integrados:</strong> Elige envío a domicilio o entrega personal, todo gestionado desde la plataforma.</li>
+            <li><strong>Compra protegida:</strong> El pago queda retenido y solo se libera cuando el comprador confirma que recibió el producto en buen estado.</li>
+          </ol>
+          <div className="mt-4 text-center">
+            <span className="inline-block bg-brand text-white px-4 py-2 rounded-full font-semibold shadow">¡Empieza ahora y vende fácil y seguro!</span>
+          </div>
+        </div>
       </div>
 
       {/* CTA secundario */}

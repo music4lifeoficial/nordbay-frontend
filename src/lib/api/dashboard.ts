@@ -10,6 +10,6 @@ export interface DashboardData {
 }
 
 export async function getDashboardData(): Promise<DashboardData> {
-  const res = await apiClient.get('/dashboard');
+  const res = await apiClient.get('/dashboard2');
   return res.data;
 }

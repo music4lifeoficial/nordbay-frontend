@@ -62,6 +62,30 @@
     },
     "cta": "Join NordBay"
   },
+  "howItWorks": {
+    "title": "How does NordBay work?",
+    "subcopy": "Selling and buying has never been easier. Discover how in 3 steps.",
+    "steps": [
+      {
+        "title": "List your product for free",
+        "copy": "Take a photo, describe your product and publish it for free in minutes."
+      },
+      {
+        "title": "Sell safely and get paid",
+        "copy": "Receive offers, chat with buyers and sell with protected payments."
+      },
+      {
+        "title": "Easy delivery and get your money",
+        "copy": "Ship or deliver in person. Get paid when the buyer confirms."
+      }
+    ],
+    "chips": [
+      "No hidden fees",
+      "Protected payments",
+      "Danish support"
+    ],
+    "cta": "Explore the marketplace"
+  },
   "faq": {
     "title": "Frequently Asked Questions",
     "subcopy": "Here are answers to your most common questions.",
@@ -84,5 +108,23 @@
       }
     ],
     "cta": "Have more questions? Contact us"
+  },
+  "ctaFooter": {
+    "footerLinks": {
+      "about": "About NordBay",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy",
+      "help": "Help"
+    },
+    "footerSocial": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn"
+    },
+    "footerContact": {
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    }
   }
 }

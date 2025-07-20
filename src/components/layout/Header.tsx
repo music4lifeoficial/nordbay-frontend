@@ -1,15 +1,21 @@
-'use client';
+"use client";
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, User, ShoppingBag, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { useLocale } from '@/context/LocaleContext';
 import { useAuthStore } from '@/lib/stores/auth-store';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuthStore();
+  const { locale, setLocale } = useLocale();
+
+  const handleLocaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLocale(e.target.value as 'da' | 'en');
+  };
 
   const isActive = (path: string) => pathname === path;
 
@@ -32,6 +38,20 @@ export default function Header() {
             </Link>
           </div>
 
+          {/* Selector de idioma */}
+          <div className="flex items-center space-x-2">
+            <label htmlFor="locale-select" className="text-sm text-nordic-700 font-medium">Sprog / Language:</label>
+            <select
+              id="locale-select"
+              value={locale}
+              onChange={handleLocaleChange}
+              className="border border-nordic-300 rounded px-2 py-1 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
+            >
+              <option value="da">Dansk</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+
           {/* Search Bar - Desktop */}
           <div className="hidden md:flex flex-1 max-w-lg mx-8">
             <div className="relative w-full">
@@ -40,7 +60,7 @@ export default function Header() {
               </div>
               <input
                 type="text"
-                placeholder="Buscar productos..."
+                placeholder={locale === 'da' ? 'Søg produkter...' : 'Search products...'}
                 className="block w-full pl-10 pr-3 py-2 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 bg-white"
               />
             </div>

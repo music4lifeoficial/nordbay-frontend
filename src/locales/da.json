@@ -62,6 +62,30 @@
     },
     "cta": "Bliv medlem af NordBay"
   },
+  "howItWorks": {
+    "title": "Hvordan fungerer NordBay?",
+    "subcopy": "Det har aldrig været nemmere at sælge og købe. Se hvordan i 3 trin.",
+    "steps": [
+      {
+        "title": "Opret din vare gratis",
+        "copy": "Tag et foto, beskriv din vare og publicer den gratis på få minutter."
+      },
+      {
+        "title": "Sælg sikkert og få betaling",
+        "copy": "Modtag tilbud, chat med købere og sælg med beskyttede betalinger."
+      },
+      {
+        "title": "Nem levering og få dine penge",
+        "copy": "Send eller aflever personligt. Få betaling når køber bekræfter."
+      }
+    ],
+    "chips": [
+      "Ingen skjulte gebyrer",
+      "Beskyttede betalinger",
+      "Dansk support"
+    ],
+    "cta": "Udforsk markedspladsen"
+  },
   "faq": {
     "title": "Ofte stillede spørgsmål",
     "subcopy": "Her finder du svar på de mest almindelige spørgsmål.",
@@ -84,5 +108,23 @@
       }
     ],
     "cta": "Har du flere spørgsmål? Kontakt os"
+  },
+  "ctaFooter": {
+    "footerLinks": {
+      "about": "Om NordBay",
+      "terms": "Vilkår og betingelser",
+      "privacy": "Privatlivspolitik",
+      "help": "Hjælp"
+    },
+    "footerSocial": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn"
+    },
+    "footerContact": {
+      "email": "Email",
+      "phone": "Telefon",
+      "address": "Adresse"
+    }
   }
 }

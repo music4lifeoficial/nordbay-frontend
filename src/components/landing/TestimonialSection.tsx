@@ -7,7 +7,7 @@ import React from 'react';
 import { useTranslation } from '../../lib/useTranslation';
 
 export const TestimonialSection: React.FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslation();
   // Datos reales o placeholders personalizados
   const testimonials = [
     {
@@ -20,7 +20,7 @@ export const TestimonialSection: React.FC = () => {
       ),
       name: "Mikkel",
       city: "København",
-      text: t("testimonials.items.0.text"),
+      text: t.testimonials.items[0].text,
       stars: 5,
     },
     {
@@ -33,7 +33,7 @@ export const TestimonialSection: React.FC = () => {
       ),
       name: "Sara",
       city: "Aarhus",
-      text: t("testimonials.items.1.text"),
+      text: t.testimonials.items[1].text,
       stars: 5,
     },
     {
@@ -46,16 +46,16 @@ export const TestimonialSection: React.FC = () => {
       ),
       name: "Lars",
       city: "Odense",
-      text: t("testimonials.items.2.text"),
+      text: t.testimonials.items[2].text,
       stars: 4,
     },
   ];
 
   // Métricas badges
   const metrics = [
-    t("testimonials.metrics.productsSold"),
-    t("testimonials.metrics.satisfaction"),
-    t("testimonials.metrics.avgSaleTime"),
+    t.testimonials.metrics.productsSold,
+    t.testimonials.metrics.satisfaction,
+    t.testimonials.metrics.avgSaleTime,
   ];
 
   return (
@@ -68,10 +68,10 @@ export const TestimonialSection: React.FC = () => {
           id="testimonials-title"
           className="text-2xl md:text-4xl font-bold text-brand mb-2"
         >
-          {t("testimonials.title")}
+          {t.testimonials.title}
         </h2>
         <p className="text-base md:text-lg text-gray-700 mb-6">
-          {t("testimonials.subcopy")}
+          {t.testimonials.subcopy}
         </p>
       </div>
       <div className="flex flex-col gap-6 md:flex-row md:justify-center mb-8">
@@ -90,7 +90,7 @@ export const TestimonialSection: React.FC = () => {
             <span className="text-sm text-gray-600 mb-2">
               {t.text}
             </span>
-            <span className="flex gap-1" aria-label={t.stars + " estrellas"}>
+          <span className="flex gap-1" aria-label={t.stars + " estrellas"}>
               {[...Array(5)].map((_, i) => (
                 <span
                   key={i}
@@ -119,9 +119,9 @@ export const TestimonialSection: React.FC = () => {
       <div className="flex justify-center">
         <button
           className="bg-brand text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200"
-          aria-label={t("testimonials.cta")}
+          aria-label={t.testimonials.cta}
         >
-          {t("testimonials.cta")}
+          {t.testimonials.cta}
         </button>
       </div>
       {/* Animaciones fade-in y hover, validado con usuarios */}

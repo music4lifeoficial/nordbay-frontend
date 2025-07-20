@@ -5,7 +5,6 @@
 
 import React from "react";
 import { useTranslation } from "../../lib/useTranslation";
-import { getLocale } from "../../lib/getLocale";
 import Image from "next/image";
 
 export interface HeroSectionProps {
@@ -26,8 +25,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onSearch,
   onCTA,
 }) => {
-  const locale = getLocale();
-  const t = useTranslation(locale);
+  const t = useTranslation();
 
   // TODO: Adaptar estructura y estilos según variante mobile/desktop
   return (

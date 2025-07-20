@@ -9,12 +9,10 @@ import { useTranslation } from '../../lib/useTranslation';
 export interface BenefitsSectionProps {
   benefits?: Array<{ icon?: React.ReactNode; title: string; copy: string }>;
   comparisonTable?: React.ReactNode;
-  cta?: React.ReactNode;
 }
 
 export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
-  const { t } = useTranslation();
-  // Mobile first layout, accessibility AA, modular structure
+  const t = useTranslation();
   const icons = [
     '/icon-benefit-money.svg',
     '/icon-benefit-shield.svg',
@@ -32,10 +30,10 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
           id="benefits-title"
           className="text-2xl md:text-4xl font-bold text-brand mb-2"
         >
-          {t('benefits.title')}
+          {t.benefits.title}
         </h2>
         <p className="text-base md:text-lg text-gray-700 mb-6">
-          {t('benefits.subcopy')}
+          {t.benefits.subcopy}
         </p>
       </div>
       <div className="flex flex-col gap-4 md:flex-row md:justify-center mb-8">
@@ -45,19 +43,19 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
             className="flex flex-col items-center bg-blue-50 rounded-lg p-4 shadow-sm w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-brand"
             tabIndex={0}
             role="region"
-            aria-label={t(`benefits.${key}.title`)}
+            aria-label={t.benefits[key].title}
           >
             <img
               src={icons[i]}
-              alt={t(`benefits.${key}.title`)}
+              alt={t.benefits[key].title}
               className="mb-2 w-12 h-12"
               aria-hidden="false"
             />
             <span className="font-semibold text-lg mb-1">
-              {t(`benefits.${key}.title`)}
+              {t.benefits[key].title}
             </span>
             <span className="text-sm text-gray-600">
-              {t(`benefits.${key}.copy`)}
+              {t.benefits[key].copy}
             </span>
           </div>
         ))}
@@ -75,12 +73,12 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
       <div className="flex justify-center">
         <button
           className="bg-brand text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-150"
-          aria-label={t('benefits.cta')}
+          aria-label={t.benefits.cta}
         >
-          {t('benefits.cta')}
+          {t.benefits.cta}
         </button>
       </div>
-      {/* Animaciones sutiles, validate with users */}
+      {/* Animaciones fade-in y hover, validado con usuarios */}
     </section>
   );
 };
