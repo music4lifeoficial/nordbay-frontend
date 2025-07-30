@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { createProduct } from '@/lib/api/create-product';
 import type { CreatePublicationData } from '@/types';
 import { useToast } from '@/hooks/useToast';
+import { useTranslation } from '@/lib/useTranslation';
+import { Alert } from '@/components/ui/Alert';
 
 const initialForm: CreatePublicationData = {
   title: '',
@@ -18,8 +20,10 @@ const initialForm: CreatePublicationData = {
 };
 
 export default function CreateProductWizard() {
+  const t = useTranslation();
   const [form, setForm] = useState<CreatePublicationData>(initialForm);
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const showToast = useToast();
 
   // Maneja el cambio de todos los inputs (text, select, textarea, checkbox, number)
@@ -42,14 +46,17 @@ export default function CreateProductWizard() {
   // Maneja el submit del formulario
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setFormError(null);
     setLoading(true);
     try {
       await createProduct(form);
-      showToast('Producto creado', 'success');
+      showToast(t('products.createSuccess') || 'Product created', 'success');
       setForm(initialForm);
-    } catch (error) {
-      showToast('No se pudo crear el producto', 'error');
-      // console.error(error); // para debug, opcional
+    } catch (error: any) {
+      let errorKey = 'default';
+      if (error?.message?.includes('network')) errorKey = 'network';
+      if (error?.message?.includes('validation')) errorKey = 'validation';
+      setFormError(t(`products.errors.${errorKey}`) || t('products.errors.default'));
     } finally {
       setLoading(false);
     }
@@ -57,6 +64,9 @@ export default function CreateProductWizard() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto mt-8">
+      {formError && (
+        <Alert type="error" className="mb-4" message={formError} />
+      )}
       <div>
         <label htmlFor="title" className="block text-sm font-medium">
           Título

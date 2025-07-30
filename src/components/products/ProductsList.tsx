@@ -3,22 +3,26 @@ import { useEffect, useState } from 'react';
 import { getProducts } from '@/lib/api/products';
 import type { Publication } from '@/types';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { Alert } from '@/components/ui/Alert';
+import { useTranslation } from '@/lib/useTranslation';
+
 
 export default function ProductsList() {
   const [products, setProducts] = useState<Publication[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslation();
 
   useEffect(() => {
     setLoading(true);
     getProducts()
       .then(setProducts)
-      .catch((err) => setError(err?.message || 'Error al cargar productos'))
+      .catch((err) => setError(t.alert?.productsLoadError || err?.message || 'Error loading products'))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
-    // Skeletons para cards de producto (3 columnas en desktop, 1 en mobile)
+    // Skeletons for product cards (3 columns desktop, 1 mobile)
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {Array.from({ length: 6 }).map((_, i) => (
@@ -32,8 +36,8 @@ export default function ProductsList() {
       </div>
     );
   }
-  if (error) return <div className="text-red-600">{error}</div>;
-  if (!products.length) return <div className="text-nordic-500">No hay productos publicados aún.</div>;
+  if (error) return <Alert type="error" message={error} className="mb-4" />;
+  if (!products.length) return <Alert type="info" message={t.alert?.productsEmpty ?? 'No products have been published yet.'} className="mb-4" />;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">

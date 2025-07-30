@@ -1,4 +1,6 @@
-import { AuthGuard } from '@/hooks/useAuthGuard';
+"use client";
+import { RequireAuthLevel } from '@/components/auth/RequireAuthLevel';
+import { useTranslation } from '@/lib/useTranslation';
 
 // ---
 // Endpoint: GET /api/search/*
@@ -11,14 +13,16 @@ import { AuthGuard } from '@/hooks/useAuthGuard';
 
 import MarketplaceSearch from '@/components/marketplace/MarketplaceSearch';
 
+
 export default function MarketplaceSearchPage() {
+  const t = useTranslation();
   return (
-    <AuthGuard level="public" fallback={<div className="p-8 text-center text-red-600">Acceso restringido.</div>}>
+    <RequireAuthLevel level="public">
       <div className="p-8">
-        <h1 className="text-3xl font-bold mb-4">Buscar en el marketplace</h1>
-        <p className="text-nordic-700 mb-6">Encuentra productos y vendedores en NordBay.</p>
+        <h1 className="text-3xl font-bold mb-4">{t.marketplace?.searchTitle ?? "Buscar en el marketplace"}</h1>
+        <p className="text-nordic-700 mb-6">{t.marketplace?.searchDescription ?? "Encuentra productos y vendedores en NordBay."}</p>
         <MarketplaceSearch />
       </div>
-    </AuthGuard>
+    </RequireAuthLevel>
   );
 }

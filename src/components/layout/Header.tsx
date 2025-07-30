@@ -5,10 +5,11 @@ import { useLocale } from "@/context/LocaleContext";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTranslation } from "@/lib/useTranslation";
 
+
 // Mapeo de banderas y etiquetas para el selector visual
 const flagMap = {
-  da: { icon: "🇬🇧", label: "ENG", next: "en" },
-  en: { icon: "🇩🇰", label: "DAN", next: "da" }
+  da: { icon: "��", label: "DK", next: "en" },
+  en: { icon: "��", label: "EN", next: "da" }
 };
 
 export default function Header() {
@@ -17,8 +18,11 @@ export default function Header() {
   const { locale, setLocale } = useLocale();
   const t = useTranslation();
 
+
+  // Fallback seguro si el locale no es válido
+  const safeLocale = flagMap[locale] ? locale : "da";
   const handleLocaleSwitch = () => {
-    setLocale(flagMap[locale].next as "da" | "en");
+    setLocale(flagMap[safeLocale].next as "da" | "en");
   };
 
   return (
@@ -32,11 +36,11 @@ export default function Header() {
             {/* Selector visual de idioma para desktop y mobile */}
             <button
               className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-nordic-300 bg-nordic-50 hover:bg-nordic-100 focus:outline-none focus:ring-2 focus:ring-nordic-400"
-              aria-label={locale === "da" ? "Switch to English" : "Skift til dansk"}
+              aria-label={safeLocale === "da" ? "Switch to English" : "Skift til dansk"}
               onClick={handleLocaleSwitch}
             >
-              <span>{flagMap[locale].icon}</span>
-              <span>{flagMap[locale].label}</span>
+              <span role="img" aria-label={safeLocale === "da" ? "Danish flag" : "UK flag"}>{flagMap[safeLocale].icon}</span>
+              <span>{flagMap[safeLocale].label}</span>
             </button>
           </div>
           <nav className="hidden md:flex items-center space-x-6">

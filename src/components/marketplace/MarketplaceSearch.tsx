@@ -2,12 +2,15 @@
 import { useState } from 'react';
 import { searchMarketplace } from '@/lib/api/search';
 import type { Publication } from '@/types';
+import { Alert } from '@/components/ui/Alert';
+import { useTranslation } from '@/lib/useTranslation';
 
 export default function MarketplaceSearch() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Publication[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslation();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ export default function MarketplaceSearch() {
       const data = await searchMarketplace({ query });
       setResults(data.publications);
     } catch {
-      setError('Error al buscar en el marketplace');
+      setError(t.alert?.marketplaceSearchError ?? 'Error al buscar en el marketplace');
     } finally {
       setLoading(false);
     }
@@ -30,14 +33,14 @@ export default function MarketplaceSearch() {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Buscar productos o vendedores..."
+          placeholder={t.marketplace?.searchPlaceholder ?? 'Buscar productos o vendedores...'}
           className="input flex-1"
         />
         <button type="submit" className="btn-primary" disabled={loading}>
-          {loading ? 'Buscando...' : 'Buscar'}
+          {loading ? t.common?.searching ?? 'Buscando...' : t.common?.search ?? 'Buscar'}
         </button>
       </form>
-      {error && <div className="text-red-600 mb-4">{error}</div>}
+      {error && <Alert type="error" message={error} className="mb-4" />}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {results.map((item) => (
           <div key={item.id} className="bg-white rounded-lg shadow p-4 border border-nordic-100">
@@ -48,7 +51,7 @@ export default function MarketplaceSearch() {
         ))}
       </div>
       {!loading && !results.length && query && (
-        <div className="text-nordic-500 mt-4">No se encontraron resultados.</div>
+        <Alert type="info" message={t.alert?.marketplaceNoResults ?? 'No se encontraron resultados.'} className="mt-4" />
       )}
     </div>
   );

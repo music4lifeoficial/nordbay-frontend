@@ -7,6 +7,7 @@ import { useTranslation } from '@/lib/useTranslation';
 import { Eye, EyeOff, Mail, Lock, User, Phone, MapPin, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { useToast } from '@/hooks/useToast';
+import { Alert } from '@/components/ui/Alert';
 
 export default function RegisterForm() {
   const t = useTranslation();
@@ -23,6 +24,7 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   
   const { register } = useAuthStore();
   const showToast = useToast();
@@ -38,15 +40,15 @@ export default function RegisterForm() {
 
   const validateForm = () => {
     if (formData.password !== formData.confirmPassword) {
-      showToast(t.register.passwordMismatch, "error");
+      setFormError(t.register.passwordMismatch);
       return false;
     }
     if (formData.password.length < 8) {
-      showToast(t.register.passwordShort, "error");
+      setFormError(t.register.passwordShort);
       return false;
     }
     if (!formData.acceptTerms) {
-      showToast(t.register.acceptTermsError, "error");
+      setFormError(t.register.acceptTermsError);
       return false;
     }
     return true;
@@ -60,19 +62,24 @@ export default function RegisterForm() {
     setIsLoading(true);
 
     try {
-      await register({
-        email: formData.email,
-        password: formData.password,
-        nickname: formData.nickname,
-        name: formData.name,
-        phone: formData.phone,
-        address: formData.address,
-        accept_terms: formData.acceptTerms
-      });
+          setFormError(null);
+          await register({
+            email: formData.email,
+            password: formData.password,
+            nickname: formData.nickname,
+            name: formData.name,
+            phone: formData.phone,
+            address: formData.address,
+            accept_terms: formData.acceptTerms
+          });
       showToast(t.register.success, "success");
       router.push('/auth/login');
-    } catch (error) {
-      showToast(t.register.error, "error");
+      } catch (error: any) {
+          setFormError(
+            error?.message
+              ? t(`register.errors.${error.message}`) || t('register.errors.default')
+              : t('register.errors.default')
+          );
     } finally {
       setIsLoading(false);
     }
@@ -91,8 +98,14 @@ export default function RegisterForm() {
         </div>
 
         {/* Formulario */}
+        {formError && (
+          <Alert type="error" className="mb-4" message={formError} />
+        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white rounded-xl shadow-sm border border-nordic-200 p-6">
+            {formError && (
+              <Alert type="error" className="mb-4" message={formError} />
+            )}
             <div className="space-y-4">
               {/* Email */}
               <div>

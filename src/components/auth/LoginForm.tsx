@@ -6,6 +6,7 @@ import { useTranslation } from "@/lib/useTranslation";
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useToast } from "@/hooks/useToast";
+import { Alert } from "@/components/ui/Alert";
 
 export default function LoginForm() {
   const t = useTranslation();
@@ -13,19 +14,26 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const { login } = useAuthStore();
   const showToast = useToast();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setFormError(null);
     setIsLoading(true);
+    if (!email || !password) {
+      setFormError(t.login?.missingFields ?? "Por favor completa todos los campos.");
+      setIsLoading(false);
+      return;
+    }
     try {
       await login({ email, password });
       showToast(t.login.success, "success");
       router.push("/dashboard2");
     } catch (err) {
-      showToast(t.login.error, "error");
+      setFormError(t.login.error);
     } finally {
       setIsLoading(false);
     }
@@ -34,6 +42,10 @@ export default function LoginForm() {
   const handleGoogleLogin = () => {
     showToast("Redirigiendo a Google...", "success");
     window.open(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`, "_self");
+  };
+  const handleFacebookLogin = () => {
+    showToast("Redirigiendo a Facebook...", "success");
+    window.open(`${process.env.NEXT_PUBLIC_API_URL}/auth/facebook`, "_self");
   };
   const handleMitIDLogin = async () => {
     showToast("Redirigiendo a MitID...", "success");
@@ -63,6 +75,7 @@ export default function LoginForm() {
         </div>
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-6" aria-label="Formulario de inicio de sesión">
+          {formError && <Alert type="error" message={formError} className="mb-4" />}
           <div className="bg-white rounded-xl shadow-sm border border-nordic-200 p-6">
             <div className="space-y-4">
               <div>
@@ -157,7 +170,7 @@ export default function LoginForm() {
           <button
             type="button"
             className="w-full flex items-center justify-center gap-2 border border-nordic-200 rounded-lg py-3 bg-white hover:bg-nordic-50 transition-colors"
-            aria-label={t.login.googleAria}
+            aria-label={t.login.googleAria || "Iniciar sesión con Google"}
             onClick={handleGoogleLogin}
             tabIndex={0}
           >
@@ -167,7 +180,17 @@ export default function LoginForm() {
           <button
             type="button"
             className="w-full flex items-center justify-center gap-2 border border-nordic-200 rounded-lg py-3 bg-white hover:bg-nordic-50 transition-colors"
-            aria-label={t.login.mitidAria}
+            aria-label={t.login.facebookAria || "Iniciar sesión con Facebook"}
+            onClick={handleFacebookLogin}
+            tabIndex={0}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" fill="#1877F3"/><path d="M13.5 10.5H11V17H8.5V10.5H7V8.5h1.5V7.5c0-1.1.9-2 2-2h2v2h-2c-.28 0-.5.22-.5.5v1h2.5l-.5 2z" fill="#fff"/></svg>
+            Facebook
+          </button>
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-2 border border-nordic-200 rounded-lg py-3 bg-white hover:bg-nordic-50 transition-colors"
+            aria-label={t.login.mitidAria || "Iniciar sesión con MitID"}
             onClick={handleMitIDLogin}
             tabIndex={0}
           >

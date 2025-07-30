@@ -1,6 +1,7 @@
-
-import { AuthGuard } from '@/hooks/useAuthGuard';
+"use client";
+import { RequireAuthLevel } from '@/components/auth/RequireAuthLevel';
 import CreateProductWizard from '@/components/products/CreateProductWizard';
+import { useTranslation } from '@/lib/useTranslation';
 
 // ---
 // Endpoint: POST /api/publications
@@ -11,14 +12,16 @@ import CreateProductWizard from '@/components/products/CreateProductWizard';
 //
 // Ver BACKEND_FOR_FRONTEND.txt para detalles de payload y respuesta.
 
+
 export default function ProductsCreatePage() {
+  const t = useTranslation();
   return (
-    <AuthGuard level="mitid_verified" fallback={<div className="p-8 text-center text-red-600">Acceso restringido: solo usuarios con MitID verificado pueden crear productos.</div>}>
+    <RequireAuthLevel level="mitid_verified">
       <div className="p-8">
-        <h1 className="text-3xl font-bold mb-4">Crear producto</h1>
-        <p className="text-nordic-700">Aquí puedes crear un nuevo producto para vender.</p>
+        <h1 className="text-3xl font-bold mb-4">{t.products?.createTitle ?? "Crear producto"}</h1>
+        <p className="text-nordic-700">{t.products?.createDescription ?? "Aquí puedes crear un nuevo producto para vender."}</p>
         <CreateProductWizard />
       </div>
-    </AuthGuard>
+    </RequireAuthLevel>
   );
 }

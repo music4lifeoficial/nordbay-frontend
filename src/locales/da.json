@@ -1,4 +1,37 @@
 {
+  "alert": {
+    "marketplaceSearchError": "Fejl ved søgning i markedspladsen.",
+    "marketplaceNoResults": "Ingen resultater fundet.",
+    "productsLoadError": "Fejl ved indlæsning af produkter.",
+    "productsEmpty": "Der er endnu ikke offentliggjort produkter."
+  },
+  "common": {
+    "search": "Søg",
+    "searching": "Søger..."
+  },
+  "marketplace": {
+    "searchTitle": "Søg i markedspladsen",
+    "searchDescription": "Find produkter og sælgere på NordBay."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Administrer dine produkter, favoritter og profil ét sted.",
+    "createTitle": "Opret annonce",
+    "createDescription": "Udgiv et nyt produkt til salg på NordBay.",
+    "favoritesTitle": "Favoritter",
+    "favoritesDescription": "Her ser du dine gemte favoritprodukter.",
+    "profileTitle": "Profil",
+    "profileDescription": "Administrer dine personlige oplysninger og verificér din konto."
+  },
+  "products": {
+    "createTitle": "Opret produkt",
+    "createDescription": "Her kan du oprette et nyt produkt til salg.",
+    "errors": {
+      "network": "Netværksfejl. Prøv igen.",
+      "validation": "Tjek venligst alle obligatoriske felter.",
+      "default": "Kunne ikke oprette produkt. Prøv igen."
+    }
+  },
   "login": {
     "title": "Log ind på NordBay",
     "subcopy": "Få adgang til din konto og oplev hele platformen",
@@ -52,10 +85,16 @@
     "passwordMismatch": "Adgangskoderne matcher ikke.",
     "passwordShort": "Adgangskoden skal være mindst 8 tegn.",
     "acceptTermsError": "Du skal acceptere vilkår og betingelser.",
+    "errors": {
+      "email_in_use": "Denne email er allerede i brug.",
+      "invalid_email": "Indtast venligst en gyldig email-adresse.",
+      "weak_password": "Adgangskoden er for svag.",
+      "network": "Netværksfejl. Prøv igen.",
+      "default": "Kunne ikke oprette konto. Prøv igen."
+    },
     "copyright": "© 2025 NordBay. Alle rettigheder forbeholdes."
   },
   "header": {
-    "login": "Log ind",
     "register": "Opret konto",
     "dashboard": "Dashboard",
     "favorites": "Favoritter",
@@ -142,22 +181,30 @@
     ],
     "cta": "Har du flere spørgsmål? Kontakt os"
   },
-  "ctaFooter": {
-    "footerLinks": {
-      "about": "Om NordBay",
-      "terms": "Vilkår og betingelser",
-      "privacy": "Privatlivspolitik",
-      "help": "Hjælp"
-    },
-    "footerSocial": {
-      "facebook": "Facebook",
-      "instagram": "Instagram",
-      "linkedin": "LinkedIn"
-    },
-    "footerContact": {
-      "email": "Email",
-      "phone": "Telefon",
-      "address": "Adresse"
-    }
+  "ctaFooter": {},
+  "authGuard": {
+    "loading": "Indlæser...",
+    "redirecting": "Omdirigerer til login...",
+    "adminOnly": "Adgang kun for administratorer.",
+    "verifyEmail": "Bekræft din email for at få adgang til denne funktion.",
+    "goToProfile": "Gå til profil",
+    "verifyMitID": "Bekræft din identitet med MitID for at få adgang til denne funktion.",
+    "verifyWithMitID": "Bekræft med MitID"
+  },
+  "footerLinks": {
+    "about": "Om NordBay",
+    "terms": "Vilkår og betingelser",
+    "privacy": "Privatlivspolitik",
+    "help": "Hjælp"
+  },
+  "footerSocial": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  },
+  "footerContact": {
+    "email": "Email",
+    "phone": "Telefon",
+    "address": "Adresse"
   }
 }
