@@ -6,10 +6,10 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTranslation } from "@/lib/useTranslation";
 
 
-// Mapeo de banderas y etiquetas para el selector visual
+// Mapeo de banderas y etiquetas para el selector visual (SVG)
 const flagMap = {
-  da: { icon: "🇩🇰", label: "DK", next: "en" },
-  en: { icon: "🇬🇧", label: "EN", next: "da" }
+  da: { icon: "/flag-dk.svg", label: "DK", next: "en" },
+  en: { icon: "/flag-en.svg", label: "EN", next: "da" }
 };
 
 export default function Header() {
@@ -39,7 +39,7 @@ export default function Header() {
               aria-label={safeLocale === "da" ? "Switch to English" : "Skift til dansk"}
               onClick={handleLocaleSwitch}
             >
-              <span role="img" aria-label={safeLocale === "da" ? "Danish flag" : "UK flag"}>{flagMap[safeLocale].icon}</span>
+              <img src={flagMap[safeLocale].icon} alt={safeLocale === "da" ? "Danish flag" : "English flag"} className="w-5 h-5 mr-1 rounded-sm border border-nordic-200 bg-white" />
               <span>{flagMap[safeLocale].label}</span>
             </button>
           </div>
