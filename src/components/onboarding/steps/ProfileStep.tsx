@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 
-const ProfileStep = ({ onNext, onPrev, data, isFirst, isLast }: any) => {
+const ProfileStep = ({ onNext, onPrev, data }: any) => {
   const [name, setName] = React.useState(data?.name || '');
   const [location, setLocation] = React.useState(data?.location || '');
   // TODO: Avatar upload
@@ -33,7 +33,7 @@ const ProfileStep = ({ onNext, onPrev, data, isFirst, isLast }: any) => {
         </div>
       </div>
       <div className="flex justify-between mt-6">
-        {!isFirst && <Button variant="outline" onClick={onPrev}>Atrás</Button>}
+        <Button variant="outline" onClick={onPrev}>Atrás</Button>
         <Button onClick={() => onNext({ name, location })}>Siguiente</Button>
       </div>
     </div>
