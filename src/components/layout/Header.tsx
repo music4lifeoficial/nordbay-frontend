@@ -8,8 +8,8 @@ import { useTranslation } from "@/lib/useTranslation";
 
 // Mapeo de banderas y etiquetas para el selector visual
 const flagMap = {
-  da: { icon: "��", label: "DK", next: "en" },
-  en: { icon: "��", label: "EN", next: "da" }
+  da: { icon: "🇩🇰", label: "DK", next: "en" },
+  en: { icon: "🇬🇧", label: "EN", next: "da" }
 };
 
 export default function Header() {
