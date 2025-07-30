@@ -1,4 +1,67 @@
 {
+  "login": {
+    "title": "Sign in to NordBay",
+    "subcopy": "Access your account and enjoy the full experience",
+    "motivation": "Access exclusive offers, manage your favorites, and shop securely.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "forgotPassword": "Forgot your password?",
+    "submit": "Sign in",
+    "submitAria": "Sign in",
+    "orContinueWith": "Or continue with",
+    "mitidAria": "Sign in with MitID",
+    "privacyNote": "We never share your data without permission. Fast and secure access.",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "copyright": "© 2025 NordBay. All rights reserved.",
+    "success": "Welcome to NordBay! You have signed in successfully.",
+    "error": "Sign in failed. Please check your credentials."
+  },
+  "register": {
+    "title": "Join NordBay",
+    "subcopy": "Create your account to start buying and selling",
+    "emailLabel": "Email *",
+    "emailPlaceholder": "your@email.com",
+    "nicknameLabel": "Username *",
+    "nicknamePlaceholder": "your_username",
+    "nameLabel": "Full name *",
+    "namePlaceholder": "Your full name",
+    "phoneLabel": "Phone *",
+    "phonePlaceholder": "+45 12 34 56 78",
+    "addressLabel": "Address *",
+    "addressPlaceholder": "Your full address",
+    "passwordLabel": "Password *",
+    "passwordPlaceholder": "Minimum 8 characters",
+    "confirmPasswordLabel": "Confirm password *",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "acceptTermsPrefix": "I accept the",
+    "acceptTermsAnd": "and the",
+    "terms": "terms and conditions",
+    "privacy": "privacy policy",
+    "submit": "Create account",
+    "haveAccount": "Already have an account?",
+    "loginHere": "Sign in here",
+    "success": "Account created successfully! You can now sign in with your new account.",
+    "error": "Could not create account. Please try again.",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordShort": "Password must be at least 8 characters.",
+    "acceptTermsError": "You must accept the terms and conditions.",
+    "copyright": "© 2025 NordBay. All rights reserved."
+  },
+  "header": {
+    "login": "Sign in",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "favorites": "Favorites",
+    "profile": "Profile",
+    "logout": "Log out"
+  },
   "hero": {
     "slogan": "Sell easily. Buy safely. Pass it on.",
     "subcopy": "The Danish marketplace to sell and buy simply, safely and humanly.",
@@ -31,36 +94,6 @@
       "copy": "A dedicated team always ready to help you in your language."
     },
     "cta": "Explore the marketplace"
-  },
-  "testimonials": {
-    "title": "What our users say",
-    "subcopy": "Real success stories from NordBay.",
-    "items": [
-      {
-        "name": "Mikkel",
-        "city": "Copenhagen",
-        "text": "Excellent experience, sold my bike in 3 days without hassle.",
-        "stars": 5
-      },
-      {
-        "name": "Sara",
-        "city": "Aarhus",
-        "text": "Bought an almost new sofa at a great price. Everything was easy and safe.",
-        "stars": 5
-      },
-      {
-        "name": "Lars",
-        "city": "Odense",
-        "text": "Danish support is a big plus. Got quick help with a question.",
-        "stars": 5
-      }
-    ],
-    "metrics": {
-      "productsSold": "+10,000 products sold last month",
-      "satisfaction": "95% satisfaction with support",
-      "avgSaleTime": "Average sale time: 7 days"
-    },
-    "cta": "Join NordBay"
   },
   "howItWorks": {
     "title": "How does NordBay work?",

@@ -100,7 +100,7 @@ src/
 │   │   ├── product/[id]/page.tsx
 │   │   └── layout.tsx
 │   ├── (dashboard)/
-│   │   ├── profile/page.tsx
+│   │   ├── My account/page.tsx
 │   │   ├── my-products/page.tsx
 │   │   └── layout.tsx
 │   ├── globals.css

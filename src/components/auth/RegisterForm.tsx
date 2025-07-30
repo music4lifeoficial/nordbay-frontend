@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useTranslation } from '@/lib/useTranslation';
 import { Eye, EyeOff, Mail, Lock, User, Phone, MapPin, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { useToast } from '@/hooks/useToast';
 
 export default function RegisterForm() {
+  const t = useTranslation();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -36,20 +38,17 @@ export default function RegisterForm() {
 
   const validateForm = () => {
     if (formData.password !== formData.confirmPassword) {
-      showToast("Las contraseñas no coinciden.", "error");
+      showToast(t.register.passwordMismatch, "error");
       return false;
     }
-
     if (formData.password.length < 8) {
-      showToast("La contraseña debe tener al menos 8 caracteres.", "error");
+      showToast(t.register.passwordShort, "error");
       return false;
     }
-
     if (!formData.acceptTerms) {
-      showToast("Debes aceptar los términos y condiciones.", "error");
+      showToast(t.register.acceptTermsError, "error");
       return false;
     }
-
     return true;
   };
 
@@ -70,10 +69,10 @@ export default function RegisterForm() {
         address: formData.address,
         accept_terms: formData.acceptTerms
       });
-      showToast("¡Cuenta creada exitosamente! Ya puedes iniciar sesión con tu nueva cuenta.", "success");
+      showToast(t.register.success, "success");
       router.push('/auth/login');
     } catch (error) {
-      showToast("No se pudo crear la cuenta. Intenta nuevamente.", "error");
+      showToast(t.register.error, "error");
     } finally {
       setIsLoading(false);
     }
@@ -87,12 +86,8 @@ export default function RegisterForm() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-nordic-600 to-nordic-700 rounded-2xl mb-6 shadow-lg">
             <span className="text-2xl font-bold text-white">N</span>
           </div>
-          <h1 className="text-3xl font-bold text-nordic-900 mb-2">
-            Únete a NordBay
-          </h1>
-          <p className="text-nordic-600">
-            Crea tu cuenta para empezar a comprar y vender
-          </p>
+          <h1 className="text-3xl font-bold text-nordic-900 mb-2">{t.register.title}</h1>
+          <p className="text-nordic-600">{t.register.subcopy}</p>
         </div>
 
         {/* Formulario */}
@@ -102,7 +97,7 @@ export default function RegisterForm() {
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Correo electrónico *
+                  {t.register.emailLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -115,7 +110,7 @@ export default function RegisterForm() {
                     value={formData.email}
                     onChange={handleChange}
                     className="block w-full pl-10 pr-3 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
-                    placeholder="tu@email.com"
+                    placeholder={t.register.emailPlaceholder}
                     required
                   />
                 </div>
@@ -124,7 +119,7 @@ export default function RegisterForm() {
               {/* Nickname */}
               <div>
                 <label htmlFor="nickname" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Nombre de usuario *
+                  {t.register.nicknameLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -137,7 +132,7 @@ export default function RegisterForm() {
                     value={formData.nickname}
                     onChange={handleChange}
                     className="block w-full pl-10 pr-3 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
-                    placeholder="tu_usuario"
+                    placeholder={t.register.nicknamePlaceholder}
                     required
                   />
                 </div>
@@ -146,7 +141,7 @@ export default function RegisterForm() {
               {/* Nombre completo */}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Nombre completo *
+                  {t.register.nameLabel}
                 </label>
                 <input
                   id="name"
@@ -155,7 +150,7 @@ export default function RegisterForm() {
                   value={formData.name}
                   onChange={handleChange}
                   className="block w-full px-3 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
-                  placeholder="Tu nombre completo"
+                  placeholder={t.register.namePlaceholder}
                   required
                 />
               </div>
@@ -163,7 +158,7 @@ export default function RegisterForm() {
               {/* Teléfono */}
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Teléfono *
+                  {t.register.phoneLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -176,7 +171,7 @@ export default function RegisterForm() {
                     value={formData.phone}
                     onChange={handleChange}
                     className="block w-full pl-10 pr-3 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
-                    placeholder="+45 12 34 56 78"
+                    placeholder={t.register.phonePlaceholder}
                     required
                   />
                 </div>
@@ -185,7 +180,7 @@ export default function RegisterForm() {
               {/* Dirección */}
               <div>
                 <label htmlFor="address" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Dirección *
+                  {t.register.addressLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -198,7 +193,7 @@ export default function RegisterForm() {
                     value={formData.address}
                     onChange={handleChange}
                     className="block w-full pl-10 pr-3 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
-                    placeholder="Tu dirección completa"
+                    placeholder={t.register.addressPlaceholder}
                     required
                   />
                 </div>
@@ -207,7 +202,7 @@ export default function RegisterForm() {
               {/* Contraseña */}
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Contraseña *
+                  {t.register.passwordLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -220,7 +215,7 @@ export default function RegisterForm() {
                     value={formData.password}
                     onChange={handleChange}
                     className="block w-full pl-10 pr-12 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
-                    placeholder="Mínimo 8 caracteres"
+                    placeholder={t.register.passwordPlaceholder}
                     required
                   />
                   <button
@@ -240,7 +235,7 @@ export default function RegisterForm() {
               {/* Confirmar Contraseña */}
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-nordic-700 mb-2">
-                  Confirmar contraseña *
+                  {t.register.confirmPasswordLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -253,7 +248,7 @@ export default function RegisterForm() {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     className="block w-full pl-10 pr-12 py-3 border border-nordic-300 rounded-lg focus:ring-2 focus:ring-nordic-500 focus:border-nordic-500 transition-colors"
-                    placeholder="Repite tu contraseña"
+                    placeholder={t.register.confirmPasswordPlaceholder}
                     required
                   />
                   <button
@@ -285,14 +280,7 @@ export default function RegisterForm() {
                 </div>
                 <div className="text-sm">
                   <label htmlFor="acceptTerms" className="text-nordic-700">
-                    Acepto los{' '}
-                    <Link href="/terms" className="text-nordic-600 hover:text-nordic-800 underline">
-                      términos y condiciones
-                    </Link>
-                    {' '}y la{' '}
-                    <Link href="/privacy" className="text-nordic-600 hover:text-nordic-800 underline">
-                      política de privacidad
-                    </Link>
+                    {t.register.acceptTermsPrefix} <Link href="/terms" className="text-nordic-600 hover:text-nordic-800 underline">{t.register.terms}</Link> {t.register.acceptTermsAnd} <Link href="/privacy" className="text-nordic-600 hover:text-nordic-800 underline">{t.register.privacy}</Link>
                   </label>
                 </div>
               </div>
@@ -308,7 +296,7 @@ export default function RegisterForm() {
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  Crear cuenta
+              {t.register.submit}
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -319,19 +307,13 @@ export default function RegisterForm() {
         {/* Enlace a Login */}
         <div className="text-center mt-6">
           <p className="text-nordic-600">
-            ¿Ya tienes una cuenta?{' '}
-            <Link 
-              href="/auth/login" 
-              className="font-medium text-nordic-700 hover:text-nordic-900 transition-colors"
-            >
-              Inicia sesión aquí
-            </Link>
+            {t.register.haveAccount} <Link href="/auth/login" className="font-medium text-nordic-700 hover:text-nordic-900 transition-colors">{t.register.loginHere}</Link>
           </p>
         </div>
 
         {/* Footer */}
         <div className="text-center mt-8 text-xs text-nordic-500">
-          <p>© 2025 NordBay. Todos los derechos reservados.</p>
+          <p>{t.register.copyright}</p>
         </div>
       </div>
     </div>

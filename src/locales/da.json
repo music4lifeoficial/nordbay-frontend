@@ -1,26 +1,89 @@
 {
+  "login": {
+    "title": "Log ind på NordBay",
+    "subcopy": "Få adgang til din konto og oplev hele platformen",
+    "motivation": "Få adgang til eksklusive tilbud, styr dine favoritter og køb sikkert.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "din@email.com",
+    "passwordLabel": "Adgangskode",
+    "passwordPlaceholder": "Din adgangskode",
+    "showPassword": "Vis adgangskode",
+    "hidePassword": "Skjul adgangskode",
+    "forgotPassword": "Glemt din adgangskode?",
+    "submit": "Log ind",
+    "submitAria": "Log ind",
+    "orContinueWith": "Eller fortsæt med",
+    "mitidAria": "Log ind med MitID",
+    "privacyNote": "Vi deler aldrig dine data uden tilladelse. Hurtig og sikker adgang.",
+    "noAccount": "Har du ikke en konto?",
+    "registerHere": "Opret konto her",
+    "terms": "Vilkår",
+    "privacy": "Privatliv",
+    "copyright": "© 2025 NordBay. Alle rettigheder forbeholdes.",
+    "success": "Velkommen til NordBay! Du er nu logget ind.",
+    "error": "Login mislykkedes. Tjek dine oplysninger."
+  },
+  "register": {
+    "title": "Bliv medlem af NordBay",
+    "subcopy": "Opret din konto og begynd at købe og sælge",
+    "emailLabel": "Email *",
+    "emailPlaceholder": "din@email.com",
+    "nicknameLabel": "Brugernavn *",
+    "nicknamePlaceholder": "dit_brugernavn",
+    "nameLabel": "Fulde navn *",
+    "namePlaceholder": "Dit fulde navn",
+    "phoneLabel": "Telefon *",
+    "phonePlaceholder": "+45 12 34 56 78",
+    "addressLabel": "Adresse *",
+    "addressPlaceholder": "Din fulde adresse",
+    "passwordLabel": "Adgangskode *",
+    "passwordPlaceholder": "Minimum 8 tegn",
+    "confirmPasswordLabel": "Bekræft adgangskode *",
+    "confirmPasswordPlaceholder": "Gentag din adgangskode",
+    "acceptTermsPrefix": "Jeg accepterer",
+    "acceptTermsAnd": "og",
+    "terms": "vilkår og betingelser",
+    "privacy": "privatlivspolitik",
+    "submit": "Opret konto",
+    "haveAccount": "Har du allerede en konto?",
+    "loginHere": "Log ind her",
+    "success": "Konto oprettet! Du kan nu logge ind med din nye konto.",
+    "error": "Kunne ikke oprette konto. Prøv igen.",
+    "passwordMismatch": "Adgangskoderne matcher ikke.",
+    "passwordShort": "Adgangskoden skal være mindst 8 tegn.",
+    "acceptTermsError": "Du skal acceptere vilkår og betingelser.",
+    "copyright": "© 2025 NordBay. Alle rettigheder forbeholdes."
+  },
+  "header": {
+    "login": "Log ind",
+    "register": "Opret konto",
+    "dashboard": "Dashboard",
+    "favorites": "Favoritter",
+    "profile": "Profil",
+    "logout": "Log ud"
+  },
   "hero": {
-    "slogan": "Sælg nemt. Køb trygt. Giv videre.",
-    "subcopy": "Den danske markedsplads til at sælge og købe nemt, sikkert og menneskeligt.",
-    "cta": "Kom i gang med at sælge",
+    "slogan": "Sælg nemt. Køb sikkert. Giv videre.",
+    "subcopy": "Den danske markedsplads til at sælge og købe enkelt, sikkert og menneskeligt.",
+    "cta": "Begynd at sælge",
     "searchPlaceholder": "Hvad leder du efter i dag?",
     "trust": {
       "payments": "Beskyttede betalinger",
       "moderation": "AI-moderering",
-      "shipping": "Levering i hele DK",
+      "shipping": "Forsendelse i hele DK",
       "support": "Dansk support"
     }
   },
   "benefits": {
     "title": "Hvorfor vælge NordBay?",
-    "subcopy": "Opdag fordelene ved vores danske markedsplads.",
+    "subcopy": "Oplev fordelene ved vores danske markedsplads.",
     "noFees": {
       "title": "Ingen skjulte gebyrer",
-      "copy": "Hvad du ser er hvad du får. Ingen overraskelser eller småt print."
+      "copy": "Hvad du ser, er hvad du får. Ingen overraskelser eller småt print."
     },
     "securePayments": {
       "title": "Beskyttede betalinger",
-      "copy": "Sikre transaktioner med Stripe/MobilePay. Dine penge og data er beskyttet."
+      "copy": "Sikre transaktioner med Stripe/MobilePay. Dine penge og data er sikre."
     },
     "aiModeration": {
       "title": "Automatisk AI-moderering",
@@ -28,55 +91,25 @@
     },
     "danishSupport": {
       "title": "Dansk support",
-      "copy": "Et dedikeret team klar til at hjælpe dig på dansk."
+      "copy": "Et dedikeret team altid klar til at hjælpe dig på dit sprog."
     },
     "cta": "Udforsk markedspladsen"
-  },
-  "testimonials": {
-    "title": "Hvad siger vores brugere?",
-    "subcopy": "Ægte succeshistorier fra NordBay.",
-    "items": [
-      {
-        "name": "Mikkel",
-        "city": "København",
-        "text": "Fantastisk oplevelse, solgte min cykel på 3 dage uden problemer.",
-        "stars": 5
-      },
-      {
-        "name": "Sara",
-        "city": "Aarhus",
-        "text": "Købte en næsten ny sofa til en super pris. Alt var nemt og sikkert.",
-        "stars": 5
-      },
-      {
-        "name": "Lars",
-        "city": "Odense",
-        "text": "Dansk support er et stort plus. Fik hurtigt hjælp til et spørgsmål.",
-        "stars": 5
-      }
-    ],
-    "metrics": {
-      "productsSold": "+10.000 produkter solgt sidste måned",
-      "satisfaction": "95% tilfredshed med supporten",
-      "avgSaleTime": "Gennemsnitlig salgstid: 7 dage"
-    },
-    "cta": "Bliv medlem af NordBay"
   },
   "howItWorks": {
     "title": "Hvordan fungerer NordBay?",
     "subcopy": "Det har aldrig været nemmere at sælge og købe. Se hvordan i 3 trin.",
     "steps": [
       {
-        "title": "Opret din vare gratis",
-        "copy": "Tag et foto, beskriv din vare og publicer den gratis på få minutter."
+        "title": "Opret din annonce gratis",
+        "copy": "Tag et billede, beskriv dit produkt og udgiv det gratis på få minutter."
       },
       {
         "title": "Sælg sikkert og få betaling",
-        "copy": "Modtag tilbud, chat med købere og sælg med beskyttede betalinger."
+        "copy": "Modtag bud, chat med købere og sælg med beskyttede betalinger."
       },
       {
-        "title": "Nem levering og få dine penge",
-        "copy": "Send eller aflever personligt. Få betaling når køber bekræfter."
+        "title": "Nemt levering og få dine penge",
+        "copy": "Send eller aflever personligt. Få betaling, når køber bekræfter."
       }
     ],
     "chips": [
@@ -96,15 +129,15 @@
       },
       {
         "question": "Hvad gør jeg, hvis jeg har et problem med et køb?",
-        "answer": "Vores support er klar til at hjælpe dig. Kontakt os via chat eller e-mail, og vi løser dit problem hurtigt."
+        "answer": "Vores support står klar til at hjælpe dig. Kontakt os via chat eller e-mail, så løser vi hurtigt dit problem."
       },
       {
         "question": "Kan jeg stole på sælgerne?",
         "answer": "Ja, alle vores sælgere er verificerede, og transaktioner er beskyttet af Stripe/MobilePay."
       },
       {
-        "question": "Er der nogen omkostninger ved at bruge NordBay?",
-        "answer": "Vi har ingen skjulte gebyrer. Hvad du ser er hvad du får."
+        "question": "Koster det noget at bruge NordBay?",
+        "answer": "Vi opkræver ikke skjulte gebyrer. Hvad du ser, er hvad du får."
       }
     ],
     "cta": "Har du flere spørgsmål? Kontakt os"

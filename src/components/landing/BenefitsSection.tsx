@@ -58,16 +58,7 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = () => {
           </div>
         ))}
       </div>
-      <div className="w-full max-w-3xl mx-auto mb-8">
-        <div className="bg-gray-50 rounded-lg p-4 text-center flex justify-center">
-          <img
-            src="/benefits-comparison-table.svg"
-            alt="Tabla comparativa de beneficios NordBay vs competidores"
-            className="w-full h-auto max-w-2xl mx-auto"
-            aria-hidden="false"
-          />
-        </div>
-      </div>
+      {/* Eliminada la tabla comparativa para profesionalizar el landing */}
       <div className="flex justify-center">
         <button
           className="bg-brand text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-150"

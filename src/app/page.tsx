@@ -4,7 +4,6 @@ import * as React from "react";
 import { HeroSection } from '@/components/landing/HeroSection';
 import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
 import { BenefitsSection } from '@/components/landing/BenefitsSection';
-import { TestimonialSection } from '@/components/landing/TestimonialSection';
 import { FAQSection } from '@/components/landing/FAQSection';
 import { CTAFooterSection } from '@/components/landing/CTAFooterSection';
 import FooterSection from '@/components/landing/FooterSection';
@@ -18,8 +17,6 @@ export default function HomePage() {
       <HowItWorksSection />
       {/* Sección Beneficios clave */}
       <BenefitsSection />
-      {/* Sección Testimonios / Social Proof */}
-      <TestimonialSection />
       {/* Sección FAQ */}
       <FAQSection />
       {/* Sección CTA final + Footer */}

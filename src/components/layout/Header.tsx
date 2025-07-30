@@ -5,14 +5,20 @@ import { useLocale } from "@/context/LocaleContext";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTranslation } from "@/lib/useTranslation";
 
+// Mapeo de banderas y etiquetas para el selector visual
+const flagMap = {
+  da: { icon: "🇬🇧", label: "ENG", next: "en" },
+  en: { icon: "🇩🇰", label: "DAN", next: "da" }
+};
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isAuthenticated, logout } = useAuthStore();
   const { locale, setLocale } = useLocale();
   const t = useTranslation();
 
-  const handleLocaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLocale(e.target.value as 'da' | 'en');
+  const handleLocaleSwitch = () => {
+    setLocale(flagMap[locale].next as "da" | "en");
   };
 
   return (
@@ -22,12 +28,16 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <span className="text-xl font-bold text-nordic-900">NordBay</span>
           </Link>
-          <div className="flex items-center space-x-2">
-            <label htmlFor="locale-select" className="text-sm text-nordic-700 font-medium">Sprog / Language:</label>
-            <select id="locale-select" value={locale} onChange={handleLocaleChange} className="border rounded px-2 py-1 text-sm">
-              <option value="da">Dansk</option>
-              <option value="en">English</option>
-            </select>
+          <div className="flex items-center">
+            {/* Selector visual de idioma para desktop y mobile */}
+            <button
+              className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-nordic-300 bg-nordic-50 hover:bg-nordic-100 focus:outline-none focus:ring-2 focus:ring-nordic-400"
+              aria-label={locale === "da" ? "Switch to English" : "Skift til dansk"}
+              onClick={handleLocaleSwitch}
+            >
+              <span>{flagMap[locale].icon}</span>
+              <span>{flagMap[locale].label}</span>
+            </button>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             {!isAuthenticated ? (
