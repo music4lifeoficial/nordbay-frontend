@@ -1,5 +1,10 @@
-import RegisterForm from '@/components/auth/RegisterForm';
+
+
+
+
+import RegisterClient from './register.client';
+
 
 export default function RegisterPage() {
-  return <RegisterForm />;
+  return <RegisterClient />;
 }

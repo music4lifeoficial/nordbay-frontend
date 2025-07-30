@@ -30,6 +30,186 @@ Este documento es la **fuente de verdad** para todo el equipo y Copilot/GPT. Aqu
 
 # 🚀 Plan de Implementación Frontend NordBay - Roadmap Técnico Detallado
 
+---
+
+## 📑 DOCUMENTACIÓN: FLUJO DE REGISTRO Y ONBOARDING (SOCIAL/EMAIL)
+
+### 5.1 Registro y Onboarding - Documentación y Microtareas
+
+**🎯 Introducción y Objetivo:**
+El objetivo es crear un flujo de registro y onboarding minimalista, progresivo y social-first para NordBay, alineado con el contrato backend y la personalidad de marca. El registro debe ser lo más simple posible (email/social + password + nickname), con onboarding posterior para completar perfil y preferencias. Todo el proceso debe ser mobile-first, accesible (AA), y con copy relevante para Dinamarca/Escandinavia.
+
+**🛡️ Parámetros de Marca y Reglas para Devs/Copilot:**
+- No usar texto genérico ni placeholder (“lorem ipsum” prohibido)
+- Copy y microcopy siempre relevante para DK/Scandinavia
+- Social login (Google, MitID) siempre visible y prioritario
+- Email/password como alternativa clara
+- Nickname obligatorio, nombre opcional
+- Onboarding separado tras registro exitoso
+- Animaciones suaves, feedback visual claro
+- Accesibilidad AA, mobile-first, dark mode
+- No pedir más datos de los necesarios en el primer paso
+- Si algo no está definido, dejarlo como TODO
+
+**📝 Desglose en Microtareas (UX, Copy, Estados, Animaciones, Edge-cases):**
+1. **Pantalla de bienvenida registro**
+   - Branding NordBay, value proposition breve
+   - Botones: “Continuar con Google”, “Continuar con MitID”, “Registrarse con email”
+   - Microcopy sobre privacidad y términos
+   - Animación de entrada sutil
+
+2. **Registro social**
+   - Redirige a OAuth (Google/MitID)
+   - Feedback de loading, error, cancelación
+   - Si éxito: ir directo a onboarding
+
+3. **Registro por email**
+   - Campos: email, password, nickname (obligatorio), nombre (opcional)
+   - Validación en tiempo real (zod)
+   - Botón “Crear cuenta”
+   - Feedback de error (email en uso, password débil, etc.)
+   - Loading state en botón
+
+4. **Onboarding wizard (post-registro)**
+   - Paso 1: Completa tu perfil (avatar, nombre, ubicación)
+   - Paso 2: Preferencias (categorías, notificaciones)
+   - Paso 3: Confirmación y bienvenida
+   - Progreso visual (dots/bar)
+   - Opción de saltar pasos no obligatorios
+
+5. **Edge-cases y estados**
+   - Error de red, backend caído
+   - Usuario ya logueado intenta registrar
+   - Cancelación de social login
+   - Email ya registrado
+   - Password débil
+   - Validación nickname único
+   - Loading global y por botón
+   - Accesibilidad: focus, aria, contraste
+
+**🔍 Benchmark y Validación de Mejores Prácticas:**
+- Referencia: Vinted, Trendsales, Facebook Marketplace, Airbnb
+- Social login siempre primero, email como fallback
+- Registro en 1-2 pasos máximo antes de onboarding
+- Onboarding progresivo, nunca forzar todo en un solo paso
+- Feedback visual inmediato (errores, loading, éxito)
+- Microcopy claro sobre privacidad y uso de datos
+- Mobile-first, botones grandes, navegación clara
+- Animaciones sutiles (fade, slide, progress)
+- Dark mode y accesibilidad AA
+
+**✅ Checklist de QA y Criterios de “Done” (Registro/Onboarding):**
+- [ ] Social login (Google, MitID) funcional y prioritario
+- [ ] Registro por email/nickname/password funcional
+- [ ] Validación robusta (zod, feedback inmediato)
+- [ ] Onboarding wizard post-registro operativo
+- [ ] Copy y microcopy revisados para DK/EN
+- [ ] Mobile-first y accesibilidad AA
+- [ ] Animaciones y feedback visual implementados
+- [ ] Edge-cases y errores gestionados
+- [ ] QA manual en dispositivos reales
+- [ ] Documentación y checklist actualizados
+
+---
+
+### 5.2 Wireframe Funcional y Desglose de UI (Registro & Onboarding)
+
+**Estructura de Componentes y Jerarquía Visual:**
+
+1. **Pantalla de bienvenida registro**
+   - `<AuthWelcome />` (nuevo componente)
+     - Logo NordBay
+     - Value proposition breve
+     - Botón primario: “Continuar con Google” (`<Button variant="social-google" />`)
+     - Botón secundario: “Continuar con MitID” (`<Button variant="social-mitid" />`)
+     - Link: “Registrarse con email” (abre modal o navega a `<RegisterForm />`)
+     - Microcopy: “Al continuar aceptas nuestros Términos y Política de Privacidad”
+     - Animación fade-in
+
+2. **Registro social**
+   - `<SocialAuthHandler />` (gestiona OAuth, loading, error)
+   - Feedback visual: spinner, error toast, retry
+
+3. **Registro por email**
+   - `<RegisterForm />` (nuevo, minimalista)
+     - Campos: email, password, nickname (obligatorio), nombre (opcional)
+     - Validación en tiempo real (zod)
+     - Botón: “Crear cuenta”
+     - Link: “¿Ya tienes cuenta? Inicia sesión”
+     - Feedback de error inline
+     - Loading state en botón
+
+4. **Onboarding wizard (post-registro)**
+   - `<OnboardingWizard />` (multi-step, progresivo)
+     - Paso 1: `<ProfileStep />` (avatar, nombre, ubicación)
+     - Paso 2: `<PreferencesStep />` (categorías, notificaciones)
+     - Paso 3: `<WelcomeStep />` (confirmación, tips)
+     - Progreso visual: dots/bar arriba
+     - Botón “Saltar” en pasos opcionales
+     - Animaciones slide/fade entre pasos
+
+**Navegación y Estados:**
+- Navegación clara entre bienvenida, social/email, onboarding
+- Redirección automática tras éxito social/email
+- Feedback inmediato en cada acción (loading, error, éxito)
+- Mobile-first: botones grandes, layout vertical, padding generoso
+- Dark mode: fondo, botones y campos adaptados
+
+**Recomendaciones de Layout/Responsividad:**
+- Máximo 400-480px de ancho en mobile
+- Espaciado vertical generoso entre secciones
+- Botones full-width en mobile
+- Tipografía clara, jerarquía visual fuerte (h1, h2, labels)
+- Iconos de Google/MitID en botones sociales
+- Microcopy siempre visible bajo botones principales
+
+**Wireframe textual (mobile):**
+
+```
+┌───────────────────────────────┐
+│   [NordBay Logo]             │
+│   Sælg nemt. Køb trygt.      │
+│   Giv videre.                │
+│------------------------------│
+│ [Continuar con Google]       │
+│ [Continuar con MitID]        │
+│ [Registrarse con email]      │
+│------------------------------│
+│ Al continuar aceptas...      │
+└───────────────────────────────┘
+
+// Si elige email:
+┌───────────────────────────────┐
+│   Crear cuenta                │
+│------------------------------│
+│ Email:  [___________]         │
+│ Nickname: [_________]         │
+│ Nombre:   [_________] (op)    │
+│ Contraseña: [_______]         │
+│ [Crear cuenta]                │
+│ ¿Ya tienes cuenta? Inicia sesión│
+└───────────────────────────────┘
+
+// Onboarding (wizard):
+┌───────────────────────────────┐
+│ Paso 1/3: Completa tu perfil  │
+│ [Avatar] [Nombre] [Ubicación] │
+│ [Siguiente] [Saltar]          │
+│------------------------------│
+│ Paso 2/3: Preferencias        │
+│ [Categorías] [Notificaciones] │
+│ [Siguiente] [Saltar]          │
+│------------------------------│
+│ Paso 3/3: ¡Listo!             │
+│ [Tips, links, CTA]            │
+│ [Ir al marketplace]           │
+└───────────────────────────────┘
+```
+
+---
+
+---
+
 Nuestro slogan: “Sælg nemt. Køb trygt. Giv videre.”
 
 ## 📋 ÍNDICE DE FEATURES POR PRIORIDAD
