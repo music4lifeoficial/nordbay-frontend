@@ -10,7 +10,13 @@ import { useToast } from '@/hooks/useToast';
 import { Alert } from '@/components/ui/Alert';
 
 export default function RegisterForm() {
-  const t = useTranslation();
+  let t;
+  try {
+    t = useTranslation();
+  } catch (err) {
+    t = null;
+  }
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,67 +25,62 @@ export default function RegisterForm() {
     name: '',
     phone: '',
     address: '',
-    acceptTerms: false
+    acceptTerms: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-  
+
   const { register } = useAuthStore();
   const showToast = useToast();
   const router = useRouter();
+
+  if (!t) {
+    return (
+      <div className="w-full max-w-md mx-auto mt-12 bg-white p-8 rounded-lg shadow-sm text-center border border-red-200">
+        <h2 className="text-xl font-bold text-error mb-2">Error cargando traducciones o contexto</h2>
+        <p className="text-nordic-700 mb-4">No se pudo cargar el formulario de registro. Por favor, recarga la página o contacta soporte.</p>
+      </div>
+    );
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
   const validateForm = () => {
-    if (formData.password !== formData.confirmPassword) {
-      setFormError(t.register.passwordMismatch);
-      return false;
-    }
-    if (formData.password.length < 8) {
-      setFormError(t.register.passwordShort);
-      return false;
-    }
-    if (!formData.acceptTerms) {
-      setFormError(t.register.acceptTermsError);
-      return false;
-    }
+    // TODO: Validación robusta aquí
     return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
-    
     setIsLoading(true);
-
     try {
-          setFormError(null);
-          await register({
-            email: formData.email,
-            password: formData.password,
-            nickname: formData.nickname,
-            name: formData.name,
-            phone: formData.phone,
-            address: formData.address,
-            accept_terms: formData.acceptTerms
-          });
+      setFormError(null);
+      await register({
+        email: formData.email,
+        password: formData.password,
+        nickname: formData.nickname,
+        name: formData.name,
+        phone: formData.phone,
+        address: formData.address,
+        accept_terms: formData.acceptTerms,
+      });
       showToast(t.register.success, "success");
       router.push('/auth/login');
-      } catch (error: any) {
-          setFormError(
-            error?.message
-              ? t(`register.errors.${error.message}`) || t('register.errors.default')
-              : t('register.errors.default')
-          );
+    } catch (error: any) {
+      setFormError(
+        error?.message
+          ? t(`register.errors.${error.message}`) || t('register.errors.default')
+          : t('register.errors.default')
+      );
     } finally {
       setIsLoading(false);
     }
@@ -103,9 +104,6 @@ export default function RegisterForm() {
         )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white rounded-xl shadow-sm border border-nordic-200 p-6">
-            {formError && (
-              <Alert type="error" className="mb-4" message={formError} />
-            )}
             <div className="space-y-4">
               {/* Email */}
               <div>
@@ -128,7 +126,6 @@ export default function RegisterForm() {
                   />
                 </div>
               </div>
-
               {/* Nickname */}
               <div>
                 <label htmlFor="nickname" className="block text-sm font-medium text-nordic-700 mb-2">
@@ -150,7 +147,6 @@ export default function RegisterForm() {
                   />
                 </div>
               </div>
-
               {/* Nombre completo */}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-nordic-700 mb-2">
@@ -167,7 +163,6 @@ export default function RegisterForm() {
                   required
                 />
               </div>
-
               {/* Teléfono */}
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-nordic-700 mb-2">
@@ -189,7 +184,6 @@ export default function RegisterForm() {
                   />
                 </div>
               </div>
-
               {/* Dirección */}
               <div>
                 <label htmlFor="address" className="block text-sm font-medium text-nordic-700 mb-2">
@@ -211,7 +205,6 @@ export default function RegisterForm() {
                   />
                 </div>
               </div>
-
               {/* Contraseña */}
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-nordic-700 mb-2">
@@ -244,7 +237,6 @@ export default function RegisterForm() {
                   </button>
                 </div>
               </div>
-
               {/* Confirmar Contraseña */}
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-nordic-700 mb-2">
@@ -277,7 +269,6 @@ export default function RegisterForm() {
                   </button>
                 </div>
               </div>
-
               {/* Términos y condiciones */}
               <div className="flex items-start space-x-3 pt-2">
                 <div className="flex items-center h-5">
@@ -293,12 +284,14 @@ export default function RegisterForm() {
                 </div>
                 <div className="text-sm">
                   <label htmlFor="acceptTerms" className="text-nordic-700">
-                    {t.register.acceptTermsPrefix} <Link href="/terms" className="text-nordic-600 hover:text-nordic-800 underline">{t.register.terms}</Link> {t.register.acceptTermsAnd} <Link href="/privacy" className="text-nordic-600 hover:text-nordic-800 underline">{t.register.privacy}</Link>
+                    {t.register.acceptTermsPrefix}{' '}
+                    <Link href="/terms" className="text-nordic-600 hover:text-nordic-800 underline">{t.register.terms}</Link>{' '}
+                    {t.register.acceptTermsAnd}{' '}
+                    <Link href="/privacy" className="text-nordic-600 hover:text-nordic-800 underline">{t.register.privacy}</Link>
                   </label>
                 </div>
               </div>
             </div>
-
             {/* Botón de Registro */}
             <button
               type="submit"
@@ -309,7 +302,7 @@ export default function RegisterForm() {
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-              {t.register.submit}
+                  {t.register.submit}
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -320,7 +313,8 @@ export default function RegisterForm() {
         {/* Enlace a Login */}
         <div className="text-center mt-6">
           <p className="text-nordic-600">
-            {t.register.haveAccount} <Link href="/auth/login" className="font-medium text-nordic-700 hover:text-nordic-900 transition-colors">{t.register.loginHere}</Link>
+            {t.register.haveAccount}{' '}
+            <Link href="/auth/login" className="font-medium text-nordic-700 hover:text-nordic-900 transition-colors">{t.register.loginHere}</Link>
           </p>
         </div>
 

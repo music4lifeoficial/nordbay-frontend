@@ -39,9 +39,30 @@ export default function Header() {
               className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-nordic-300 bg-nordic-50 hover:bg-nordic-100 focus:outline-none focus:ring-2 focus:ring-nordic-400"
               aria-label={nextLocale === "en" ? "Switch to English" : "Skift til dansk"}
               onClick={handleLocaleSwitch}
+              style={{ minWidth: 54 }}
             >
-              <img src={flagMap[nextLocale as "da" | "en"].icon} alt={nextLocale === "en" ? "English flag" : "Danish flag"} className="w-5 h-5 mr-1 rounded-sm border border-nordic-200 bg-white" />
-              <span>{flagMap[nextLocale as "da" | "en"].label}</span>
+              <img
+                src={flagMap[nextLocale as "da" | "en"].icon}
+                alt={nextLocale === "en" ? "English flag" : "Danish flag"}
+                className="w-5 h-5 mr-1 rounded-sm border border-nordic-200 bg-white"
+                style={{ display: 'inline-block' }}
+              />
+              <span
+                style={{
+                  color: '#334155', // nordic-700
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  letterSpacing: '0.02em',
+                  display: 'inline-block',
+                  minWidth: 22,
+                  textAlign: 'center',
+                  textShadow: '0 1px 0 #fff',
+                  userSelect: 'none',
+                }}
+                aria-hidden="false"
+              >
+                {flagMap[nextLocale as "da" | "en"].label}
+              </span>
             </button>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
