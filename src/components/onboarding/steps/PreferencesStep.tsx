@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 
 const categories = ['Moda', 'Electrónica', 'Hogar', 'Libros', 'Deporte'];
 
-const PreferencesStep = ({ onNext, onPrev, data, isFirst, isLast }: any) => {
+const PreferencesStep = ({ onNext, onPrev, data }: any) => {
   const [selected, setSelected] = React.useState<string[]>(data?.categories || []);
   const [notifications, setNotifications] = React.useState(data?.notifications ?? true);
 
@@ -37,7 +37,7 @@ const PreferencesStep = ({ onNext, onPrev, data, isFirst, isLast }: any) => {
       </div>
       <div className="flex justify-between mt-6">
         <Button variant="outline" onClick={onPrev}>Atrás</Button>
-        <Button onClick={() => onNext({ categories: selected, notifications })}>{isLast ? 'Finalizar' : 'Siguiente'}</Button>
+        <Button onClick={() => onNext({ categories: selected, notifications })}>Siguiente</Button>
       </div>
     </div>
   );
