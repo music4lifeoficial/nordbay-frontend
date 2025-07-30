@@ -21,8 +21,9 @@ export default function Header() {
 
   // Fallback seguro si el locale no es válido
   const safeLocale = flagMap[locale] ? locale : "da";
+  const nextLocale = flagMap[safeLocale].next;
   const handleLocaleSwitch = () => {
-    setLocale(flagMap[safeLocale].next as "da" | "en");
+    setLocale(nextLocale as "da" | "en");
   };
 
   return (
@@ -36,11 +37,11 @@ export default function Header() {
             {/* Selector visual de idioma para desktop y mobile */}
             <button
               className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-nordic-300 bg-nordic-50 hover:bg-nordic-100 focus:outline-none focus:ring-2 focus:ring-nordic-400"
-              aria-label={safeLocale === "da" ? "Switch to English" : "Skift til dansk"}
+              aria-label={nextLocale === "en" ? "Switch to English" : "Skift til dansk"}
               onClick={handleLocaleSwitch}
             >
-              <img src={flagMap[safeLocale].icon} alt={safeLocale === "da" ? "Danish flag" : "English flag"} className="w-5 h-5 mr-1 rounded-sm border border-nordic-200 bg-white" />
-              <span>{flagMap[safeLocale].label}</span>
+              <img src={flagMap[nextLocale as "da" | "en"].icon} alt={nextLocale === "en" ? "English flag" : "Danish flag"} className="w-5 h-5 mr-1 rounded-sm border border-nordic-200 bg-white" />
+              <span>{flagMap[nextLocale as "da" | "en"].label}</span>
             </button>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
