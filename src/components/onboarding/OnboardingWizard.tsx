@@ -1,11 +1,16 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfileStep from './steps/ProfileStep';
+import ContactStep from './steps/ContactStep';
 import PreferencesStep from './steps/PreferencesStep';
 import WelcomeStep from './steps/WelcomeStep';
+import { toast } from 'sonner';
+import { useTranslation } from '@/lib/useTranslation';
 
 const steps = [
   { id: 'profile', component: ProfileStep },
+  { id: 'contact', component: ContactStep },
   { id: 'preferences', component: PreferencesStep },
   { id: 'welcome', component: WelcomeStep },
 ];
@@ -13,8 +18,19 @@ const steps = [
 const OnboardingWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState({});
+  const t = useTranslation();
 
-  const nextStep = (data?: any) => {
+  const nextStep = async (data?: any) => {
+    // Si estamos saliendo del paso de contacto, guardar phone/address en backend
+    if (steps[currentStep].id === 'contact' && data) {
+      try {
+        const { authApi } = await import('@/lib/api/auth');
+        await authApi.updateProfile({ phone: data.phone, address: data.address });
+        toast.success(t.onboarding?.contactSaved || 'Kontaktoplysninger gemt!');
+      } catch (err) {
+        toast.error(t.onboarding?.contactSaveError || 'Kunne ikke gemme kontaktoplysninger.');
+      }
+    }
     if (data) setUserData((prev) => ({ ...prev, ...data }));
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   };

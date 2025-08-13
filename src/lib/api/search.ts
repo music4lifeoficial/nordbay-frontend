@@ -1,8 +1,15 @@
 // API client for marketplace search
-import { apiClient } from './client';
+import { api } from './client';
 import type { SearchFilters, SearchResponse } from '@/types';
 
 export async function searchMarketplace(filters: SearchFilters): Promise<SearchResponse> {
-  const res = await apiClient.get('/search', { params: filters });
-  return res.data;
+  const response = await api.get<SearchResponse>('/search/publications', {
+    params: filters,
+  });
+
+  if (response.success && response.data) {
+    return response.data;
+  }
+
+  throw new Error(response.error || 'Failed to search publications');
 }

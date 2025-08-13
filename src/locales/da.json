@@ -1,4 +1,15 @@
 {
+  "onboarding": {
+    "contactTitle": "Kontaktoplysninger",
+    "phoneLabel": "Telefon",
+    "phonePlaceholder": "Dit telefonnummer",
+    "phoneHelp": "Dit telefonnummer deles ikke med andre brugere. Kun til notifikationer og sikkerhed.",
+    "addressLabel": "Adresse",
+    "addressPlaceholder": "Gade, nummer, by, postnummer",
+    "addressHelp": "Dette er adressen vi bruger til dine forsendelser.",
+    "contactSaved": "Kontaktoplysninger gemt!",
+    "contactSaveError": "Kunne ikke gemme kontaktoplysninger."
+  },
   "alert": {
     "marketplaceSearchError": "Fejl ved søgning i markedspladsen.",
     "marketplaceNoResults": "Ingen resultater fundet.",
@@ -7,11 +18,25 @@
   },
   "common": {
     "search": "Søg",
-    "searching": "Søger..."
+    "searching": "Søger...",
+    "home": "Hjem",
+    "connecting": "Forbinder...",
+    "error": "Noget gik galt."
   },
   "marketplace": {
     "searchTitle": "Søg i markedspladsen",
-    "searchDescription": "Find produkter og sælgere på NordBay."
+    "searchDescription": "Find produkter og sælgere på NordBay.",
+    "category": "Kategori",
+    "priceMin": "Min pris",
+    "priceMax": "Max pris",
+    "conditions": "Stand",
+    "sortBy": "Sorter efter",
+    "sortNewest": "Nyeste",
+    "sortPriceAsc": "Pris ↑",
+    "sortPriceDesc": "Pris ↓",
+    "sortRelevance": "Relevans",
+    "results": "Resultater",
+    "viewProduct": "Se produkt"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -46,6 +71,8 @@
     "submit": "Log ind",
     "submitAria": "Log ind",
     "orContinueWith": "Eller fortsæt med",
+    "googleAria": "Log ind med Google",
+    "facebookAria": "Log ind med Facebook",
     "mitidAria": "Log ind med MitID",
     "privacyNote": "Vi deler aldrig dine data uden tilladelse. Hurtig og sikker adgang.",
     "noAccount": "Har du ikke en konto?",
@@ -54,7 +81,8 @@
     "privacy": "Privatliv",
     "copyright": "© 2025 NordBay. Alle rettigheder forbeholdes.",
     "success": "Velkommen til NordBay! Du er nu logget ind.",
-    "error": "Login mislykkedes. Tjek dine oplysninger."
+    "error": "Login mislykkedes. Tjek dine oplysninger.",
+    "missingFields": "Udfyld venligst alle felter."
   },
   "register": {
     "title": "Bliv medlem af NordBay",
@@ -78,6 +106,7 @@
     "terms": "vilkår og betingelser",
     "privacy": "privatlivspolitik",
     "submit": "Opret konto",
+    "emailCta": "Opret med email",
     "haveAccount": "Har du allerede en konto?",
     "loginHere": "Log ind her",
     "success": "Konto oprettet! Du kan nu logge ind med din nye konto.",
@@ -95,6 +124,7 @@
     "copyright": "© 2025 NordBay. Alle rettigheder forbeholdes."
   },
   "header": {
+    "login": "Log ind",
     "register": "Opret konto",
     "dashboard": "Dashboard",
     "favorites": "Favoritter",
@@ -206,5 +236,30 @@
     "email": "Email",
     "phone": "Telefon",
     "address": "Adresse"
+  },
+  "social": {
+    "continueWith": "Fortsæt med"
+  },
+  "product": {
+    "description": "Beskrivelse",
+    "condition": "Stand",
+    "favorites": "Favoritter",
+    "shipping": "Forsendelse",
+    "shipsNationwide": "Sender i hele landet",
+    "pickupAvailable": "Afhentning mulig",
+    "questions": "Spørgsmål & svar",
+    "askPlaceholder": "Stil et offentligt spørgsmål om varen",
+    "ask": "Spørg",
+    "sending": "Sender...",
+    "noQuestions": "Ingen spørgsmål endnu.",
+    "related": "Relaterede varer",
+    "contactSeller": "Kontakt sælger",
+    "buyNow": "Køb nu",
+    "addToFavorites": "Tilføj til favoritter",
+    "addedFavorite": "Tilføjet til favoritter",
+    "removedFavorite": "Fjernet fra favoritter",
+    "questionPosted": "Spørgsmål sendt",
+    "featured": "Fremhævet",
+    "seller": "Sælger"
   }
 }

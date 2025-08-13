@@ -1,107 +1,129 @@
-"use client";
-import Link from "next/link";
-import { useState } from "react";
-import { useLocale } from "@/context/LocaleContext";
-import { useAuthStore } from "@/lib/stores/auth-store";
-import { useTranslation } from "@/lib/useTranslation";
+'use client'
 
+import { useState } from 'react'
+import Link from 'next/link'
+import { Search, Bell, User, Menu, ShoppingBag, Heart } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useAuthStore } from '@/lib/stores/auth-store'
 
-// Mapeo de banderas y etiquetas para el selector visual (SVG)
-const flagMap = {
-  da: { icon: "/flag-dk.svg", label: "DK", next: "en" },
-  en: { icon: "/flag-en.svg", label: "EN", next: "da" }
-};
+export function Header() {
+  const [searchQuery, setSearchQuery] = useState('')
+  const { user, isAuthenticated, logout } = useAuthStore()
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuthStore();
-  const { locale, setLocale } = useLocale();
-  const t = useTranslation();
-
-
-  // Fallback seguro si el locale no es válido
-  const safeLocale = flagMap[locale] ? locale : "da";
-  const nextLocale = flagMap[safeLocale].next;
-  const handleLocaleSwitch = () => {
-    setLocale(nextLocale as "da" | "en");
-  };
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      // TODO: Implementar navegación a search
+      console.log('Search:', searchQuery)
+    }
+  }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-nordic-200 bg-white/95 backdrop-blur-sm">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-nordic-900">NordBay</span>
-          </Link>
-          <div className="flex items-center">
-            {/* Selector visual de idioma para desktop y mobile */}
-            <button
-              className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-nordic-300 bg-nordic-50 hover:bg-nordic-100 focus:outline-none focus:ring-2 focus:ring-nordic-400"
-              aria-label={nextLocale === "en" ? "Switch to English" : "Skift til dansk"}
-              onClick={handleLocaleSwitch}
-              style={{ minWidth: 54 }}
-            >
-              <img
-                src={flagMap[nextLocale as "da" | "en"].icon}
-                alt={nextLocale === "en" ? "English flag" : "Danish flag"}
-                className="w-5 h-5 mr-1 rounded-sm border border-nordic-200 bg-white"
-                style={{ display: 'inline-block' }}
-              />
-              <span
-                style={{
-                  color: '#334155', // nordic-700
-                  fontWeight: 600,
-                  fontSize: '13px',
-                  letterSpacing: '0.02em',
-                  display: 'inline-block',
-                  minWidth: 22,
-                  textAlign: 'center',
-                  textShadow: '0 1px 0 #fff',
-                  userSelect: 'none',
-                }}
-                aria-hidden="false"
-              >
-                {flagMap[nextLocale as "da" | "en"].label}
-              </span>
-            </button>
+    <header className="sticky top-0 z-50 w-full border-b border-nordic-200 bg-white/80 backdrop-blur-lg">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <Link 
+          href="/" 
+          className="flex items-center space-x-2 text-xl font-bold text-nordic-900"
+        >
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-500 text-white">
+            NB
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            {!isAuthenticated ? (
-              <>
-                <Link href="/auth/login" className="text-sm font-medium text-nordic-600 hover:text-nordic-900 transition-colors">{t.header.login}</Link>
-                <Link href="/auth/register" className="bg-nordic-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-nordic-700 transition-colors">{t.header.register}</Link>
-              </>
-            ) : (
-              <>
-                <Link href="/dashboard2page" className="text-sm font-medium">{t.header.dashboard}</Link>
-                <Link href="/favorites" className="text-sm font-medium">{t.header.favorites}</Link>
-                <Link href="/profile" className="text-sm font-medium">{t.header.profile}</Link>
-                <button onClick={logout} className="text-sm font-medium">{t.header.logout}</button>
-              </>
-            )}
-          </nav>
-          <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            ☰
-          </button>
+          <span className="hidden sm:block">NordBay</span>
+        </Link>
+
+        {/* Search Bar - Desktop */}
+        <form 
+          onSubmit={handleSearch} 
+          className="hidden md:flex flex-1 max-w-lg mx-8"
+        >
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-nordic-400" />
+            <Input
+              type="search"
+              placeholder="Search for anything..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 border-nordic-200 focus:border-brand-500 focus:ring-brand-500/20"
+            />
+          </div>
+        </form>
+
+        {/* Navigation Actions */}
+        <div className="flex items-center space-x-4">
+          {/* Mobile Search Toggle */}
+          <Button variant="ghost" size="sm" className="md:hidden">
+            <Search className="h-5 w-5" />
+          </Button>
+
+          {isAuthenticated ? (
+            <>
+              {/* Notifications */}
+              <Button variant="ghost" size="sm" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
+                  3
+                </span>
+              </Button>
+
+              {/* Favorites */}
+              <Button variant="ghost" size="sm">
+                <Heart className="h-5 w-5" />
+              </Button>
+
+              {/* My Products */}
+              <Button variant="ghost" size="sm">
+                <ShoppingBag className="h-5 w-5" />
+              </Button>
+
+              {/* User Menu */}
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+                  <div className="h-8 w-8 rounded-full bg-nordic-200 flex items-center justify-center">
+                    {user?.name?.charAt(0) || user?.nickname?.charAt(0) || 'U'}
+                  </div>
+                  <span className="hidden sm:block">{user?.nickname}</span>
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="ghost" size="sm">
+                  Log in
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button size="sm" className="bg-brand-500 hover:bg-brand-600">
+                  Sign up
+                </Button>
+              </Link>
+            </>
+          )}
+
+          {/* Mobile Menu */}
+          <Button variant="ghost" size="sm" className="md:hidden">
+            <Menu className="h-5 w-5" />
+          </Button>
         </div>
-        {isMenuOpen && (
-          <nav className="md:hidden flex flex-col space-y-2 mt-2">
-            {!isAuthenticated ? (
-              <>
-                <Link href="/auth/login" className="text-base font-medium" onClick={() => setIsMenuOpen(false)}>{t.header.login}</Link>
-                <Link href="/auth/register" className="text-base font-medium" onClick={() => setIsMenuOpen(false)}>{t.header.register}</Link>
-              </>
-            ) : (
-              <>
-                <Link href="/dashboard2page" className="text-base font-medium" onClick={() => setIsMenuOpen(false)}>{t.header.dashboard}</Link>
-                <Link href="/favorites" className="text-base font-medium" onClick={() => setIsMenuOpen(false)}>{t.header.favorites}</Link>
-                <Link href="/profile" className="text-base font-medium" onClick={() => setIsMenuOpen(false)}>{t.header.profile}</Link>
-                <button onClick={() => { logout(); setIsMenuOpen(false); }} className="text-base font-medium">{t.header.logout}</button>
-              </>
-            )}
-          </nav>
-        )}
+      </div>
+
+      {/* Mobile Search Bar */}
+      <div className="border-t border-nordic-200 px-4 py-3 md:hidden">
+        <form onSubmit={handleSearch}>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-nordic-400" />
+            <Input
+              type="search"
+              placeholder="Search for anything..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4"
+            />
+          </div>
+        </form>
       </div>
     </header>
-  );
+  )
 }

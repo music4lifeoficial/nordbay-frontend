@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { useTranslation } from '@/lib/useTranslation';
 
 // TODO: Replace with actual OAuth logic and handlers
 type SocialAuthHandlerProps = {
@@ -10,6 +11,7 @@ type SocialAuthHandlerProps = {
 };
 
 const SocialAuthHandler = ({ provider, onSuccess, onError }: SocialAuthHandlerProps) => {
+  const t = useTranslation();
   // Placeholder for loading and error state
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -21,14 +23,16 @@ const SocialAuthHandler = ({ provider, onSuccess, onError }: SocialAuthHandlerPr
       // TODO: Implement actual OAuth redirect/flow
       // Simulate async
       await new Promise((res) => setTimeout(res, 1200));
-      if (onSuccess) onSuccess({ provider });
+      onSuccess?.({ provider });
     } catch (e: any) {
-      setError('Error al conectar con ' + provider);
-      if (onError) onError(e);
+      setError(t?.common?.error || `Error with ${provider}`);
+      onError?.(e);
     } finally {
       setLoading(false);
     }
   };
+
+  const continueWith = t?.login?.orContinueWith || t?.social?.continueWith || 'Continue with';
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
@@ -37,7 +41,7 @@ const SocialAuthHandler = ({ provider, onSuccess, onError }: SocialAuthHandlerPr
         className="w-full flex items-center justify-center gap-2"
         onClick={handleSocialAuth}
         disabled={loading}
-        aria-label={`Continuar con ${provider === 'google' ? 'Google' : 'MitID'}`}
+        aria-label={`${continueWith} ${provider === 'google' ? 'Google' : 'MitID'}`}
       >
         <Image
           src={provider === 'google' ? '/icons/google.svg' : '/icons/mitid.svg'}
@@ -45,7 +49,7 @@ const SocialAuthHandler = ({ provider, onSuccess, onError }: SocialAuthHandlerPr
           width={24}
           height={24}
         />
-        {loading ? 'Conectando...' : `Continuar con ${provider === 'google' ? 'Google' : 'MitID'}`}
+        {loading ? (t?.common?.connecting || 'Connecting...') : `${continueWith} ${provider === 'google' ? 'Google' : 'MitID'}`}
       </Button>
       {error && <div className="text-error text-sm">{error}</div>}
     </div>

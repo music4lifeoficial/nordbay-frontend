@@ -1,28 +1,12 @@
-"use client";
-import { RequireAuthLevel } from '@/components/auth/RequireAuthLevel';
-import { useTranslation } from '@/lib/useTranslation';
+import { AppLayout } from '@/components/layout/AppLayout'
 
-// ---
-// Endpoint: GET /api/search/*
-// Access: public (sin autenticación)
-// ---
-// Permite buscar productos y vendedores en el marketplace.
-// Protegido con <AuthGuard level="public">.
-//
-// Ver BACKEND_FOR_FRONTEND.txt para detalles de payload y respuesta.
-
-import MarketplaceSearch from '@/components/marketplace/MarketplaceSearch';
-
-
-export default function MarketplaceSearchPage() {
-  const t = useTranslation();
+export default function SearchPage() {
   return (
-    <RequireAuthLevel level="public">
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-4">{t.marketplace?.searchTitle ?? "Buscar en el marketplace"}</h1>
-        <p className="text-nordic-700 mb-6">{t.marketplace?.searchDescription ?? "Encuentra productos y vendedores en NordBay."}</p>
-        <MarketplaceSearch />
+    <AppLayout>
+      <div className="py-8">
+        <h1 className="text-3xl font-bold text-nordic-900 mb-6">Search</h1>
+        <p className="text-nordic-600">Search functionality coming soon...</p>
       </div>
-    </RequireAuthLevel>
-  );
+    </AppLayout>
+  )
 }

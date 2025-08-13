@@ -4,8 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/useTranslation";
 
 export function Breadcrumbs({ className }: { className?: string }) {
+  const t = useTranslation();
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
 
@@ -21,7 +23,7 @@ export function Breadcrumbs({ className }: { className?: string }) {
 
   return (
     <nav className={cn("flex items-center text-sm text-nordic-500 gap-1", className)} aria-label="Breadcrumb">
-      <Link href="/" className="hover:text-brand-600 font-medium">Inicio</Link>
+      <Link href="/" className="hover:text-brand-600 font-medium">{t?.common?.home || 'Home'}</Link>
       {crumbs.map((crumb, idx) => (
         <span key={crumb.href} className="flex items-center">
           <ChevronRight className="w-4 h-4 mx-1 text-nordic-300" />

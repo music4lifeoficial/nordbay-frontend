@@ -178,6 +178,17 @@ export const publicationsApi = {
     
     throw new Error(response.error || 'Failed to get related publications');
   },
+
+  // Check if a publication is favorited by current user (optimized, requires backend endpoint)
+  isFavorited: async (id: string): Promise<boolean> => {
+    try {
+      const response = await api.get<{ favorited: boolean }>(`/publications/${id}/favorite-status`);
+      if (response.success && response.data) return (response.data as any).favorited ?? false;
+      return false;
+    } catch {
+      return false;
+    }
+  },
 };
 
 // ✅ CATEGORIES API
@@ -256,7 +267,7 @@ export const questionsApi = {
 
   // Answer a question (seller only)
   answer: async (questionId: string, answer: string): Promise<Question> => {
-    const response = await api.post<Question>(`/questions/${questionId}/answer`, {
+    const response = await api.post<Question>(`/questions/answer/${questionId}`, {
       answer,
     });
     

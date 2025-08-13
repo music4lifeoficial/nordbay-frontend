@@ -1,264 +1,63 @@
-// ===============================================
-// AUTHENTICATION API - RAILWAY BACKEND
-// 3-Tier Authentication System Implementation
-// ===============================================
+import { apiClient } from './client'
+import type { AuthResponse, RegisterResponse, RegisterRequest, LoginRequest, User, ApiResponse } from '@/types/api'
 
-import { api } from './client';
-import type { 
-  User, 
-  AuthResponse, 
-  LoginRequest, 
-  RegisterRequest
-} from '@/types';
-
-// ✅ AUTHENTICATION ENDPOINTS
 export const authApi = {
-  // Register new user (creates Light Account)
-  register: async (data: RegisterRequest): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>('/users/register', data);
-    
-    if (response.success && response.data) {
-      // Store tokens and user data
-      const { access_token, refresh_token, user } = response.data;
-      
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('nordbay_access_token', access_token);
-        localStorage.setItem('nordbay_refresh_token', refresh_token);
-        localStorage.setItem('nordbay_user', JSON.stringify(user));
-      }
-      
-      return response.data;
-    }
-    
-    throw new Error(response.error || 'Registration failed');
+  // Registro de usuario (backend: POST /api/users/register)
+  register: async (data: RegisterRequest): Promise<RegisterResponse> => {
+    const response = await apiClient.post<RegisterResponse>('/users/register', data)
+    return response.data
   },
 
-  // Login existing user
+  // Login (backend: POST /api/users/login)
   login: async (data: LoginRequest): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>('/users/login', data);
-    
-    if (response.success && response.data) {
-      // Store tokens and user data
-      const { access_token, refresh_token, user } = response.data;
-      
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('nordbay_access_token', access_token);
-        localStorage.setItem('nordbay_refresh_token', refresh_token);
-        localStorage.setItem('nordbay_user', JSON.stringify(user));
-      }
-      
-      return response.data;
-    }
-    
-    throw new Error(response.error || 'Login failed');
+    const response = await apiClient.post<AuthResponse>('/users/login', data)
+    return response.data
   },
 
-  // Logout user
-  logout: async (): Promise<void> => {
-    try {
-      // Call backend logout endpoint
-      await api.post('/users/logout');
-    } catch (error) {
-      console.warn('Logout endpoint failed, clearing local storage anyway');
-    } finally {
-      // Always clear local storage
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('nordbay_access_token');
-        localStorage.removeItem('nordbay_refresh_token');
-        localStorage.removeItem('nordbay_user');
-      }
-    }
+  // Verificar email (backend: POST /api/users/verify-email)
+  verifyEmail: async (token: string): Promise<ApiResponse> => {
+    const response = await apiClient.post<ApiResponse>('/users/verify-email', { token })
+    return response.data
   },
 
-  // Get current user profile
-  getCurrentUser: async (): Promise<User> => {
-    const response = await api.get<User>('/users/me');
-    
-    if (response.success && response.data) {
-      // Update stored user data
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('nordbay_user', JSON.stringify(response.data));
-      }
-      
-      return response.data;
-    }
-    
-    throw new Error(response.error || 'Failed to get user profile');
+  // Refresh token (backend: POST /api/users/refresh)
+  refreshToken: async (refreshToken: string): Promise<AuthResponse> => {
+    const response = await apiClient.post<AuthResponse>('/users/refresh', { refresh: refreshToken })
+    return response.data
   },
 
-  // Update user profile
-  updateProfile: async (data: Partial<User>): Promise<User> => {
-    const response = await api.put<User>('/users/me', data);
-    
-    if (response.success && response.data) {
-      // Update stored user data
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('nordbay_user', JSON.stringify(response.data));
-      }
-      
-      return response.data;
-    }
-    
-    throw new Error(response.error || 'Failed to update profile');
+  // Obtener perfil propio (backend: GET /api/users/me)
+  getProfile: async (): Promise<ApiResponse<User>> => {
+    const response = await apiClient.get<ApiResponse<User>>('/users/me')
+    return response.data
   },
 
-  // Email verification
-  verifyEmail: async (token: string): Promise<void> => {
-    const response = await api.post('/users/verify-email', { token });
-    
-    if (!response.success) {
-      throw new Error(response.error || 'Email verification failed');
-    }
+  // Actualizar perfil (backend: PUT /api/users/me)
+  updateProfile: async (data: Partial<User>): Promise<ApiResponse<User>> => {
+    const response = await apiClient.put<ApiResponse<User>>('/users/me', data)
+    return response.data
   },
 
-  // Resend email verification
-  resendVerification: async (): Promise<void> => {
-    const response = await api.post('/users/resend-verification');
-    
-    if (!response.success) {
-      throw new Error(response.error || 'Failed to resend verification');
-    }
+  // Solicitar reseteo de contraseña (backend: POST /api/users/request-password-reset)
+  requestPasswordReset: async (email: string): Promise<ApiResponse> => {
+    const response = await apiClient.post<ApiResponse>('/users/request-password-reset', { email })
+    return response.data
   },
 
-  // Password reset request
-  requestPasswordReset: async (email: string): Promise<void> => {
-    const response = await api.post('/users/request-password-reset', { email });
-    
-    if (!response.success) {
-      throw new Error(response.error || 'Failed to request password reset');
-    }
-  },
-
-  // Password reset confirmation
-  resetPassword: async (token: string, newPassword: string): Promise<void> => {
-    const response = await api.post('/users/reset-password', { 
+  // Resetear contraseña (backend: POST /api/users/reset-password)
+  resetPassword: async (token: string, newPassword: string): Promise<ApiResponse> => {
+    const response = await apiClient.post<ApiResponse>('/users/reset-password', { 
       token, 
       new_password: newPassword 
-    });
-    
-    if (!response.success) {
-      throw new Error(response.error || 'Password reset failed');
-    }
+    })
+    return response.data
   },
 
-  // MitID verification (Phase 2 - Currently placeholder)
-  initiateMitIDVerification: async (): Promise<{ verification_url: string }> => {
-    const response = await api.post<{ verification_url: string }>('/users/mitid/initiate');
-    
-    if (response.success && response.data) {
-      return response.data;
-    }
-    
-    throw new Error(response.error || 'Failed to initiate MitID verification');
-  },
-
-  // Complete MitID verification
-  completeMitIDVerification: async (code: string): Promise<User> => {
-    const response = await api.post<User>('/users/mitid/complete', { code });
-    
-    if (response.success && response.data) {
-      // Update stored user data with new verification status
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('nordbay_user', JSON.stringify(response.data));
-      }
-      
-      return response.data;
-    }
-    
-    throw new Error(response.error || 'MitID verification failed');
-  },
-
-  // Check authentication status
-  checkAuth: (): { isAuthenticated: boolean; user: User | null } => {
-    if (typeof window === 'undefined') {
-      return { isAuthenticated: false, user: null };
-    }
-    
-    const token = localStorage.getItem('nordbay_access_token');
-    const userStr = localStorage.getItem('nordbay_user');
-    
-    if (!token || !userStr) {
-      return { isAuthenticated: false, user: null };
-    }
-    
-    try {
-      const user = JSON.parse(userStr) as User;
-      return { isAuthenticated: true, user };
-    } catch (error) {
-      console.error('Invalid user data in localStorage:', error);
-      return { isAuthenticated: false, user: null };
-    }
-  },
-
-  // Get account level info
-  getAccountLevelInfo: (user?: User) => {
-    if (!user) return { level: 'public', canSell: false, canBuy: true };
-    
-    switch (user.account_level) {
-      case 'public':
-        return {
-          level: 'Public',
-          description: 'Browse and search products',
-          canSell: false,
-          canBuy: true,
-          features: ['Browse products', 'Search marketplace', 'View seller profiles']
-        };
-      
-      case 'light_account':
-        return {
-          level: 'Light Account',
-          description: 'Buy and sell with email verification',
-          canSell: true,
-          canBuy: true,
-          features: ['All Public features', 'Create listings', 'Buy products', 'Message sellers']
-        };
-      
-      case 'mitid_verified':
-        return {
-          level: 'MitID Verified',
-          description: 'Full marketplace access with Danish ID verification',
-          canSell: true,
-          canBuy: true,
-          features: ['All Light Account features', 'Higher selling limits', 'Verified seller badge', 'Premium support']
-        };
-      
-      default:
-        return { level: 'Unknown', canSell: false, canBuy: false };
-    }
+  // Obtener perfil público (backend: GET /api/users/public/:user_id)
+  getPublicProfile: async (userId: string): Promise<ApiResponse<User>> => {
+    const response = await apiClient.get<ApiResponse<User>>(`/users/public/${userId}`)
+    return response.data
   }
-};
+}
 
-// ✅ AUTH UTILITIES
-export const authUtils = {
-  // Check if user can perform action based on account level
-  canUserSell: (user?: User): boolean => {
-    if (!user) return false;
-    return user.account_level !== 'public';
-  },
-  
-  canUserBuy: (_user?: User): boolean => {
-    return true; // All users can buy, even public
-  },
-  
-  isEmailVerified: (user?: User): boolean => {
-    if (!user) return false;
-    return user.email_verified;
-  },
-  
-  isMitIDVerified: (user?: User): boolean => {
-    if (!user) return false;
-    return user.mitid_verified;
-  },
-  
-  needsUpgrade: (user?: User, requiredLevel?: User['account_level']): boolean => {
-    if (!user || !requiredLevel) return false;
-    
-    const levels = ['public', 'light_account', 'mitid_verified'];
-    const currentIndex = levels.indexOf(user.account_level);
-    const requiredIndex = levels.indexOf(requiredLevel);
-    
-    return currentIndex < requiredIndex;
-  }
-};
-
-export default authApi;
+export default authApi

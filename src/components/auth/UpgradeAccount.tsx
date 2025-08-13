@@ -5,34 +5,33 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useToast } from "@/hooks/useToast";
 import { ShieldCheck, ArrowRight } from "lucide-react";
+import { useTranslation } from "@/lib/useTranslation";
 
 export default function UpgradeAccount() {
-  const { isMitIDVerified, initiateMitIDVerification } = useAuthStore();
+  const { isMitIDVerified } = useAuthStore();
   const showToast = useToast();
   const router = useRouter();
+  const t = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Mejor práctica: redirigir en useEffect para evitar side effects en render
   useEffect(() => {
     if (isMitIDVerified()) {
-      router.replace("/dashboard2page");
+      router.replace("/dashboard");
     }
   }, [isMitIDVerified, router]);
 
   const handleUpgrade = async () => {
     setIsLoading(true);
     try {
-      const url = await initiateMitIDVerification();
-      showToast("Redirigiendo a MitID... Completa la verificación en la plataforma oficial.", "success");
-      window.location.href = url;
+      showToast(t?.mitid?.redirecting || "Redirecting to MitID...", "success");
+      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/mitid/verify`;
     } catch (error) {
-      showToast("Error al iniciar MitID. Intenta nuevamente o contacta soporte.", "error");
+      showToast(t?.mitid?.initError || "Error starting MitID. Try again or contact support.", "error");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Mientras verifica si está autenticado, evitar doble render del contenido
   if (isMitIDVerified()) return null;
 
   return (
@@ -43,17 +42,17 @@ export default function UpgradeAccount() {
             <ShieldCheck className="text-white w-8 h-8" />
           </div>
           <h1 className="text-3xl font-bold text-nordic-900 mb-2">
-            Verifica tu identidad con MitID
+            {t?.mitid?.upgradeTitle || "Verify your identity with MitID"}
           </h1>
           <p className="text-nordic-600">
-            Para acceder a todas las funciones de NordBay, debes verificar tu identidad con MitID.
+            {t?.mitid?.upgradeDescription || "To access all NordBay features, you must verify your identity with MitID."}
           </p>
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-nordic-200 p-6">
           <ul className="mb-6 text-nordic-700 text-sm list-disc pl-5">
-            <li>Comprar y vender productos</li>
-            <li>Publicar anuncios</li>
-            <li>Acceso completo al marketplace</li>
+            <li>{t?.mitid?.benefit1 || "Buy and sell products"}</li>
+            <li>{t?.mitid?.benefit2 || "Post listings"}</li>
+            <li>{t?.mitid?.benefit3 || "Full marketplace access"}</li>
           </ul>
           <button
             onClick={handleUpgrade}
@@ -64,14 +63,14 @@ export default function UpgradeAccount() {
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
               <>
-                Iniciar verificación MitID
+                {t?.mitid?.startVerification || "Start MitID verification"}
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
         </div>
         <div className="text-center mt-8 text-xs text-nordic-500">
-          <p>© 2025 NordBay. Todos los derechos reservados.</p>
+          <p>© 2025 NordBay. All rights reserved.</p>
         </div>
       </div>
     </div>

@@ -1,4 +1,15 @@
 {
+  "onboarding": {
+    "contactTitle": "Contact information",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "Your phone number",
+    "phoneHelp": "Your phone number will not be shared with other users. Only for notifications and security.",
+    "addressLabel": "Address",
+    "addressPlaceholder": "Street, number, city, postal code",
+    "addressHelp": "This is the address we will use for your shipments.",
+    "contactSaved": "Contact information saved!",
+    "contactSaveError": "Could not save contact information."
+  },
   "alert": {
     "marketplaceSearchError": "Marketplace search failed.",
     "marketplaceNoResults": "No results found.",
@@ -7,11 +18,25 @@
   },
   "common": {
     "search": "Search",
-    "searching": "Searching..."
+    "searching": "Searching...",
+    "home": "Home",
+    "connecting": "Connecting...",
+    "error": "Something went wrong."
   },
   "marketplace": {
     "searchTitle": "Search the marketplace",
-    "searchDescription": "Find products and sellers on NordBay."
+    "searchDescription": "Find products and sellers on NordBay.",
+    "category": "Category",
+    "priceMin": "Min price",
+    "priceMax": "Max price",
+    "conditions": "Condition",
+    "sortBy": "Sort by",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price ↑",
+    "sortPriceDesc": "Price ↓",
+    "sortRelevance": "Relevance",
+    "results": "Results",
+    "viewProduct": "View product"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -34,7 +59,7 @@
   },
   "login": {
     "title": "Sign in to NordBay",
-    "subcopy": "Access your account and experience the full platform",
+    "subcopy": "Access your account and enjoy the platform",
     "motivation": "Get exclusive deals, manage your favorites, and buy securely.",
     "emailLabel": "Email",
     "emailPlaceholder": "your@email.com",
@@ -46,6 +71,8 @@
     "submit": "Sign in",
     "submitAria": "Sign in",
     "orContinueWith": "Or continue with",
+    "googleAria": "Sign in with Google",
+    "facebookAria": "Sign in with Facebook",
     "mitidAria": "Sign in with MitID",
     "privacyNote": "We never share your data without permission. Fast and secure access.",
     "noAccount": "Don't have an account?",
@@ -54,7 +81,8 @@
     "privacy": "Privacy",
     "copyright": "© 2025 NordBay. All rights reserved.",
     "success": "Welcome to NordBay! You are now signed in.",
-    "error": "Login failed. Please check your credentials."
+    "error": "Login failed. Please check your credentials.",
+    "missingFields": "Please complete all fields."
   },
   "register": {
     "title": "Join NordBay",
@@ -78,6 +106,7 @@
     "terms": "terms and conditions",
     "privacy": "privacy policy",
     "submit": "Create account",
+    "emailCta": "Register with email",
     "haveAccount": "Already have an account?",
     "loginHere": "Sign in here",
     "success": "Account created! You can now sign in with your new account.",
@@ -95,6 +124,7 @@
     "copyright": "© 2025 NordBay. All rights reserved."
   },
   "header": {
+    "login": "Log in",
     "register": "Register",
     "dashboard": "Dashboard",
     "favorites": "Favorites",
@@ -206,5 +236,30 @@
     "email": "Email",
     "phone": "Phone",
     "address": "Address"
+  },
+  "social": {
+    "continueWith": "Continue with"
+  },
+  "product": {
+    "description": "Description",
+    "condition": "Condition",
+    "favorites": "Favorites",
+    "shipping": "Shipping",
+    "shipsNationwide": "Ships nationwide",
+    "pickupAvailable": "Pickup available",
+    "questions": "Questions & Answers",
+    "askPlaceholder": "Ask a public question about this item",
+    "ask": "Ask",
+    "sending": "Sending...",
+    "noQuestions": "No questions yet.",
+    "related": "Related items",
+    "contactSeller": "Contact seller",
+    "buyNow": "Buy now",
+    "addToFavorites": "Add to favorites",
+    "addedFavorite": "Added to favorites",
+    "removedFavorite": "Removed from favorites",
+    "questionPosted": "Question posted",
+    "featured": "Featured",
+    "seller": "Seller"
   }
 }
