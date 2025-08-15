@@ -10,13 +10,13 @@ export const FAQSection: React.FC = () => {
   const t = useTranslation();
   const icons = [
     // Seguridad
-    <svg width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M16 10l6 3v3c0 4-2.5 7-6 7s-6-3-6-7v-3l6-3z" fill="#fff"/></svg>,
+    <svg key="security" width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M16 10l6 3v3c0 4-2.5 7-6 7s-6-3-6-7v-3l6-3z" fill="#fff"/></svg>,
     // Soporte
-    <svg width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M10 22v-2a4 4 0 018 0v2" stroke="#fff" strokeWidth="2"/><circle cx="16" cy="14" r="4" fill="#fff"/></svg>,
+    <svg key="support" width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M10 22v-2a4 4 0 018 0v2" stroke="#fff" strokeWidth="2"/><circle cx="16" cy="14" r="4" fill="#fff"/></svg>,
     // Confianza
-    <svg width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M16 10l6 3v3c0 4-2.5 7-6 7s-6-3-6-7v-3l6-3z" fill="#fff"/></svg>,
+    <svg key="trust" width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M16 10l6 3v3c0 4-2.5 7-6 7s-6-3-6-7v-3l6-3z" fill="#fff"/></svg>,
     // Comisiones
-    <svg width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><text x="16" y="21" textAnchor="middle" fontSize="14" fill="#fff">0%</text></svg>,
+    <svg key="fees" width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#2563eb"/><text x="16" y="21" textAnchor="middle" fontSize="14" fill="#fff">0%</text></svg>,
   ];
   return (
     <section

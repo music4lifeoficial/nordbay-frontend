@@ -26,9 +26,15 @@ export default function ShadcnUiDemo() {
         <Label htmlFor="input-demo">Input</Label>
         <Input id="input-demo" placeholder="Escribe algo..." />
       </div>
-      <DropdownMenu className="p-4 border rounded">DropdownMenu (placeholder)</DropdownMenu>
-      <Dialog open className="mt-4">Dialog (placeholder abierto)</Dialog>
-      <Sheet className="mt-4">Sheet (placeholder abierto)</Sheet>
+      <div className="p-4 border rounded">
+        <DropdownMenu>DropdownMenu (placeholder)</DropdownMenu>
+      </div>
+      <div className="mt-4">
+        <Dialog open>Dialog (placeholder abierto)</Dialog>
+      </div>
+      <div className="mt-4">
+        <Sheet>Sheet (placeholder abierto)</Sheet>
+      </div>
     </div>
   )
 }

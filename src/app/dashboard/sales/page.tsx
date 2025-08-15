@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { RequireAuthLevel } from '@/components/auth/RequireAuthLevel';
 import { useTranslation } from '@/lib/useTranslation';
 import { salesApi } from '@/lib/api/sales';
-import { Alert } from '@/components/ui/Alert';
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 

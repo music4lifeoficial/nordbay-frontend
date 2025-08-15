@@ -2,24 +2,29 @@ import { Suspense } from 'react';
 import ProductDetail from '../../../components/products/ProductDetail';
 import { RequireAuthLevel } from '@/components/auth/RequireAuthLevel';
 import { publicationsApi } from '@/lib/api/publications';
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: { params: Promise<{ id: string }> },
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
   try {
-    const publication = await publicationsApi.getById(params.id);
+    const { id } = await params;
+    const publication = await publicationsApi.getById(id);
+    const ogImage = publication.images?.length ? publication.images[0] : undefined;
     return {
       title: `${publication.title} | NordBay` ,
       description: publication.description?.slice(0, 160),
       openGraph: {
         title: publication.title,
         description: publication.description?.slice(0, 200),
-        images: publication.primary_image ? [publication.primary_image] : publication.images?.length ? [publication.images[0]] : undefined,
+        images: ogImage ? [ogImage] : undefined,
       },
       twitter: {
         card: 'summary_large_image',
         title: publication.title,
         description: publication.description?.slice(0, 200),
-        images: publication.primary_image ? [publication.primary_image] : publication.images?.length ? [publication.images[0]] : undefined,
+        images: ogImage ? [ogImage] : undefined,
       },
     };
   } catch {

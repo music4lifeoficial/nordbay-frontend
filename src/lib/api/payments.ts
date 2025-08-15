@@ -3,7 +3,7 @@ import { api } from './client';
 
 interface PaymentIntentResponse { payment_intent: { id: string; client_secret: string; amount: number; }; }
 interface TransactionsListResponse { transactions: { id: string; amount: number; status: string; type: string; payment_id: string; created_at: string; }[] }
-interface TransactionDetailResponse { transaction: { id: string; amount: number; status: string; escrow_status?: string; dispute?: any; payment_id?: string; }; }
+interface TransactionDetailResponse { transaction: { id: string; amount: number; status: string; escrow_status?: string; dispute?: any; payment_id?: string; type?: string; created_at?: string; }; }
 interface WalletResponse { wallet: { balance: number; pending: number; currency: string; transactions_count: number; } }
 interface RefundsListResponse { refunds: { id: string; amount: number; status: string; reason: string; created_at: string; processed_at?: string; }[]; total: number; }
 interface RefundDetailResponse { refund: { id: string; payment_id: string; amount: number; status: string; reason: string; created_at: string; processed_at?: string; }; }

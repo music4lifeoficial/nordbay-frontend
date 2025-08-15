@@ -1,8 +1,7 @@
 // API client for user favorites
-import { apiClient } from './client';
-import type { Publication } from '@/types';
+import { publicationsApi } from './publications';
+import type { Publication } from '@/types/api';
 
 export async function getFavorites(): Promise<Publication[]> {
-  const res = await apiClient.get('/favorites');
-  return res.data;
+  return publicationsApi.getFavorites();
 }

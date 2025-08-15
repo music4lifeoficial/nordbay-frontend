@@ -3,8 +3,8 @@ import { RequireAuthLevel } from "@/components/auth/RequireAuthLevel";
 import { useTranslation } from "@/lib/useTranslation";
 import { useEffect, useState } from "react";
 import { publicationsApi } from "@/lib/api/publications";
-import type { Publication } from "@/types";
-import { Alert } from "@/components/ui/Alert";
+import type { Publication } from "@/types/api";
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -43,15 +43,10 @@ export default function FavoritesPage() {
             {items.map((p) => (
               <div key={p.id} className="bg-white rounded-xl shadow-md border border-nordic-100 flex flex-col group hover:shadow-lg transition overflow-hidden">
                 <div className="relative w-full h-44 bg-nordic-100 flex items-center justify-center">
-                  {p.primary_image || p.images?.[0] ? (
-                    <img src={p.primary_image || p.images[0]} alt={p.title} className="object-cover w-full h-full group-hover:scale-105 transition" />
+                  {p.images?.[0] ? (
+                    <img src={p.images[0]} alt={p.title} className="object-cover w-full h-full group-hover:scale-105 transition" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-nordic-300 text-4xl">📦</div>
-                  )}
-                  {p.featured && (
-                    <span className="absolute top-2 left-2 bg-brand-500 text-white text-xs px-2 py-1 rounded-full shadow">
-                      {t.product?.featured ?? "Featured"}
-                    </span>
                   )}
                 </div>
                 <div className="flex-1 flex flex-col p-3">

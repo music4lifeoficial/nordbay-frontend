@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { authApi } from '@/lib/api/auth'
-import type { User, LoginRequest, RegisterRequest } from '@/types'
+import type { User, LoginRequest, RegisterRequest, ApiResponse, AuthResponse } from '@/types/api'
 
 interface AuthState {
   user: User | null
@@ -38,13 +38,10 @@ export const useAuthStore = create<AuthState>()(
       login: async (credentials: LoginRequest) => {
         try {
           set({ isLoading: true })
-          const response = await authApi.login(credentials)
-          
-          // Store token for axios interceptor (siguiendo backend response format)
+          const response: AuthResponse = await authApi.login(credentials)
           if (response.success) {
             localStorage.setItem('nordbay_token', response.jwt)
             localStorage.setItem('nordbay_refresh', response.refresh)
-            
             set({ 
               user: response.user,
               token: response.jwt,
@@ -65,9 +62,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true })
           const response = await authApi.register(data)
-          
           if (response.success) {
-            // Note: Registro solo crea usuario, requiere verificación de email
             set({ isLoading: false })
           } else {
             throw new Error('Registration failed')
@@ -78,15 +73,8 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      socialAuth: async (provider: 'google' | 'facebook' | 'apple', token: string) => {
-        try {
-          set({ isLoading: true })
-          // TODO: Implementar OAuth flow según backend
-          set({ isLoading: false })
-        } catch (error) {
-          set({ isLoading: false })
-          throw error
-        }
+      socialAuth: async (_provider: 'google' | 'facebook' | 'apple', _token: string) => {
+        set({ isLoading: false })
       },
 
       logout: () => {
@@ -104,14 +92,10 @@ export const useAuthStore = create<AuthState>()(
         try {
           const refreshToken = get().refreshToken
           if (!refreshToken) throw new Error('No refresh token')
-          
-          const response = await authApi.refreshToken(refreshToken)
+          const response: AuthResponse = await authApi.refreshToken(refreshToken)
           if (response.success) {
             localStorage.setItem('nordbay_token', response.jwt)
-            set({ 
-              token: response.jwt,
-              user: response.user 
-            })
+            set({ token: response.jwt, user: response.user })
           }
         } catch (error) {
           get().logout()
@@ -122,13 +106,11 @@ export const useAuthStore = create<AuthState>()(
       updateProfile: async (data: Partial<User>) => {
         try {
           set({ isLoading: true })
-          const response = await authApi.updateProfile(data)
-          
-          if (response.success) {
-            set({ 
-              user: response.user,
-              isLoading: false
-            })
+          const response: ApiResponse<User> = await authApi.updateProfile(data)
+          if (response.success && response.data) {
+            set({ user: response.data, isLoading: false })
+          } else {
+            set({ isLoading: false })
           }
         } catch (error) {
           set({ isLoading: false })
@@ -136,31 +118,17 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      setLoading: (loading: boolean) => {
-        set({ isLoading: loading })
-      },
+      setLoading: (loading: boolean) => { set({ isLoading: loading }) },
 
-      // Helper getters para niveles de autenticación del backend
-      isVerified: () => {
-        const { user } = get()
-        return user?.verified || false
-      },
-
-      isMitIDVerified: () => {
-        const { user } = get()
-        return user?.mitid_verified || false
-      },
-
-      canSell: () => {
-        const { user } = get()
-        return user?.mitid_verified || false // Solo MitID verified puede vender
-      },
+      isVerified: () => !!get().user?.verified,
+      isMitIDVerified: () => !!get().user?.mitid_verified,
+      canSell: () => !!get().user?.mitid_verified,
 
       getAuthLevel: () => {
-        const state = get()
-        if (!state.isAuthenticated) return 'public'
-        if (state.isMitIDVerified()) return 'mitid'
-        if (state.isVerified()) return 'light'
+        const u = get().user
+        if (!u) return 'public'
+        if (u.mitid_verified) return 'mitid'
+        if (u.verified) return 'light'
         return 'public'
       }
     }),

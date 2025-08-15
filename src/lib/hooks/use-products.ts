@@ -1,41 +1,23 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api/client';
-import type { Product, SearchFilters } from '@/types/product';
-import type { ApiResponse, PaginatedResponse } from '@/types';
+import type { SearchParams, Publication } from '@/types/api';
+import { publicationsApi } from '@/lib/api/publications';
 
-// Fetch products with filters
-type ProductsResponse = { items: Product[]; total: number };
-
-
-function mapApiPaginatedProducts(res: ApiResponse<PaginatedResponse<Product>>): ProductsResponse {
-  if (!res.success || !res.data) throw new Error(res.error || 'API error');
-  return {
-    items: res.data.items,
-    total: res.data.pagination.total,
-  };
-}
-
-export function useProducts(filters: SearchFilters) {
-  return useQuery<ProductsResponse>({
+// Temporary adapter around publications search
+export function useProducts(filters: Partial<SearchParams>) {
+  return useQuery<{ items: Publication[]; total: number }>({
     queryKey: ['products', filters],
     queryFn: async () => {
-      const res = await api.get<PaginatedResponse<Product>>('/products', { params: filters });
-      return mapApiPaginatedProducts(res);
+      const res = await publicationsApi.search(filters as any);
+      return { items: res.publications, total: res.pagination.total };
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 }
 
-// Create product mutation
 export function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: Partial<Product>) => {
-      const res = await api.post<Product>('/products', data);
-      if (!res.success || !res.data) throw new Error(res.error || 'API error');
-      return res.data;
-    },
+    mutationFn: publicationsApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
     },

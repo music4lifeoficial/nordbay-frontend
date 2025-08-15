@@ -10,10 +10,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Progress } from '@/components/ui/progress'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, ArrowRight, Check, Upload, X, Star } from 'lucide-react'
-import { productsAPI, type CreateProductData } from '@/lib/api/products'
+import { productsAPI, type CreateProductData } from '@/lib/api/products-fixed'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 
@@ -404,7 +404,7 @@ export default function CreateProductWizard() {
               </div>
               {errors.category_id && (
                 <Alert variant="destructive">
-                  <AlertDescription>{errors.category_id}</AlertDescription>
+                  <div className="text-sm">{errors.category_id}</div>
                 </Alert>
               )}
             </div>
@@ -558,12 +558,16 @@ export default function CreateProductWizard() {
                   <Button
                     variant={formData.shipping_info?.pickup_available ? "default" : "outline"}
                     size="sm"
-                    onClick={() => updateFormData({
-                      shipping_info: {
-                        ...formData.shipping_info,
-                        pickup_available: !formData.shipping_info?.pickup_available
-                      }
-                    })}
+                    onClick={() => {
+                      const current = formData.shipping_info || { offers_shipping: false, pickup_available: false };
+                      updateFormData({
+                        shipping_info: {
+                          offers_shipping: !!current.offers_shipping,
+                          pickup_available: !current.pickup_available,
+                          shipping_cost: current.shipping_cost
+                        }
+                      })
+                    }}
                   >
                     {formData.shipping_info?.pickup_available ? "Aktiveret" : "Deaktiveret"}
                   </Button>
@@ -580,12 +584,16 @@ export default function CreateProductWizard() {
                     <Button
                       variant={formData.shipping_info?.offers_shipping ? "default" : "outline"}
                       size="sm"
-                      onClick={() => updateFormData({
-                        shipping_info: {
-                          ...formData.shipping_info,
-                          offers_shipping: !formData.shipping_info?.offers_shipping
-                        }
-                      })}
+                      onClick={() => {
+                        const current = formData.shipping_info || { offers_shipping: false, pickup_available: false };
+                        updateFormData({
+                          shipping_info: {
+                            offers_shipping: !current.offers_shipping,
+                            pickup_available: !!current.pickup_available,
+                            shipping_cost: current.shipping_cost
+                          }
+                        })
+                      }}
                     >
                       {formData.shipping_info?.offers_shipping ? "Aktiveret" : "Deaktiveret"}
                     </Button>
@@ -598,12 +606,16 @@ export default function CreateProductWizard() {
                         id="shipping_cost"
                         type="number"
                         value={formData.shipping_info?.shipping_cost || ''}
-                        onChange={(e) => updateFormData({
-                          shipping_info: {
-                            ...formData.shipping_info,
-                            shipping_cost: parseInt(e.target.value) || 0
-                          }
-                        })}
+                        onChange={(e) => {
+                          const current = formData.shipping_info || { offers_shipping: false, pickup_available: false };
+                          updateFormData({
+                            shipping_info: {
+                              offers_shipping: !!current.offers_shipping,
+                              pickup_available: !!current.pickup_available,
+                              shipping_cost: parseInt(e.target.value) || 0
+                            }
+                          })
+                        }}
                         placeholder="0"
                         min={0}
                       />
@@ -678,7 +690,7 @@ export default function CreateProductWizard() {
 
                 {errors.images && (
                   <Alert variant="destructive">
-                    <AlertDescription>{errors.images}</AlertDescription>
+                    <div className="text-sm">{errors.images}</div>
                   </Alert>
                 )}
 
@@ -696,9 +708,9 @@ export default function CreateProductWizard() {
             <div className="space-y-6">
               <Alert>
                 <Check className="h-4 w-4" />
-                <AlertDescription>
+                <div className="text-sm">
                   Gennemse dine oplysninger før du publicerer annoncen
-                </AlertDescription>
+                </div>
               </Alert>
 
               <div className="grid md:grid-cols-2 gap-6">

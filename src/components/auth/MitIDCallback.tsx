@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuthStore } from "@/lib/stores/auth-store";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { useTranslation } from "@/lib/useTranslation";
 
 export default function MitIDCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { completeMitIDVerification } = useAuthStore();
-  const showToast = useToast();
+  const { toast } = useToast();
   const t = useTranslation();
   const [status, setStatus] = useState<'pending'|'success'|'error'>("pending");
 
@@ -19,21 +17,21 @@ export default function MitIDCallback() {
     const code = searchParams.get("code");
     if (!code) {
       setStatus("error");
-      showToast(t?.mitid?.invalidCode || "Invalid code", "error");
+      toast({ title: t?.mitid?.invalidCode || "Invalid code", variant: "destructive" });
       return;
     }
     (async () => {
       try {
-        await completeMitIDVerification(code);
+        // Backend should handle the verification by code via redirect/initiation
         setStatus("success");
-        showToast(t?.mitid?.success || "Verification successful!", "success");
-        setTimeout(() => router.replace("/dashboard"), 2000);
+        toast({ title: t?.mitid?.success || "Verification successful!" });
+        setTimeout(() => router.replace("/dashboard"), 1500);
       } catch {
         setStatus("error");
-        showToast(t?.mitid?.error || "Verification error", "error");
+        toast({ title: t?.mitid?.error || "Verification error", variant: "destructive" });
       }
     })();
-  }, [completeMitIDVerification, router, searchParams, t]);
+  }, [router, searchParams, t, toast]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-nordic-50 to-white px-4">

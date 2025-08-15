@@ -1,130 +1,107 @@
-'use client';
+"use client";
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
-import { AuthLevel, AUTH_LEVELS } from '@/lib/auth/auth-levels';
 import { toast } from 'sonner';
+
+// Lightweight levels aligned with backend flags
+export enum AuthLevel {
+  PUBLIC = 'public',
+  VERIFIED = 'verified',
+  MITID_VERIFIED = 'mitid_verified',
+}
+
+const LEVEL_NAMES: Record<AuthLevel, string> = {
+  [AuthLevel.PUBLIC]: 'Offentlig',
+  [AuthLevel.VERIFIED]: 'Email verificeret',
+  [AuthLevel.MITID_VERIFIED]: 'MitID verificeret',
+};
 
 interface UseAuthGuardOptions {
   requiredLevel: AuthLevel;
   redirectTo?: string;
   showToast?: boolean;
+  // kept for backward compatibility; currently not used
   permission?: string;
 }
 
 /**
- * Hook para proteger rutas basado en niveles de autorización
- * Según ARQUITECTURA_AUTENTICACION.md
+ * Hook de protección basado únicamente en flags del backend (verified, mitid_verified)
  */
 export function useAuthGuard({
   requiredLevel,
-  redirectTo = '/auth/login',
+  redirectTo,
   showToast = true,
-  permission
 }: UseAuthGuardOptions) {
   const router = useRouter();
-  const { user, hasAuthLevel, hasPermission } = useAuthStore();
+  const { user } = useAuthStore();
+
+  const isVerified = !!user?.verified;
+  const isMitIDVerified = !!user?.mitid_verified;
+
+  const hasAccess =
+    requiredLevel === AuthLevel.PUBLIC ||
+    (requiredLevel === AuthLevel.VERIFIED && isVerified) ||
+    (requiredLevel === AuthLevel.MITID_VERIFIED && isMitIDVerified);
 
   useEffect(() => {
-    // Verificar nivel de autorización
-    if (!hasAuthLevel(requiredLevel)) {
-      if (showToast) {
-        const levelName = AUTH_LEVELS[requiredLevel].name;
-        toast.error(`Du skal have ${levelName} for at tilgå denne side`);
-      }
-      router.push(redirectTo);
-      return;
+    if (hasAccess) return;
+
+    // Pick sensible default redirect if not provided
+    const defaultRedirect =
+      requiredLevel === AuthLevel.MITID_VERIFIED
+        ? '/auth/verify-mitid'
+        : requiredLevel === AuthLevel.VERIFIED
+        ? '/auth/verify-email'
+        : '/auth/login';
+
+    if (showToast) {
+      const levelName = LEVEL_NAMES[requiredLevel];
+      toast.error(`Du skal have ${levelName} for at tilgå denne side`);
     }
 
-    // Verificar permiso específico si se proporciona
-    if (permission && !hasPermission(permission)) {
-      if (showToast) {
-        toast.error('Du har ikke tilladelse til at tilgå denne side');
-      }
-      router.push(redirectTo);
-      return;
-    }
-  }, [user, requiredLevel, permission, hasAuthLevel, hasPermission, router, redirectTo, showToast]);
+    router.push(redirectTo || defaultRedirect);
+  }, [hasAccess, requiredLevel, redirectTo, router, showToast]);
 
   return {
-    hasAccess: hasAuthLevel(requiredLevel) && (!permission || hasPermission(permission)),
+    hasAccess,
     user,
-    authLevel: user?.auth_level || AuthLevel.PUBLIC
+    authLevel:
+      isMitIDVerified
+        ? AuthLevel.MITID_VERIFIED
+        : isVerified
+        ? AuthLevel.VERIFIED
+        : AuthLevel.PUBLIC,
   };
 }
 
 /**
- * Hook específico para verificar si puede vender (Nivel 2 - MitID Verified)
+ * Helpers específicos
  */
 export function useCanSell() {
-  return useAuthGuard({
-    requiredLevel: AuthLevel.MITID_VERIFIED,
-    permission: 'create_publications',
-    redirectTo: '/auth/verify-mitid'
-  });
+  return useAuthGuard({ requiredLevel: AuthLevel.MITID_VERIFIED, redirectTo: '/auth/verify-mitid' });
 }
 
-/**
- * Hook específico para verificar si puede comprar (Nivel 2 - MitID Verified)
- */
 export function useCanBuy() {
-  return useAuthGuard({
-    requiredLevel: AuthLevel.MITID_VERIFIED,
-    permission: 'buy_products',
-    redirectTo: '/auth/verify-mitid'
-  });
+  return useAuthGuard({ requiredLevel: AuthLevel.MITID_VERIFIED, redirectTo: '/auth/verify-mitid' });
 }
 
-/**
- * Hook específico para funciones sociales (Nivel 1 - Light Account)
- */
 export function useCanSocial() {
-  return useAuthGuard({
-    requiredLevel: AuthLevel.LIGHT_ACCOUNT,
-    redirectTo: '/auth/verify-email'
-  });
+  return useAuthGuard({ requiredLevel: AuthLevel.VERIFIED, redirectTo: '/auth/verify-email' });
 }
 
 /**
- * Componente HOC para proteger rutas
+ * Componente HOC sin JSX (compatible con .ts)
  */
 interface AuthGuardProps {
   children: React.ReactNode;
   requiredLevel: AuthLevel;
   fallback?: React.ReactNode;
-  permission?: string;
 }
 
-export function AuthGuard({ 
-  children, 
-  requiredLevel, 
-  fallback, 
-  permission 
-}: AuthGuardProps) {
-  const { hasAccess } = useAuthGuard({ 
-    requiredLevel, 
-    showToast: false,
-    permission 
-  });
-
-  if (!hasAccess) {
-    return fallback || (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-nordic-900 mb-2">
-            Adgang nægtet
-          </h2>
-          <p className="text-nordic-600 mb-4">
-            Du skal have {AUTH_LEVELS[requiredLevel].name} for at se dette indhold
-          </p>
-          <AuthLevelDisplay user={null} />
-        </div>
-      </div>
-    );
-  }
-
-  return <>{children}</>;
+export function AuthGuard({ children, requiredLevel, fallback }: AuthGuardProps) {
+  const { hasAccess } = useAuthGuard({ requiredLevel, showToast: false });
+  if (!hasAccess) return (fallback ?? null) as any;
+  return children as any;
 }
-
-export {};

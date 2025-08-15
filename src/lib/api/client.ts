@@ -21,6 +21,54 @@ export const apiClient = axios.create({
   validateStatus: (status) => status < 500 || status === 503, // Retry on Railway timeouts
 })
 
+// Simple token manager used by some components
+export const tokenManager = {
+  getToken(): string | null {
+    if (typeof window === 'undefined') return null
+    return localStorage.getItem('nordbay_token')
+  },
+  setToken(token: string) {
+    if (typeof window === 'undefined') return
+    localStorage.setItem('nordbay_token', token)
+  },
+  clear() {
+    if (typeof window === 'undefined') return
+    localStorage.removeItem('nordbay_token')
+    localStorage.removeItem('nordbay_user')
+  }
+}
+
+// Lightweight wrapper returning { success, data, error }
+export type ApiResult<T = any> = { success: boolean; data?: T; error?: string }
+
+async function wrap<T>(p: Promise<any>): Promise<ApiResult<T>> {
+  try {
+    const res = await p
+    return { success: true, data: res.data }
+  } catch (e: any) {
+    const err = e?.response?.data?.error || e?.message || 'Unknown error'
+    return { success: false, error: err }
+  }
+}
+
+export const api = {
+  get<T = any>(url: string, config?: any) {
+    return wrap<T>(apiClient.get(url, config))
+  },
+  post<T = any>(url: string, data?: any, config?: any) {
+    return wrap<T>(apiClient.post(url, data, config))
+  },
+  put<T = any>(url: string, data?: any, config?: any) {
+    return wrap<T>(apiClient.put(url, data, config))
+  },
+  patch<T = any>(url: string, data?: any, config?: any) {
+    return wrap<T>(apiClient.patch(url, data, config))
+  },
+  delete<T = any>(url: string, config?: any) {
+    return wrap<T>(apiClient.delete(url, config))
+  }
+}
+
 // Request interceptor para añadir token JWT automáticamente
 apiClient.interceptors.request.use(
   (config) => {

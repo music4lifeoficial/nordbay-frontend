@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProfileStep from './steps/ProfileStep';
@@ -13,16 +12,18 @@ const steps = [
   { id: 'contact', component: ContactStep },
   { id: 'preferences', component: PreferencesStep },
   { id: 'welcome', component: WelcomeStep },
-];
+] as const;
+
+type Step = typeof steps[number];
 
 const OnboardingWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<Record<string, any>>({});
   const t = useTranslation();
 
   const nextStep = async (data?: any) => {
-    // Si estamos saliendo del paso de contacto, guardar phone/address en backend
-    if (steps[currentStep].id === 'contact' && data) {
+    const step: Step | undefined = steps[currentStep];
+    if (step?.id === 'contact' && data) {
       try {
         const { authApi } = await import('@/lib/api/auth');
         await authApi.updateProfile({ phone: data.phone, address: data.address });
@@ -34,8 +35,9 @@ const OnboardingWizard = () => {
     if (data) setUserData((prev) => ({ ...prev, ...data }));
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
+
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
-  const CurrentStepComponent = steps[currentStep].component;
+  const CurrentStepComponent = steps[currentStep]?.component as React.ComponentType<any> | undefined;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-nordic-50 to-brand-50 p-4">
@@ -57,13 +59,15 @@ const OnboardingWizard = () => {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <CurrentStepComponent
-              onNext={nextStep}
-              onPrev={prevStep}
-              data={userData}
-              isFirst={currentStep === 0}
-              isLast={currentStep === steps.length - 1}
-            />
+            {CurrentStepComponent && (
+              <CurrentStepComponent
+                onNext={nextStep}
+                onPrev={prevStep}
+                data={userData}
+                isFirst={currentStep === 0}
+                isLast={currentStep === steps.length - 1}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

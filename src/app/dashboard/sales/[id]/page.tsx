@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { RequireAuthLevel } from '@/components/auth/RequireAuthLevel';
 import { useParams, useRouter } from 'next/navigation';
-import { Alert } from '@/components/ui/Alert';
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/lib/useTranslation';
 import { pushToast } from '@/hooks/use-toast';

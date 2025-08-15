@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { publicationsApi, categoriesApi } from '@/lib/api/publications';
-import type { Publication, SearchFilters, Category } from '@/types';
-import { Alert } from '@/components/ui/Alert';
+import type { Publication, Category } from '@/types/api';
+import type { SearchFilters } from '@/types';
+import { Alert } from '@/components/ui/alert';
 import { useTranslation } from '@/lib/useTranslation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -69,7 +70,7 @@ export default function MarketplaceSearch() {
   const buildFilters = useCallback((): SearchFilters => {
     const filters: SearchFilters = {
       query: query || undefined,
-      category_id: categoryId || undefined,
+      category: categoryId || undefined,
       price_min: priceMin ? Number(priceMin) : undefined,
       price_max: priceMax ? Number(priceMax) : undefined,
       condition: conditions.length ? (conditions as any) : undefined,
@@ -83,10 +84,10 @@ export default function MarketplaceSearch() {
   const syncUrl = useCallback((filters: SearchFilters) => {
     const params = new URLSearchParams();
     if (filters.query) params.set('q', filters.query);
-    if (filters.category_id) params.set('cat', filters.category_id);
+    if (filters.category) params.set('cat', String(filters.category));
     if (filters.price_min !== undefined) params.set('pmin', String(filters.price_min));
     if (filters.price_max !== undefined) params.set('pmax', String(filters.price_max));
-    if (filters.condition) filters.condition.forEach(c => params.append('cond', c));
+    if (filters.condition) (filters.condition as string[]).forEach(c => params.append('cond', c));
     if (filters.sort_by) params.set('sort', filters.sort_by);
     if (filters.page) params.set('page', String(filters.page));
     router.replace(`?${params.toString()}`);
@@ -101,16 +102,16 @@ export default function MarketplaceSearch() {
       const filters = { ...buildFilters(), page: nextPage };
       const data = await publicationsApi.search(filters);
       setPublications(data.publications);
-      setTotalPages(data.pagination.total_pages);
-      setTotalResults(data.total_results);
+      setTotalPages(data.pagination.pages);
+      setTotalResults(data.pagination.total);
       setPage(data.pagination.page);
       syncUrl(filters);
     } catch (e: any) {
-      setError(t.alert?.marketplaceSearchError ?? (e?.message || 'Marketplace search failed'));
+      setError((t as any).alert?.marketplaceSearchError ?? (e?.message || 'Marketplace search failed'));
     } finally {
       setLoading(false);
     }
-  }, [buildFilters, page, syncUrl, t.alert?.marketplaceSearchError]);
+  }, [buildFilters, page, syncUrl, t]);
 
   // Trigger search when mounted (after URL params parsed)
   useEffect(() => {
@@ -167,8 +168,6 @@ export default function MarketplaceSearch() {
       }
       return next;
     });
-    // Optimistic count update
-    setPublications(prev => prev.map(p => p.id === id ? { ...p, favorites_count: p.favorites_count + (favorites.has(id) ? -1 : 1) } : p));
     try {
       if (favorites.has(id)) {
         await publicationsApi.removeFromFavorites(id);
@@ -177,7 +176,6 @@ export default function MarketplaceSearch() {
       }
     } catch {
       // Revert on error
-      setPublications(prev => prev.map(p => p.id === id ? { ...p, favorites_count: p.favorites_count + (favorites.has(id) ? 1 : -1) } : p));
       setFavorites(prev => {
         const next = new Set(prev);
         if (next.has(id)) next.delete(id); else next.add(id);
@@ -194,32 +192,32 @@ export default function MarketplaceSearch() {
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder={t.marketplace?.searchPlaceholder ?? 'Buscar productos o vendedores...'}
+            placeholder={(t as any).marketplace?.searchPlaceholder ?? 'Buscar productos o vendedores...'}
             className="flex-1"
           />
           <div className="flex gap-2">
-            <Button type="submit" variant="secondary" size="lg" disabled={loading}>{loading ? (t.common?.searching ?? 'Buscando...') : (t.common?.search ?? 'Buscar')}</Button>
-            <Button type="button" variant="outline" size="lg" onClick={handleReset} disabled={loading}>{t.common?.reset ?? 'Reset'}</Button>
+            <Button type="submit" variant="secondary" size="lg" disabled={loading}>{loading ? ((t as any).common?.searching ?? 'Buscando...') : ((t as any).common?.search ?? 'Buscar')}</Button>
+            <Button type="button" variant="outline" size="lg" onClick={handleReset} disabled={loading}>{(t as any).common?.reset ?? 'Reset'}</Button>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-nordic-500">{t.marketplace?.category ?? 'Categoría'}</label>
+            <label className="text-xs font-semibold text-nordic-500">{(t as any).marketplace?.category ?? 'Categoría'}</label>
             <select value={categoryId} onChange={e => setCategoryId(e.target.value)} className="border rounded-md px-2 py-2 text-sm bg-white">
-              <option value="">{t.common?.all ?? 'Todas'}</option>
-              {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
+              <option value="">{(t as any).common?.all ?? 'Todas'}</option>
+              {categories.map(cat => <option key={cat.id} value={String(cat.id)}>{cat.name}</option>)}
             </select>
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-nordic-500">{t.marketplace?.priceMin ?? 'Precio mín.'}</label>
+            <label className="text-xs font-semibold text-nordic-500">{(t as any).marketplace?.priceMin ?? 'Precio mín.'}</label>
             <Input type="number" value={priceMin} onChange={e => setPriceMin(e.target.value)} placeholder="0" className="text-sm" />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-nordic-500">{t.marketplace?.priceMax ?? 'Precio máx.'}</label>
+            <label className="text-xs font-semibold text-nordic-500">{(t as any).marketplace?.priceMax ?? 'Precio máx.'}</label>
             <Input type="number" value={priceMax} onChange={e => setPriceMax(e.target.value)} placeholder="1000" className="text-sm" />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-nordic-500">{t.marketplace?.conditions ?? 'Condición'}</label>
+            <label className="text-xs font-semibold text-nordic-500">{(t as any).marketplace?.conditions ?? 'Condición'}</label>
             <div className="flex flex-wrap gap-2">
               {['new','like_new','good','fair'].map(c => (
                 <button
@@ -232,12 +230,12 @@ export default function MarketplaceSearch() {
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-nordic-500">{t.marketplace?.sortBy ?? 'Ordenar'}</label>
+            <label className="text-xs font-semibold text-nordic-500">{(t as any).marketplace?.sortBy ?? 'Ordenar'}</label>
             <select value={sortBy} onChange={e => setSortBy(e.target.value as any)} className="border rounded-md px-2 py-2 text-sm bg-white">
-              <option value="date_desc">{t.marketplace?.sortNewest ?? 'Más recientes'}</option>
-              <option value="price_asc">{t.marketplace?.sortPriceAsc ?? 'Precio ↑'}</option>
-              <option value="price_desc">{t.marketplace?.sortPriceDesc ?? 'Precio ↓'}</option>
-              <option value="relevance">{t.marketplace?.sortRelevance ?? 'Relevancia'}</option>
+              <option value="date_desc">{(t as any).marketplace?.sortNewest ?? 'Más recientes'}</option>
+              <option value="price_asc">{(t as any).marketplace?.sortPriceAsc ?? 'Precio ↑'}</option>
+              <option value="price_desc">{(t as any).marketplace?.sortPriceDesc ?? 'Precio ↓'}</option>
+              <option value="relevance">{(t as any).marketplace?.sortRelevance ?? 'Relevancia'}</option>
             </select>
           </div>
         </div>
@@ -247,7 +245,7 @@ export default function MarketplaceSearch() {
 
       {/* Results meta */}
       <div className="flex items-center justify-between mt-6">
-        <h2 className="text-lg font-semibold text-nordic-800">{t.marketplace?.results ?? 'Resultados'}</h2>
+        <h2 className="text-lg font-semibold text-nordic-800">{(t as any).marketplace?.results ?? 'Resultados'}</h2>
         {paginatedLabel && <span className="text-xs text-nordic-500">{paginatedLabel}</span>}
       </div>
 
@@ -266,18 +264,15 @@ export default function MarketplaceSearch() {
           {publications.map((item) => (
             <div key={item.id} className="bg-white rounded-xl shadow-md border border-nordic-100 flex flex-col group hover:shadow-lg transition overflow-hidden">
               <div className="relative w-full h-44 bg-nordic-100 flex items-center justify-center">
-                {item.primary_image || (item.images && item.images[0]) ? (
+                {item.images && item.images[0] ? (
                   <img
-                    src={item.primary_image || item.images[0]}
+                    src={item.images[0]}
                     alt={item.title}
                     className="object-cover w-full h-full transition group-hover:scale-105 duration-200"
                     loading="lazy"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-nordic-300 text-4xl">📦</div>
-                )}
-                {item.featured && (
-                  <span className="absolute top-2 left-2 bg-brand-500 text-white text-xs px-2 py-1 rounded-full shadow">Featured</span>
                 )}
                 <button
                   type="button"
@@ -293,24 +288,16 @@ export default function MarketplaceSearch() {
               <div className="flex-1 flex flex-col p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-brand-600 font-bold text-lg">{item.price} DKK</span>
-                  <span className="text-xs text-nordic-400 ml-auto capitalize">{item.category_id}</span>
+                  <span className="text-xs text-nordic-400 ml-auto capitalize">{String(item.category_id)}</span>
                 </div>
                 <div className="font-semibold text-nordic-900 truncate mb-1" title={item.title}>{item.title}</div>
                 <div className="text-nordic-600 text-xs line-clamp-2 mb-2">{item.description}</div>
                 <div className="flex items-center gap-2 mt-auto">
-                  {item.seller.avatar ? (
-                    <img src={item.seller.avatar} alt={item.seller.nickname} className="w-7 h-7 rounded-full border" />
-                  ) : (
-                    <span className="w-7 h-7 rounded-full bg-nordic-200 flex items-center justify-center text-nordic-400 text-lg">👤</span>
-                  )}
-                  <span className="text-xs text-nordic-700 font-medium">{item.seller.nickname}</span>
-                  <span className="ml-auto flex items-center gap-1 text-nordic-400 text-xs">
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#f87171"/></svg>
-                    {item.favorites_count}
-                  </span>
+                  <span className="w-7 h-7 rounded-full bg-nordic-200 flex items-center justify-center text-nordic-400 text-lg">👤</span>
+                  <span className="text-xs text-nordic-700 font-medium">{item.seller_nickname}</span>
                 </div>
-                <Button className="mt-3 w-full" variant="default" /* removed asChild */>
-                  <Link href={`/products/${item.id}`} className="block w-full h-full">{t.marketplace?.viewProduct ?? 'Ver producto'}</Link>
+                <Button className="mt-3 w-full" variant="default">
+                  <Link href={`/products/${item.id}`} className="block w-full h-full">{(t as any).marketplace?.viewProduct ?? 'Ver producto'}</Link>
                 </Button>
               </div>
             </div>
@@ -319,7 +306,7 @@ export default function MarketplaceSearch() {
       )}
 
       {!loading && !publications.length && !error && (
-        <Alert type="info" message={t.alert?.marketplaceNoResults ?? 'No se encontraron resultados.'} className="mt-6" />
+        <Alert type="info" message={(t as any).alert?.marketplaceNoResults ?? 'No se encontraron resultados.'} className="mt-6" />
       )}
 
       {/* Pagination */}

@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { questionsApi } from '@/lib/api/publications';
 import type { Publication, Question } from '@/types/api';
-import { Alert } from '@/components/ui/Alert';
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/lib/useTranslation';
 import { pushToast } from '@/hooks/use-toast';
@@ -121,7 +121,7 @@ export default function ProductDetail() {
       const { payment_url } = await createSaleMutation.mutateAsync({ 
         publication_id: product.id, 
         payment_method: 'card' 
-      });
+      } as any);
       pushToast({ type: 'success', message: t.product?.paymentRedirect ?? 'Redirecting to payment...' });
       if (payment_url) {
         window.location.href = payment_url;
@@ -157,7 +157,6 @@ export default function ProductDetail() {
             <h1 className="text-2xl md:text-3xl font-bold text-nordic-900 mb-2">{product.title}</h1>
             <div className="flex items-center gap-4">
               <span className="text-3xl font-extrabold text-brand-600">{product.price} DKK</span>
-              {product.featured && <span className="px-2 py-1 bg-brand-100 text-brand-600 rounded-full text-xs font-medium">{t.product?.featured ?? 'Featured'}</span>}
               <span className="text-xs text-nordic-400 ml-auto">{product.category_id}</span>
             </div>
           </div>
@@ -166,35 +165,6 @@ export default function ProductDetail() {
               <h2 className="font-semibold text-nordic-800 mb-1 text-sm uppercase tracking-wide">{t.product?.description ?? 'Description'}</h2>
               <p className="text-nordic-700 text-sm leading-relaxed whitespace-pre-line">{product.description}</p>
             </div>
-            <div className="flex items-center gap-3">
-              {product.seller.avatar ? (
-                <img src={product.seller.avatar} alt={product.seller.nickname} className="w-12 h-12 rounded-full border" />
-              ) : (
-                <span className="w-12 h-12 rounded-full bg-nordic-200 flex items-center justify-center text-nordic-400 text-2xl">👤</span>
-              )}
-              <div>
-                <p className="font-medium text-nordic-800 text-sm">{product.seller.nickname}</p>
-                <p className="text-xs text-nordic-500">{product.location_city}, {product.location_region}</p>
-              </div>
-              <Button className="ml-auto" size="sm" variant="secondary">{t.product?.contactSeller ?? 'Contact seller'}</Button>
-            </div>
-            <div className="grid grid-cols-2 gap-4 text-xs">
-              <div className="p-3 rounded-lg bg-white border border-nordic-100">
-                <p className="font-semibold text-nordic-700 mb-1">{t.product?.condition ?? 'Condition'}</p>
-                <p className="text-nordic-600 capitalize">{product.condition.replace('_',' ')}</p>
-              </div>
-              <div className="p-3 rounded-lg bg-white border border-nordic-100">
-                <p className="font-semibold text-nordic-700 mb-1">{t.product?.favorites ?? 'Favorites'}</p>
-                <p className="text-nordic-600">{product.favorites_count}</p>
-              </div>
-            </div>
-            {product.shipping_info && (
-              <div className="p-4 rounded-lg bg-white border border-nordic-100 text-xs space-y-1">
-                <p className="font-semibold text-nordic-700">{t.product?.shipping ?? 'Shipping'}</p>
-                {product.shipping_info.offers_shipping && <p className="text-nordic-600">{t.product?.shipsNationwide ?? 'Ships nationwide'}{product.shipping_info.shipping_cost ? ` - ${product.shipping_info.shipping_cost} DKK` : ''}</p>}
-                {product.shipping_info.pickup_available && <p className="text-nordic-600">{t.product?.pickupAvailable ?? 'Pickup available'}</p>}
-              </div>
-            )}
           </div>
           <div className="flex gap-3">
             <Button className="flex-1" size="lg" onClick={buyNow} disabled={buyLoading}>{buyLoading ? (t.common?.connecting ?? 'Connecting...') : (t.product?.buyNow ?? 'Buy now')}</Button>

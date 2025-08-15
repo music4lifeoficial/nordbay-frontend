@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Search, Filter } from 'lucide-react'
-import { productsAPI, type Product, type SearchFilters } from '@/lib/api/products'
+import { productsAPI, type Product, type SearchFilters } from '@/lib/api/products-fixed'
 import { cn } from '@/lib/utils'
 
 export default function ProductsPage() {

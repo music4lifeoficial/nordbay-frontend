@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useTranslation } from "@/lib/useTranslation";
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
 import { useAuthStore } from "@/lib/stores/auth-store";
-import { useToast } from "@/hooks/useToast";
-import { Alert } from "@/components/ui/Alert";
+import { useToast } from "@/hooks/use-toast";
+import { Alert } from "@/components/ui/alert";
 
 export default function LoginForm() {
   const t = useTranslation();
@@ -16,7 +16,7 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const { login } = useAuthStore();
-  const showToast = useToast();
+  const { toast } = useToast();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +30,7 @@ export default function LoginForm() {
     }
     try {
       await login({ email, password });
-      showToast(t?.login?.success || "Welcome!", "success");
+      toast({ title: t?.login?.success || "Welcome!" });
       router.push("/dashboard");
     } catch (err) {
       setFormError(t?.login?.error || "Login failed.");
@@ -40,19 +40,19 @@ export default function LoginForm() {
   };
 
   const handleGoogleLogin = () => {
-    showToast(t?.common?.connecting || "Connecting...", "success");
+    toast({ title: t?.common?.connecting || "Connecting..." });
     window.open(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`, "_self");
   };
   const handleFacebookLogin = () => {
-    showToast(t?.common?.connecting || "Connecting...", "success");
+    toast({ title: t?.common?.connecting || "Connecting..." });
     window.open(`${process.env.NEXT_PUBLIC_API_URL}/auth/facebook`, "_self");
   };
   const handleMitIDLogin = async () => {
-    showToast(t?.common?.connecting || "Connecting...", "success");
+    toast({ title: t?.common?.connecting || "Connecting..." });
     try {
       window.open(`${process.env.NEXT_PUBLIC_API_URL}/auth/mitid/verify`, "_self");
     } catch (e) {
-      showToast(t?.common?.error || "Something went wrong.", "error");
+      toast({ title: t?.common?.error || "Something went wrong.", variant: "destructive" });
     }
   };
 

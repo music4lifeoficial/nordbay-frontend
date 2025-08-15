@@ -1,7 +1,7 @@
 'use client';
 
-import { Toaster as HotToaster } from 'react-hot-toast';
+import { Toaster as SonnerToaster } from 'sonner';
 
 export function Toaster() {
-  return <HotToaster position="top-right" />;
+  return <SonnerToaster position="top-right" />;
 }

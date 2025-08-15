@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { RequireAuthLevel } from '@/components/auth/RequireAuthLevel';
 import { paymentsApi } from '@/lib/api/payments';
-import { Alert } from '@/components/ui/Alert';
+import { Alert } from '@/components/ui/alert';
 import { useTranslation } from '@/lib/useTranslation';
 import Link from 'next/link';
 

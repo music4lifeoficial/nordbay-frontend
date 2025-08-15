@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { Input } from '@/components/ui/input';
@@ -11,7 +10,7 @@ export default function ProfileData() {
   const [form, setForm] = useState({
     name: user?.name || '',
     email: user?.email || '',
-    avatar: user?.avatar || '',
+    avatar_url: user?.avatar_url || '',
     phone: user?.phone || '',
     address: user?.address || '',
   });
@@ -22,7 +21,7 @@ export default function ProfileData() {
     setForm({
       name: user?.name || '',
       email: user?.email || '',
-      avatar: user?.avatar || '',
+      avatar_url: user?.avatar_url || '',
       phone: user?.phone || '',
       address: user?.address || '',
     });
@@ -52,8 +51,8 @@ export default function ProfileData() {
     <div className="max-w-lg mx-auto bg-white dark:bg-nordic-900 p-6 rounded-xl shadow-md animate-fade-in">
       <div className="flex flex-col items-center gap-2 mb-6">
         <div className="relative w-20 h-20 rounded-full overflow-hidden bg-nordic-200">
-          {form.avatar ? (
-            <Image src={form.avatar} alt="avatar" fill className="object-cover" />
+          {form.avatar_url ? (
+            <Image src={form.avatar_url} alt="avatar" fill className="object-cover" />
           ) : (
             <span className="w-full h-full flex items-center justify-center text-3xl text-nordic-400">👤</span>
           )}
@@ -61,9 +60,9 @@ export default function ProfileData() {
         <div className="text-lg font-bold text-nordic-900 dark:text-white">{user.name || user.email}</div>
         <div className="text-xs text-nordic-500">{user.email}</div>
         <div className="text-xs text-nordic-500">
-          Nivel: {user.account_level === 'mitid_verified' ? 'MitID Verificado' : user.account_level === 'light_account' ? 'Light' : 'Public'}
+          Niveau: {user.mitid_verified ? 'MitID Verificeret' : user.verified ? 'Email verificeret' : 'Public'}
           {user.mitid_verified && <span className="ml-2 text-brand-600">✔️</span>}
-          {user.email_verified && !user.mitid_verified && <span className="ml-2 text-brand-400">✉️</span>}
+          {!user.mitid_verified && user.verified && <span className="ml-2 text-brand-400">✉️</span>}
         </div>
       </div>
       {!edit ? (

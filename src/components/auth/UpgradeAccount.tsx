@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth-store";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/use-toast";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 import { useTranslation } from "@/lib/useTranslation";
 
 export default function UpgradeAccount() {
   const { isMitIDVerified } = useAuthStore();
-  const showToast = useToast();
+  const { toast } = useToast();
   const router = useRouter();
   const t = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
@@ -23,10 +23,10 @@ export default function UpgradeAccount() {
   const handleUpgrade = async () => {
     setIsLoading(true);
     try {
-      showToast(t?.mitid?.redirecting || "Redirecting to MitID...", "success");
+      toast({ title: t?.mitid?.redirecting || "Redirecting to MitID..." });
       window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/mitid/verify`;
     } catch (error) {
-      showToast(t?.mitid?.initError || "Error starting MitID. Try again or contact support.", "error");
+      toast({ title: t?.mitid?.initError || "Error starting MitID. Try again or contact support.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }

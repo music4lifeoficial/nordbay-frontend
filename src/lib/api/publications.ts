@@ -5,18 +5,35 @@
 
 import { api } from './client';
 import type { 
-  Publication, 
-  CreatePublicationData,
-  SearchFilters,
-  SearchResponse,
+  Publication,
+  SearchResponse as BackendSearchResponse,
   Category,
   Question
-} from '@/types';
+} from '@/types/api';
+import type { SearchFilters } from '@/types';
+
+// Local type for create/update payload (minimal fields used by UI)
+export type CreatePublicationData = {
+  title: string;
+  description: string;
+  price: number;
+  category_id: number | string;
+  condition: 'new' | 'like_new' | 'good' | 'fair';
+  location?: string;
+  images?: string[];
+};
+
+// Result shape expected by MarketplaceSearch
+export type PublicationsSearchResult = {
+  publications: Publication[];
+  pagination: BackendSearchResponse['pagination'];
+  total_results: number;
+};
 
 // ✅ PUBLICATIONS ENDPOINTS
 export const publicationsApi = {
   // Search/List publications with filters
-  search: async (filters: SearchFilters = {}): Promise<SearchResponse> => {
+  search: async (filters: SearchFilters = {}): Promise<PublicationsSearchResult> => {
     const params = new URLSearchParams();
     
     // Build query parameters from filters
@@ -30,10 +47,15 @@ export const publicationsApi = {
       }
     });
 
-    const response = await api.get<SearchResponse>(`/publications?${params.toString()}`);
+    const response = await api.get<BackendSearchResponse>(`/publications?${params.toString()}`);
     
     if (response.success && response.data) {
-      return response.data;
+      const r = response.data;
+      return {
+        publications: r.data,
+        pagination: r.pagination,
+        total_results: r.pagination?.total ?? r.pagination?.page ?? 0,
+      };
     }
     
     throw new Error(response.error || 'Failed to search publications');
@@ -106,12 +128,12 @@ export const publicationsApi = {
   // Get user's own publications
   getMyPublications: async (status?: Publication['status']): Promise<Publication[]> => {
     const params = new URLSearchParams();
-    if (status) params.set('status', status);
+    if (status) params.set('status', status as any);
     
     const response = await api.get<Publication[]>(`/publications/my?${params.toString()}`);
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Failed to get your publications');
@@ -151,7 +173,7 @@ export const publicationsApi = {
     const response = await api.get<Publication[]>('/publications/favorites');
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Failed to get favorites');
@@ -173,7 +195,7 @@ export const publicationsApi = {
     const response = await api.get<Publication[]>(`/publications/${id}/related?limit=${limit}`);
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Failed to get related publications');
@@ -198,7 +220,7 @@ export const categoriesApi = {
     const response = await api.get<Category[]>('/categories');
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Failed to get categories');
@@ -209,7 +231,7 @@ export const categoriesApi = {
     const response = await api.get<Category[]>('/categories/hierarchy/tree');
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Failed to get categories tree');
@@ -220,18 +242,18 @@ export const categoriesApi = {
     const response = await api.get<Category>(`/categories/${id}`);
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Category not found');
   },
 
   // Get category attributes (for dynamic forms)
-  getAttributes: async (id: string): Promise<Category['attributes']> => {
-    const response = await api.get<Category['attributes']>(`/categories/${id}/attributes`);
+  getAttributes: async (id: string): Promise<any[]> => {
+    const response = await api.get<any[]>(`/categories/${id}/attributes`);
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Failed to get category attributes');
@@ -245,7 +267,7 @@ export const questionsApi = {
     const response = await api.get<Question[]>(`/questions/publication/${publicationId}`);
     
     if (response.success && response.data) {
-      return response.data;
+      return response.data as any;
     }
     
     throw new Error(response.error || 'Failed to get questions');
@@ -279,22 +301,6 @@ export const questionsApi = {
   },
 };
 
-// ✅ SEARCH SUGGESTIONS API
-export const searchApi = {
-  // Get search suggestions/autocomplete
-  getSuggestions: async (query: string): Promise<string[]> => {
-    if (query.length < 2) return [];
-    
-    const response = await api.get<string[]>(`/search/suggestions?q=${encodeURIComponent(query)}`);
-    
-    if (response.success && response.data) {
-      return response.data;
-    }
-    
-    return []; // Return empty array on error for better UX
-  },
-};
-
 // ✅ PUBLICATIONS UTILITIES
 export const publicationsUtils = {
   // Format price with DKK currency
@@ -322,30 +328,31 @@ export const publicationsUtils = {
 
   // Get condition display text
   getConditionText: (condition: Publication['condition']): string => {
-    const conditionMap = {
-      'new': 'New',
-      'like_new': 'Like New',
-      'good': 'Good',
-      'fair': 'Fair'
+    const conditionMap: Record<Publication['condition'], string> = {
+      new: 'New',
+      like_new: 'Like New',
+      good: 'Good',
+      fair: 'Fair',
     };
-    return conditionMap[condition] || condition;
+    return conditionMap[condition];
   },
 
   // Get status display text with color
   getStatusInfo: (status: Publication['status']): { text: string; color: string } => {
-    const statusMap = {
-      'active': { text: 'Active', color: 'green' },
-      'sold': { text: 'Sold', color: 'blue' },
-      'inactive': { text: 'Inactive', color: 'gray' },
-      'pending': { text: 'Pending', color: 'yellow' }
+    const statusMap: Record<Publication['status'], { text: string; color: string }> = {
+      active: { text: 'Active', color: 'green' },
+      sold: { text: 'Sold', color: 'blue' },
+      paused: { text: 'Paused', color: 'gray' },
+      deleted: { text: 'Deleted', color: 'gray' },
     };
-    return statusMap[status] || { text: status, color: 'gray' };
+    return statusMap[status] || { text: String(status), color: 'gray' };
   },
 
   // Check if user can edit publication
   canUserEdit: (publication: Publication, userId?: string): boolean => {
     if (!userId) return false;
-    return publication.seller.id === userId;
+    // backend: seller_id available on publication
+    return (publication as any).seller_id === userId;
   },
 };
 
