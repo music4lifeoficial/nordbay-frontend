@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   // Vercel deployment optimizations  
@@ -26,6 +27,13 @@ const nextConfig: NextConfig = {
   
   // Bundle analyzer disabled for Vercel (only needed in dev)
   webpack: (config) => {
+    // Ensure webpack can resolve the '@' alias on all environments (e.g. Vercel Linux)
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@': path.resolve(process.cwd(), 'src'),
+    };
+
     return config
   },
   
