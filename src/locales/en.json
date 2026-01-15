@@ -1,0 +1,265 @@
+{
+  "onboarding": {
+    "contactTitle": "Contact information",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "Your phone number",
+    "phoneHelp": "Your phone number will not be shared with other users. Only for notifications and security.",
+    "addressLabel": "Address",
+    "addressPlaceholder": "Street, number, city, postal code",
+    "addressHelp": "This is the address we will use for your shipments.",
+    "contactSaved": "Contact information saved!",
+    "contactSaveError": "Could not save contact information."
+  },
+  "alert": {
+    "marketplaceSearchError": "Marketplace search failed.",
+    "marketplaceNoResults": "No results found.",
+    "productsLoadError": "Failed to load products.",
+    "productsEmpty": "No products have been published yet."
+  },
+  "common": {
+    "search": "Search",
+    "searching": "Searching...",
+    "home": "Home",
+    "connecting": "Connecting...",
+    "error": "Something went wrong."
+  },
+  "marketplace": {
+    "searchTitle": "Search the marketplace",
+    "searchDescription": "Find products and sellers on NordBay.",
+    "category": "Category",
+    "priceMin": "Min price",
+    "priceMax": "Max price",
+    "conditions": "Condition",
+    "sortBy": "Sort by",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price ↑",
+    "sortPriceDesc": "Price ↓",
+    "sortRelevance": "Relevance",
+    "results": "Results",
+    "viewProduct": "View product"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Manage your products, favorites, and profile in one place.",
+    "createTitle": "Create listing",
+    "createDescription": "Publish a new product for sale on NordBay.",
+    "favoritesTitle": "Favorites",
+    "favoritesDescription": "Here you see your saved favorite products.",
+    "profileTitle": "Profile",
+    "profileDescription": "Manage your personal information and verify your account."
+  },
+  "products": {
+    "createTitle": "Create product",
+    "createDescription": "Here you can create a new product for sale.",
+    "errors": {
+      "network": "Network error. Please try again.",
+      "validation": "Please check all required fields.",
+      "default": "Could not create product. Please try again."
+    }
+  },
+  "login": {
+    "title": "Sign in to NordBay",
+    "subcopy": "Access your account and enjoy the platform",
+    "motivation": "Get exclusive deals, manage your favorites, and buy securely.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "forgotPassword": "Forgot your password?",
+    "submit": "Sign in",
+    "submitAria": "Sign in",
+    "orContinueWith": "Or continue with",
+    "googleAria": "Sign in with Google",
+    "facebookAria": "Sign in with Facebook",
+    "mitidAria": "Sign in with MitID",
+    "privacyNote": "We never share your data without permission. Fast and secure access.",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "copyright": "© 2025 NordBay. All rights reserved.",
+    "success": "Welcome to NordBay! You are now signed in.",
+    "error": "Login failed. Please check your credentials.",
+    "missingFields": "Please complete all fields."
+  },
+  "register": {
+    "title": "Join NordBay",
+    "subcopy": "Create your account and start buying and selling",
+    "emailLabel": "Email *",
+    "emailPlaceholder": "your@email.com",
+    "nicknameLabel": "Username *",
+    "nicknamePlaceholder": "your_username",
+    "nameLabel": "Full name *",
+    "namePlaceholder": "Your full name",
+    "phoneLabel": "Phone *",
+    "phonePlaceholder": "+45 12 34 56 78",
+    "addressLabel": "Address *",
+    "addressPlaceholder": "Your full address",
+    "passwordLabel": "Password *",
+    "passwordPlaceholder": "Minimum 8 characters",
+    "confirmPasswordLabel": "Confirm password *",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "acceptTermsPrefix": "I accept the",
+    "acceptTermsAnd": "and",
+    "terms": "terms and conditions",
+    "privacy": "privacy policy",
+    "submit": "Create account",
+    "emailCta": "Register with email",
+    "haveAccount": "Already have an account?",
+    "loginHere": "Sign in here",
+    "success": "Account created! You can now sign in with your new account.",
+    "error": "Could not create account. Please try again.",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordShort": "Password must be at least 8 characters.",
+    "acceptTermsError": "You must accept the terms and conditions.",
+    "errors": {
+      "email_in_use": "This email is already in use.",
+      "invalid_email": "Please enter a valid email address.",
+      "weak_password": "The password is too weak.",
+      "network": "Network error. Please try again.",
+      "default": "Could not create account. Please try again."
+    },
+    "copyright": "© 2025 NordBay. All rights reserved."
+  },
+  "header": {
+    "login": "Log in",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "favorites": "Favorites",
+    "profile": "Profile",
+    "logout": "Log out"
+  },
+  "hero": {
+    "slogan": "Sell easily. Buy securely. Pass it on.",
+    "subcopy": "The Danish marketplace to sell and buy simply, safely, and humanely.",
+    "cta": "Start selling",
+    "searchPlaceholder": "What are you looking for today?",
+    "trust": {
+      "payments": "Protected payments",
+      "moderation": "AI moderation",
+      "shipping": "Shipping across DK",
+      "support": "Danish support"
+    }
+  },
+  "benefits": {
+    "title": "Why choose NordBay?",
+    "subcopy": "Discover the benefits of our Danish marketplace.",
+    "noFees": {
+      "title": "No hidden fees",
+      "copy": "What you see is what you get. No surprises or fine print."
+    },
+    "securePayments": {
+      "title": "Protected payments",
+      "copy": "Secure transactions with Stripe/MobilePay. Your money and data are safe."
+    },
+    "aiModeration": {
+      "title": "Automatic AI moderation",
+      "copy": "Our AI ensures quality and safety on the platform."
+    },
+    "danishSupport": {
+      "title": "Danish support",
+      "copy": "A dedicated team always ready to help you in your language."
+    },
+    "cta": "Explore the marketplace"
+  },
+  "howItWorks": {
+    "title": "How does NordBay work?",
+    "subcopy": "It's never been easier to sell and buy. See how in 3 steps.",
+    "steps": [
+      {
+        "title": "Create your listing for free",
+        "copy": "Take a photo, describe your product, and publish it for free in minutes."
+      },
+      {
+        "title": "Sell securely and get paid",
+        "copy": "Receive offers, chat with buyers, and sell with protected payments."
+      },
+      {
+        "title": "Easy delivery and get your money",
+        "copy": "Ship or hand over in person. Get paid when the buyer confirms."
+      }
+    ],
+    "chips": [
+      "No hidden fees",
+      "Protected payments",
+      "Danish support"
+    ],
+    "cta": "Explore the marketplace"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subcopy": "Here you will find answers to the most common questions.",
+    "items": [
+      {
+        "question": "How do you protect my personal data?",
+        "answer": "At NordBay, your data security is a top priority. We use encryption and do not share your information with third parties."
+      },
+      {
+        "question": "What do I do if I have a problem with a purchase?",
+        "answer": "Our support is ready to help you. Contact us via chat or email and we will quickly resolve your issue."
+      },
+      {
+        "question": "Can I trust the sellers?",
+        "answer": "Yes, all our sellers are verified and transactions are protected by Stripe/MobilePay."
+      },
+      {
+        "question": "Does it cost anything to use NordBay?",
+        "answer": "We do not charge hidden fees. What you see is what you get."
+      }
+    ],
+    "cta": "Have more questions? Contact us"
+  },
+  "ctaFooter": {},
+  "authGuard": {
+    "loading": "Loading...",
+    "redirecting": "Redirecting to login...",
+    "adminOnly": "Access for administrators only.",
+    "verifyEmail": "Verify your email to access this feature.",
+    "goToProfile": "Go to profile",
+    "verifyMitID": "Verify your identity with MitID to access this feature.",
+    "verifyWithMitID": "Verify with MitID"
+  },
+  "footerLinks": {
+    "about": "About NordBay",
+    "terms": "Terms and conditions",
+    "privacy": "Privacy policy",
+    "help": "Help"
+  },
+  "footerSocial": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  },
+  "footerContact": {
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address"
+  },
+  "social": {
+    "continueWith": "Continue with"
+  },
+  "product": {
+    "description": "Description",
+    "condition": "Condition",
+    "favorites": "Favorites",
+    "shipping": "Shipping",
+    "shipsNationwide": "Ships nationwide",
+    "pickupAvailable": "Pickup available",
+    "questions": "Questions & Answers",
+    "askPlaceholder": "Ask a public question about this item",
+    "ask": "Ask",
+    "sending": "Sending...",
+    "noQuestions": "No questions yet.",
+    "related": "Related items",
+    "contactSeller": "Contact seller",
+    "buyNow": "Buy now",
+    "addToFavorites": "Add to favorites",
+    "addedFavorite": "Added to favorites",
+    "removedFavorite": "Removed from favorites",
+    "questionPosted": "Question posted",
+    "featured": "Featured",
+    "seller": "Seller"
+  }
+}

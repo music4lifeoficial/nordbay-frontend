@@ -7,7 +7,7 @@ Every endpoint, authentication level, payload, and response format for professio
 
 Base URL & Infrastructure
 -------------------------
-• Production: https://[railway-app-url]/api
+• Production: https://nordbay-production.up.railway.app/api
 • All endpoints are rooted at `/api`
 • PostgreSQL database hosted on Railway
 • File storage: Cloudinary integration

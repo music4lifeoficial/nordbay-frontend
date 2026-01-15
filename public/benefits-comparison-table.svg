@@ -1,0 +1,19 @@
+<svg width="100%" height="160" viewBox="0 0 600 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="600" height="160" rx="24" fill="#F3F6FB"/>
+  <text x="40" y="40" font-size="22" font-family="Inter, IBM Plex Sans" fill="#2563EB">NordBay</text>
+  <text x="180" y="40" font-size="22" font-family="Inter, IBM Plex Sans" fill="#94A3B8">Vinted</text>
+  <text x="320" y="40" font-size="22" font-family="Inter, IBM Plex Sans" fill="#94A3B8">Trendsales</text>
+  <text x="460" y="40" font-size="22" font-family="Inter, IBM Plex Sans" fill="#94A3B8">Wallapop</text>
+  <text x="40" y="80" font-size="16" fill="#2563EB">0% comisión</text>
+  <text x="180" y="80" font-size="16" fill="#64748B">5% comisión</text>
+  <text x="320" y="80" font-size="16" fill="#64748B">3% comisión</text>
+  <text x="460" y="80" font-size="16" fill="#64748B">5% comisión</text>
+  <text x="40" y="110" font-size="16" fill="#2563EB">7 días promedio venta</text>
+  <text x="180" y="110" font-size="16" fill="#64748B">14 días</text>
+  <text x="320" y="110" font-size="16" fill="#64748B">10 días</text>
+  <text x="460" y="110" font-size="16" fill="#64748B">12 días</text>
+  <text x="40" y="140" font-size="16" fill="#2563EB">Soporte en danés</text>
+  <text x="180" y="140" font-size="16" fill="#64748B">Soporte en inglés</text>
+  <text x="320" y="140" font-size="16" fill="#64748B">Soporte en danés</text>
+  <text x="460" y="140" font-size="16" fill="#64748B">Soporte en español</text>
+</svg>

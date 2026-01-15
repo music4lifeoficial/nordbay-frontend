@@ -1,4 +1,219 @@
+# 🛠️ Workflow y Parámetros Profesionales para NordBay Frontend
+
+Este documento es la **fuente de verdad** para todo el equipo y Copilot/GPT. Aquí se define el método, parámetros y checklist para abordar cada módulo/feature con coherencia y calidad profesional.
+
+## Metodología y Workflow
+
+1. **Antes de programar:** Documentar cada módulo/feature en su propio archivo (design.md, Notion, etc.) con:
+   - Introducción, objetivo, parámetros de marca, reglas para devs/Copilot.
+   - Desglose en subtasks/micro-puntos (UX, copy, estados, animaciones, QA, edge-cases).
+   - Benchmark y validación de mejores prácticas.
+   - Checklist de QA y criterios de “done”.
+
+2. **Iterativo y colaborativo:** Avanzar módulo por módulo, validando y documentando cada decisión antes de escribir código. No teorizar todo el proyecto primero.
+
+3. **Prompt para Copilot/desarrolladores:**
+   - NO usar contenido genérico, stock, ni completar con texto falso (“lorem ipsum”).
+   - Si algo NO está definido, dejarlo como TODO y NO rellenar con defaults.
+   - Respetar naming, paleta, responsividad, accesibilidad, idioma y personalidad de marca.
+   - Revisar este documento antes de cada nueva tarea/módulo.
+
+4. **Checklist QA por feature:**
+   - Validación visual, funcional y de accesibilidad antes de avanzar.
+   - Documentar edge-cases, estados, animaciones y microcopy.
+
+5. **Fuente de verdad única:** Este archivo + design.md en repo + Notion para trabajo colaborativo.
+
+6. **Para cada nuevo módulo:** Volver a esta sección y seguir el mismo proceso.
+
+---
+
 # 🚀 Plan de Implementación Frontend NordBay - Roadmap Técnico Detallado
+
+### API Base URL
+```
+Production: https://nordbay-production.up.railway.app/api
+---
+
+## 📑 DOCUMENTACIÓN: FLUJO DE REGISTRO Y ONBOARDING (SOCIAL/EMAIL)
+
+### 5.1 Registro y Onboarding - Documentación y Microtareas
+
+**🎯 Introducción y Objetivo:**
+El objetivo es crear un flujo de registro y onboarding minimalista, progresivo y social-first para NordBay, alineado con el contrato backend y la personalidad de marca. El registro debe ser lo más simple posible (email/social + password + nickname), con onboarding posterior para completar perfil y preferencias. Todo el proceso debe ser mobile-first, accesible (AA), y con copy relevante para Dinamarca/Escandinavia.
+
+**🛡️ Parámetros de Marca y Reglas para Devs/Copilot:**
+- No usar texto genérico ni placeholder (“lorem ipsum” prohibido)
+- Copy y microcopy siempre relevante para DK/Scandinavia
+- Social login (Google, MitID) siempre visible y prioritario
+- Email/password como alternativa clara
+- Nickname obligatorio, nombre opcional
+- Onboarding separado tras registro exitoso
+- Animaciones suaves, feedback visual claro
+- Accesibilidad AA, mobile-first, dark mode
+- No pedir más datos de los necesarios en el primer paso
+- Si algo no está definido, dejarlo como TODO
+
+**📝 Desglose en Microtareas (UX, Copy, Estados, Animaciones, Edge-cases):**
+1. **Pantalla de bienvenida registro**
+   - Branding NordBay, value proposition breve
+   - Botones: “Continuar con Google”, “Continuar con MitID”, “Registrarse con email”
+   - Microcopy sobre privacidad y términos
+   - Animación de entrada sutil
+
+2. **Registro social**
+   - Redirige a OAuth (Google/MitID)
+   - Feedback de loading, error, cancelación
+   - Si éxito: ir directo a onboarding
+
+3. **Registro por email**
+   - Campos: email, password, nickname (obligatorio), nombre (opcional)
+   - Validación en tiempo real (zod)
+   - Botón “Crear cuenta”
+   - Feedback de error (email en uso, password débil, etc.)
+   - Loading state en botón
+
+4. **Onboarding wizard (post-registro)**
+   - Paso 1: Completa tu perfil (avatar, nombre, ubicación)
+   - Paso 2: Preferencias (categorías, notificaciones)
+   - Paso 3: Confirmación y bienvenida
+   - Progreso visual (dots/bar)
+   - Opción de saltar pasos no obligatorios
+
+5. **Edge-cases y estados**
+   - Error de red, backend caído
+   - Usuario ya logueado intenta registrar
+   - Cancelación de social login
+   - Email ya registrado
+   - Password débil
+   - Validación nickname único
+   - Loading global y por botón
+   - Accesibilidad: focus, aria, contraste
+
+**🔍 Benchmark y Validación de Mejores Prácticas:**
+- Referencia: Vinted, Trendsales, Facebook Marketplace, Airbnb
+- Social login siempre primero, email como fallback
+- Registro en 1-2 pasos máximo antes de onboarding
+- Onboarding progresivo, nunca forzar todo en un solo paso
+- Feedback visual inmediato (errores, loading, éxito)
+- Microcopy claro sobre privacidad y uso de datos
+- Mobile-first, botones grandes, navegación clara
+- Animaciones sutiles (fade, slide, progress)
+- Dark mode y accesibilidad AA
+
+**✅ Checklist de QA y Criterios de “Done” (Registro/Onboarding):**
+- [ ] Social login (Google, MitID) funcional y prioritario
+- [ ] Registro por email/nickname/password funcional
+- [ ] Validación robusta (zod, feedback inmediato)
+- [ ] Onboarding wizard post-registro operativo
+- [ ] Copy y microcopy revisados para DK/EN
+- [ ] Mobile-first y accesibilidad AA
+- [ ] Animaciones y feedback visual implementados
+- [ ] Edge-cases y errores gestionados
+- [ ] QA manual en dispositivos reales
+- [ ] Documentación y checklist actualizados
+
+---
+
+### 5.2 Wireframe Funcional y Desglose de UI (Registro & Onboarding)
+
+**Estructura de Componentes y Jerarquía Visual:**
+
+1. **Pantalla de bienvenida registro**
+   - `<AuthWelcome />` (nuevo componente)
+     - Logo NordBay
+     - Value proposition breve
+     - Botón primario: “Continuar con Google” (`<Button variant="social-google" />`)
+     - Botón secundario: “Continuar con MitID” (`<Button variant="social-mitid" />`)
+     - Link: “Registrarse con email” (abre modal o navega a `<RegisterForm />`)
+     - Microcopy: “Al continuar aceptas nuestros Términos y Política de Privacidad”
+     - Animación fade-in
+
+2. **Registro social**
+   - `<SocialAuthHandler />` (gestiona OAuth, loading, error)
+   - Feedback visual: spinner, error toast, retry
+
+3. **Registro por email**
+   - `<RegisterForm />` (nuevo, minimalista)
+     - Campos: email, password, nickname (obligatorio), nombre (opcional)
+     - Validación en tiempo real (zod)
+     - Botón: “Crear cuenta”
+     - Link: “¿Ya tienes cuenta? Inicia sesión”
+     - Feedback de error inline
+     - Loading state en botón
+
+4. **Onboarding wizard (post-registro)**
+   - `<OnboardingWizard />` (multi-step, progresivo)
+     - Paso 1: `<ProfileStep />` (avatar, nombre, ubicación)
+     - Paso 2: `<PreferencesStep />` (categorías, notificaciones)
+     - Paso 3: `<WelcomeStep />` (confirmación, tips)
+     - Progreso visual: dots/bar arriba
+     - Botón “Saltar” en pasos opcionales
+     - Animaciones slide/fade entre pasos
+
+**Navegación y Estados:**
+- Navegación clara entre bienvenida, social/email, onboarding
+- Redirección automática tras éxito social/email
+- Feedback inmediato en cada acción (loading, error, éxito)
+- Mobile-first: botones grandes, layout vertical, padding generoso
+- Dark mode: fondo, botones y campos adaptados
+
+**Recomendaciones de Layout/Responsividad:**
+- Máximo 400-480px de ancho en mobile
+- Espaciado vertical generoso entre secciones
+- Botones full-width en mobile
+- Tipografía clara, jerarquía visual fuerte (h1, h2, labels)
+- Iconos de Google/MitID en botones sociales
+- Microcopy siempre visible bajo botones principales
+
+**Wireframe textual (mobile):**
+
+```
+┌───────────────────────────────┐
+│   [NordBay Logo]             │
+│   Sælg nemt. Køb trygt.      │
+│   Giv videre.                │
+│------------------------------│
+│ [Continuar con Google]       │
+│ [Continuar con MitID]        │
+│ [Registrarse con email]      │
+│------------------------------│
+│ Al continuar aceptas...      │
+└───────────────────────────────┘
+
+// Si elige email:
+┌───────────────────────────────┐
+│   Crear cuenta                │
+│------------------------------│
+│ Email:  [___________]         │
+│ Nickname: [_________]         │
+│ Nombre:   [_________] (op)    │
+│ Contraseña: [_______]         │
+│ [Crear cuenta]                │
+│ ¿Ya tienes cuenta? Inicia sesión│
+└───────────────────────────────┘
+
+// Onboarding (wizard):
+┌───────────────────────────────┐
+│ Paso 1/3: Completa tu perfil  │
+│ [Avatar] [Nombre] [Ubicación] │
+│ [Siguiente] [Saltar]          │
+│------------------------------│
+│ Paso 2/3: Preferencias        │
+│ [Categorías] [Notificaciones] │
+│ [Siguiente] [Saltar]          │
+│------------------------------│
+│ Paso 3/3: ¡Listo!             │
+│ [Tips, links, CTA]            │
+│ [Ir al marketplace]           │
+└───────────────────────────────┘
+```
+
+---
+
+---
+
+Nuestro slogan: “Sælg nemt. Køb trygt. Giv videre.”
 
 ## 📋 ÍNDICE DE FEATURES POR PRIORIDAD
 
@@ -116,6 +331,104 @@ src/
 - [ ] Todas las dependencias instaladas
 - [ ] Hot reload funciona
 - [ ] Structure de carpetas creada
+
+## 🚀 VERCEL DEPLOYMENT READY
+
+### ✅ Configuración Completa para Vercel
+
+**📦 Arquitectura Vercel + Railway:**
+```
+Frontend (Vercel) ←→ Backend (Railway)
+   ↓                    ↓
+Vercel Edge CDN    Railway PostgreSQL
+   ↓                    ↓
+Global Performance   European Data
+```
+
+**🔧 Optimizaciones Vercel-Specific:**
+
+1. **Next.js 15 + Turbopack**
+   - Build times 5x más rápidos en Vercel
+   - Hot reload instantáneo en desarrollo
+   - Bundle optimization automático
+
+2. **Performance Edge Computing**
+   ```typescript
+   // vercel.json
+   "regions": ["fra1"], // Frankfurt para Nordic users
+   "functions": {
+     "app/api/**/*.ts": {
+       "maxDuration": 30
+     }
+   }
+   ```
+
+3. **Image Optimization**
+   - Vercel's CDN automático para imágenes
+   - WebP/AVIF generation en edge
+   - Lazy loading optimizado
+
+4. **API Proxy Configuration**
+   ```json
+   "rewrites": [
+     {
+       "source": "/api/backend/(.*)",
+       "destination": "$NEXT_PUBLIC_API_URL/$1"
+     }
+   ]
+   ```
+
+**🌍 Variables de Entorno Vercel:**
+```bash
+# En Vercel Dashboard > Settings > Environment Variables
+NEXT_PUBLIC_APP_URL=https://nordbay.vercel.app
+NEXT_PUBLIC_API_URL=https://nordbay-backend.up.railway.app/api
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_SECRET_KEY=sk_live_...
+```
+
+**⚡ Deployment Commands:**
+```bash
+# Development
+npm run dev
+
+# Production Build (Vercel automático)
+npm run build
+npm run start
+
+# Pre-deployment checks
+npm run lint
+npm run type-check
+```
+
+**🔒 Security Headers en Vercel:**
+- X-Frame-Options: DENY
+- X-Content-Type-Options: nosniff
+- CSP automático para XSS protection
+- HTTPS enforcement
+
+**📊 Monitoring Vercel:**
+- Vercel Analytics integrado
+- Core Web Vitals tracking
+- Function execution times
+- Error boundary reporting
+
+**🚀 CI/CD Automático:**
+- Git push → Vercel auto-deploy
+- Preview deployments en PRs
+- Production deploy en main branch
+- Rollback instantáneo disponible
+
+**✅ Verified Vercel Compatibility:**
+- ✅ Next.js 15 App Router
+- ✅ React 19 Server Components  
+- ✅ TanStack Query SSR
+- ✅ Stripe Elements
+- ✅ Framer Motion animations
+- ✅ Tailwind CSS optimizado
+- ✅ TypeScript strict mode
+- ✅ Image optimization
+- ✅ API routes optimizadas
 
 ---
 

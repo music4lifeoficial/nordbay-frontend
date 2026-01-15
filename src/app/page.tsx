@@ -1,136 +1,73 @@
-// ===============================================
-// NORDBAY HOME PAGE - TEMPORARY LANDING
-// Main marketplace entry point
-// ===============================================
+'use client'
+
+import { AppLayout } from '@/components/layout/AppLayout'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { ShoppingBag, Users, Shield, Heart, Search, TrendingUp } from 'lucide-react'
 
 export default function HomePage() {
+  const features = [
+    { icon: ShoppingBag, title: 'Quality Products', description: 'Curated marketplace for authentic, high-quality items from verified sellers.' },
+    { icon: Users, title: 'Trusted Community', description: 'Connect with verified buyers and sellers in a safe, moderated environment.' },
+    { icon: Shield, title: 'Secure Payments', description: 'Protected transactions with escrow system and buyer/seller guarantees.' },
+    { icon: Heart, title: 'Conscious Commerce', description: 'Promote sustainable consumption through quality second-hand and new items.' },
+    { icon: Search, title: 'Smart Discovery', description: 'AI-powered recommendations and advanced search to find exactly what you need.' },
+    { icon: TrendingUp, title: 'Fair Pricing', description: 'Transparent commission structure and pricing that benefits both parties.' },
+  ]
+
   return (
-    <main className="min-h-screen bg-nordic-gradient">
+    <AppLayout>
       {/* Hero Section */}
-      <section className="nordic-container nordic-section text-center">
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* Logo & Title */}
-          <div className="space-y-4">
-            <h1 className="text-6xl font-bold text-nordic-ocean">
-              NordBay
+      <section className="relative bg-gradient-to-b from-white to-nordic-50 py-16 -mx-4 sm:-mx-6 lg:-mx-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-nordic-900 sm:text-6xl">
+              Welcome to{' '}
+              <span className="bg-gradient-to-r from-brand-500 to-brand-600 bg-clip-text text-transparent">
+                NordBay
+              </span>
             </h1>
-            <p className="text-xl text-nordic-secondary max-w-2xl mx-auto">
-              Nordic Marketplace for Conscious Consumers
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-nordic-600">
+              The Nordic marketplace for conscious consumers. Buy and sell quality products 
+              with trust, transparency, and authentic community connections.
             </p>
-            <p className="text-lg text-muted-foreground">
-              The Danish marketplace for authentic, quality products. 
-              Buy and sell with confidence in our trusted Nordic community.
-            </p>
-          </div>
-
-          {/* Status Badge */}
-          <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-            Connected to Railway Backend
-          </div>
-
-          {/* Tech Stack Info */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
-            <div className="nordic-card p-4 text-center">
-              <h3 className="font-semibold text-nordic-primary">Frontend</h3>
-              <p className="text-sm text-muted-foreground">Next.js 15 + Vercel</p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Button size="lg" className="bg-brand-500 hover:bg-brand-600">
+                Start Exploring
+              </Button>
+              <Button variant="outline" size="lg">
+                Sell Something
+              </Button>
             </div>
-            <div className="nordic-card p-4 text-center">
-              <h3 className="font-semibold text-nordic-primary">Backend</h3>
-              <p className="text-sm text-muted-foreground">Railway + PostgreSQL</p>
-            </div>
-            <div className="nordic-card p-4 text-center">
-              <h3 className="font-semibold text-nordic-primary">Design</h3>
-              <p className="text-sm text-muted-foreground">Nordic Minimalist</p>
-            </div>
-            <div className="nordic-card p-4 text-center">
-              <h3 className="font-semibold text-nordic-primary">Auth</h3>
-              <p className="text-sm text-muted-foreground">3-Tier + MitID</p>
-            </div>
-          </div>
-
-          {/* Coming Soon Features */}
-          <div className="mt-16 space-y-8">
-            <h2 className="text-3xl font-semibold text-nordic-primary">
-              Coming Soon
-            </h2>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="nordic-card p-6 text-left">
-                <h3 className="text-xl font-semibold mb-3">🔐 Authentication</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Email registration</li>
-                  <li>• Light Account system</li>
-                  <li>• MitID verification</li>
-                  <li>• Secure JWT tokens</li>
-                </ul>
-              </div>
-              
-              <div className="nordic-card p-6 text-left">
-                <h3 className="text-xl font-semibold mb-3">🛍️ Marketplace</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Product listings</li>
-                  <li>• Advanced search</li>
-                  <li>• Category filters</li>
-                  <li>• Instagram-style gallery</li>
-                </ul>
-              </div>
-              
-              <div className="nordic-card p-6 text-left">
-                <h3 className="text-xl font-semibold mb-3">💳 Commerce</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Stripe payments</li>
-                  <li>• Danish shipping</li>
-                  <li>• Order management</li>
-                  <li>• Reviews & ratings</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Implementation Status */}
-          <div className="mt-16 p-6 bg-white/50 rounded-nordic border border-border">
-            <h3 className="text-lg font-semibold mb-4 text-nordic-primary">
-              📋 Implementation Progress
-            </h3>
-            
-            <div className="space-y-3 text-left max-w-2xl mx-auto">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Project Setup & Configuration</span>
-                <span className="text-sm font-medium text-green-600">✅ Complete</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">API Client & Types</span>
-                <span className="text-sm font-medium text-green-600">✅ Complete</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Authentication System</span>
-                <span className="text-sm font-medium text-yellow-600">⏳ In Progress</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">UI Components</span>
-                <span className="text-sm font-medium text-yellow-600">⏳ In Progress</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Marketplace Core</span>
-                <span className="text-sm font-medium text-gray-400">⏸️ Pending</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Payment Integration</span>
-                <span className="text-sm font-medium text-gray-400">⏸️ Pending</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Footer Info */}
-          <div className="mt-16 pt-8 border-t border-border">
-            <p className="text-sm text-muted-foreground">
-              Built with Next.js 15, TypeScript, TailwindCSS & Railway<br/>
-              Professional implementation for NordBay marketplace
-            </p>
           </div>
         </div>
       </section>
-    </main>
-  );
+
+      {/* Features Section */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-nordic-900">
+              Why Choose NordBay?
+            </h2>
+            <p className="mt-4 text-lg text-nordic-600">
+              Built with Nordic values of simplicity, quality, and trust
+            </p>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature) => (
+              <Card key={feature.title} className="p-6 text-center border-nordic-200 hover:shadow-md transition-shadow">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-brand-50">
+                  <feature.icon className="h-6 w-6 text-brand-600" />
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-nordic-900">{feature.title}</h3>
+                <p className="mt-2 text-nordic-600">{feature.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    </AppLayout>
+  )
 }

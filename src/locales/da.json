@@ -1,0 +1,265 @@
+{
+  "onboarding": {
+    "contactTitle": "Kontaktoplysninger",
+    "phoneLabel": "Telefon",
+    "phonePlaceholder": "Dit telefonnummer",
+    "phoneHelp": "Dit telefonnummer deles ikke med andre brugere. Kun til notifikationer og sikkerhed.",
+    "addressLabel": "Adresse",
+    "addressPlaceholder": "Gade, nummer, by, postnummer",
+    "addressHelp": "Dette er adressen vi bruger til dine forsendelser.",
+    "contactSaved": "Kontaktoplysninger gemt!",
+    "contactSaveError": "Kunne ikke gemme kontaktoplysninger."
+  },
+  "alert": {
+    "marketplaceSearchError": "Fejl ved søgning i markedspladsen.",
+    "marketplaceNoResults": "Ingen resultater fundet.",
+    "productsLoadError": "Fejl ved indlæsning af produkter.",
+    "productsEmpty": "Der er endnu ikke offentliggjort produkter."
+  },
+  "common": {
+    "search": "Søg",
+    "searching": "Søger...",
+    "home": "Hjem",
+    "connecting": "Forbinder...",
+    "error": "Noget gik galt."
+  },
+  "marketplace": {
+    "searchTitle": "Søg i markedspladsen",
+    "searchDescription": "Find produkter og sælgere på NordBay.",
+    "category": "Kategori",
+    "priceMin": "Min pris",
+    "priceMax": "Max pris",
+    "conditions": "Stand",
+    "sortBy": "Sorter efter",
+    "sortNewest": "Nyeste",
+    "sortPriceAsc": "Pris ↑",
+    "sortPriceDesc": "Pris ↓",
+    "sortRelevance": "Relevans",
+    "results": "Resultater",
+    "viewProduct": "Se produkt"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Administrer dine produkter, favoritter og profil ét sted.",
+    "createTitle": "Opret annonce",
+    "createDescription": "Udgiv et nyt produkt til salg på NordBay.",
+    "favoritesTitle": "Favoritter",
+    "favoritesDescription": "Her ser du dine gemte favoritprodukter.",
+    "profileTitle": "Profil",
+    "profileDescription": "Administrer dine personlige oplysninger og verificér din konto."
+  },
+  "products": {
+    "createTitle": "Opret produkt",
+    "createDescription": "Her kan du oprette et nyt produkt til salg.",
+    "errors": {
+      "network": "Netværksfejl. Prøv igen.",
+      "validation": "Tjek venligst alle obligatoriske felter.",
+      "default": "Kunne ikke oprette produkt. Prøv igen."
+    }
+  },
+  "login": {
+    "title": "Log ind på NordBay",
+    "subcopy": "Få adgang til din konto og oplev hele platformen",
+    "motivation": "Få adgang til eksklusive tilbud, styr dine favoritter og køb sikkert.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "din@email.com",
+    "passwordLabel": "Adgangskode",
+    "passwordPlaceholder": "Din adgangskode",
+    "showPassword": "Vis adgangskode",
+    "hidePassword": "Skjul adgangskode",
+    "forgotPassword": "Glemt din adgangskode?",
+    "submit": "Log ind",
+    "submitAria": "Log ind",
+    "orContinueWith": "Eller fortsæt med",
+    "googleAria": "Log ind med Google",
+    "facebookAria": "Log ind med Facebook",
+    "mitidAria": "Log ind med MitID",
+    "privacyNote": "Vi deler aldrig dine data uden tilladelse. Hurtig og sikker adgang.",
+    "noAccount": "Har du ikke en konto?",
+    "registerHere": "Opret konto her",
+    "terms": "Vilkår",
+    "privacy": "Privatliv",
+    "copyright": "© 2025 NordBay. Alle rettigheder forbeholdes.",
+    "success": "Velkommen til NordBay! Du er nu logget ind.",
+    "error": "Login mislykkedes. Tjek dine oplysninger.",
+    "missingFields": "Udfyld venligst alle felter."
+  },
+  "register": {
+    "title": "Bliv medlem af NordBay",
+    "subcopy": "Opret din konto og begynd at købe og sælge",
+    "emailLabel": "Email *",
+    "emailPlaceholder": "din@email.com",
+    "nicknameLabel": "Brugernavn *",
+    "nicknamePlaceholder": "dit_brugernavn",
+    "nameLabel": "Fulde navn *",
+    "namePlaceholder": "Dit fulde navn",
+    "phoneLabel": "Telefon *",
+    "phonePlaceholder": "+45 12 34 56 78",
+    "addressLabel": "Adresse *",
+    "addressPlaceholder": "Din fulde adresse",
+    "passwordLabel": "Adgangskode *",
+    "passwordPlaceholder": "Minimum 8 tegn",
+    "confirmPasswordLabel": "Bekræft adgangskode *",
+    "confirmPasswordPlaceholder": "Gentag din adgangskode",
+    "acceptTermsPrefix": "Jeg accepterer",
+    "acceptTermsAnd": "og",
+    "terms": "vilkår og betingelser",
+    "privacy": "privatlivspolitik",
+    "submit": "Opret konto",
+    "emailCta": "Opret med email",
+    "haveAccount": "Har du allerede en konto?",
+    "loginHere": "Log ind her",
+    "success": "Konto oprettet! Du kan nu logge ind med din nye konto.",
+    "error": "Kunne ikke oprette konto. Prøv igen.",
+    "passwordMismatch": "Adgangskoderne matcher ikke.",
+    "passwordShort": "Adgangskoden skal være mindst 8 tegn.",
+    "acceptTermsError": "Du skal acceptere vilkår og betingelser.",
+    "errors": {
+      "email_in_use": "Denne email er allerede i brug.",
+      "invalid_email": "Indtast venligst en gyldig email-adresse.",
+      "weak_password": "Adgangskoden er for svag.",
+      "network": "Netværksfejl. Prøv igen.",
+      "default": "Kunne ikke oprette konto. Prøv igen."
+    },
+    "copyright": "© 2025 NordBay. Alle rettigheder forbeholdes."
+  },
+  "header": {
+    "login": "Log ind",
+    "register": "Opret konto",
+    "dashboard": "Dashboard",
+    "favorites": "Favoritter",
+    "profile": "Profil",
+    "logout": "Log ud"
+  },
+  "hero": {
+    "slogan": "Sælg nemt. Køb sikkert. Giv videre.",
+    "subcopy": "Den danske markedsplads til at sælge og købe enkelt, sikkert og menneskeligt.",
+    "cta": "Begynd at sælge",
+    "searchPlaceholder": "Hvad leder du efter i dag?",
+    "trust": {
+      "payments": "Beskyttede betalinger",
+      "moderation": "AI-moderering",
+      "shipping": "Forsendelse i hele DK",
+      "support": "Dansk support"
+    }
+  },
+  "benefits": {
+    "title": "Hvorfor vælge NordBay?",
+    "subcopy": "Oplev fordelene ved vores danske markedsplads.",
+    "noFees": {
+      "title": "Ingen skjulte gebyrer",
+      "copy": "Hvad du ser, er hvad du får. Ingen overraskelser eller småt print."
+    },
+    "securePayments": {
+      "title": "Beskyttede betalinger",
+      "copy": "Sikre transaktioner med Stripe/MobilePay. Dine penge og data er sikre."
+    },
+    "aiModeration": {
+      "title": "Automatisk AI-moderering",
+      "copy": "Vores AI sikrer kvalitet og sikkerhed på platformen."
+    },
+    "danishSupport": {
+      "title": "Dansk support",
+      "copy": "Et dedikeret team altid klar til at hjælpe dig på dit sprog."
+    },
+    "cta": "Udforsk markedspladsen"
+  },
+  "howItWorks": {
+    "title": "Hvordan fungerer NordBay?",
+    "subcopy": "Det har aldrig været nemmere at sælge og købe. Se hvordan i 3 trin.",
+    "steps": [
+      {
+        "title": "Opret din annonce gratis",
+        "copy": "Tag et billede, beskriv dit produkt og udgiv det gratis på få minutter."
+      },
+      {
+        "title": "Sælg sikkert og få betaling",
+        "copy": "Modtag bud, chat med købere og sælg med beskyttede betalinger."
+      },
+      {
+        "title": "Nemt levering og få dine penge",
+        "copy": "Send eller aflever personligt. Få betaling, når køber bekræfter."
+      }
+    ],
+    "chips": [
+      "Ingen skjulte gebyrer",
+      "Beskyttede betalinger",
+      "Dansk support"
+    ],
+    "cta": "Udforsk markedspladsen"
+  },
+  "faq": {
+    "title": "Ofte stillede spørgsmål",
+    "subcopy": "Her finder du svar på de mest almindelige spørgsmål.",
+    "items": [
+      {
+        "question": "Hvordan beskytter I mine persondata?",
+        "answer": "Hos NordBay er din datasikkerhed en topprioritet. Vi bruger kryptering og deler ikke dine oplysninger med tredjeparter."
+      },
+      {
+        "question": "Hvad gør jeg, hvis jeg har et problem med et køb?",
+        "answer": "Vores support står klar til at hjælpe dig. Kontakt os via chat eller e-mail, så løser vi hurtigt dit problem."
+      },
+      {
+        "question": "Kan jeg stole på sælgerne?",
+        "answer": "Ja, alle vores sælgere er verificerede, og transaktioner er beskyttet af Stripe/MobilePay."
+      },
+      {
+        "question": "Koster det noget at bruge NordBay?",
+        "answer": "Vi opkræver ikke skjulte gebyrer. Hvad du ser, er hvad du får."
+      }
+    ],
+    "cta": "Har du flere spørgsmål? Kontakt os"
+  },
+  "ctaFooter": {},
+  "authGuard": {
+    "loading": "Indlæser...",
+    "redirecting": "Omdirigerer til login...",
+    "adminOnly": "Adgang kun for administratorer.",
+    "verifyEmail": "Bekræft din email for at få adgang til denne funktion.",
+    "goToProfile": "Gå til profil",
+    "verifyMitID": "Bekræft din identitet med MitID for at få adgang til denne funktion.",
+    "verifyWithMitID": "Bekræft med MitID"
+  },
+  "footerLinks": {
+    "about": "Om NordBay",
+    "terms": "Vilkår og betingelser",
+    "privacy": "Privatlivspolitik",
+    "help": "Hjælp"
+  },
+  "footerSocial": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  },
+  "footerContact": {
+    "email": "Email",
+    "phone": "Telefon",
+    "address": "Adresse"
+  },
+  "social": {
+    "continueWith": "Fortsæt med"
+  },
+  "product": {
+    "description": "Beskrivelse",
+    "condition": "Stand",
+    "favorites": "Favoritter",
+    "shipping": "Forsendelse",
+    "shipsNationwide": "Sender i hele landet",
+    "pickupAvailable": "Afhentning mulig",
+    "questions": "Spørgsmål & svar",
+    "askPlaceholder": "Stil et offentligt spørgsmål om varen",
+    "ask": "Spørg",
+    "sending": "Sender...",
+    "noQuestions": "Ingen spørgsmål endnu.",
+    "related": "Relaterede varer",
+    "contactSeller": "Kontakt sælger",
+    "buyNow": "Køb nu",
+    "addToFavorites": "Tilføj til favoritter",
+    "addedFavorite": "Tilføjet til favoritter",
+    "removedFavorite": "Fjernet fra favoritter",
+    "questionPosted": "Spørgsmål sendt",
+    "featured": "Fremhævet",
+    "seller": "Sælger"
+  }
+}

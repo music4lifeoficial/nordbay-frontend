@@ -1,9 +1,4 @@
-/** @type {import('next').NextConfig} */
-module.exports = {
-  extends: ["next/core-web-vitals"],
-  rules: {
-    "@typescript-eslint/no-unused-vars": "warn",
-    "prefer-const": "error",
-    "no-var": "error"
-  }
-};
+// Delegate to ESM flat config to play nicely with next lint
+import config from "./eslint.config.mjs";
+export default config;
+

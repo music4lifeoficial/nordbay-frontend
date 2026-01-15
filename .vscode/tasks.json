@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Clean Next.js, node_modules, and reinstall dependencies",
+			"command": "rd /s /q .next && rd /s /q node_modules && del package-lock.json && del pnpm-lock.yaml && del yarn.lock && npm install",
+			"group": "build",
+			"isBackground": false
+		}
+	]
+}
